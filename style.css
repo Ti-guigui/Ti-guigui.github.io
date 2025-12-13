@@ -26,6 +26,22 @@
   background-color: #3367D6;
 }
 
+/* Texte et bouton HERO au scroll */
+.hero h1,
+.hero p,
+.hero .btn {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s ease;
+}
+
+.hero h1.visible,
+.hero p.visible,
+.hero .btn.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 /* =============================== */
 /* HERO SECTION - superposition du texte et bouton */
 /* =============================== */
