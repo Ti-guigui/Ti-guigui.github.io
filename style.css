@@ -49,6 +49,18 @@ nav a:hover {
   color: #d4af37;
 }
 
+.hero {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+}
+
+
 /* === BOUTONS === */
 .btn {
   background-color: #d4af37;
