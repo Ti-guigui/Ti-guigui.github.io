@@ -143,6 +143,14 @@ footer {
   color: #777;
 }
 
+.container {
+  max-width: 1200px;
+  width: 100%;
+  margin: auto;
+  padding: 20px;
+}
+
+
 /* === RESPONSIVE === */
 @media (max-width: 1024px) {
   header {
@@ -369,4 +377,32 @@ form button {
 form button:hover {
   transform: scale(1.03);
   box-shadow: 0 5px 12px rgba(212, 175, 55, 0.4);
+}
+
+@media (max-width: 768px) {
+
+  nav ul {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .hero h1 {
+    font-size: 1.8rem;
+  }
+
+  .hero p {
+    font-size: 1rem;
+  }
+
+  button {
+    width: 100%;
+    max-width: 280px;
+  }
+
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
 }
