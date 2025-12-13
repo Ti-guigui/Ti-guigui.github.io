@@ -60,6 +60,38 @@ nav a:hover {
   padding: 20px;
 }
 
+.hours {
+  background: #0f0f0f;
+  color: #fff;
+  padding: 60px 20px;
+}
+
+.hours h2 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.hours ul {
+  list-style: none;
+  max-width: 400px;
+  margin: auto;
+}
+
+.hours li {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #333;
+}
+
+.hours li span:last-child {
+  font-weight: bold;
+}
+
+.hours .closed span:last-child {
+  color: #d4af37; /* or */
+}
+
 
 /* === BOUTONS === */
 .btn {
