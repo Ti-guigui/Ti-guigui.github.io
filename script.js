@@ -1,43 +1,57 @@
-// script.js
-// Menu burger pour mobile
-const burger = document.querySelector('.burger');
-const nav = document.querySelector('nav ul');
+// ===============================
+// MENU BURGER (MOBILE)
+// ===============================
+const burger = document.getElementById("burger");
+const menu = document.getElementById("menu");
 
-if (burger) {
-  burger.addEventListener('click', () => {
-    nav.classList.toggle('open');
-    burger.classList.toggle('active');
+burger.addEventListener("click", () => {
+  menu.classList.toggle("active");
+  burger.classList.toggle("active");
+});
+
+// Fermer le menu après clic sur un lien (mobile)
+document.querySelectorAll("#menu a").forEach(link => {
+  link.addEventListener("click", () => {
+    menu.classList.remove("active");
+    burger.classList.remove("active");
   });
-}
-// Sélection des éléments
-const modal = document.getElementById("booksyModal");
-const btn = document.getElementById("booksyBtn");
-const span = document.querySelector(".close");
+});
 
-const days = document.querySelectorAll(".hours li");
-const today = new Date().getDay(); // 0 = dimanche
+
+// ===============================
+// SURBRILLANCE DU JOUR ACTUEL (HORAIRES)
+// ===============================
+const days = document.querySelectorAll(".infos-box ul li");
+
+// 0 = dimanche, 1 = lundi...
+const today = new Date().getDay();
 
 days.forEach((day, index) => {
-  if (index === (today === 0 ? 6 : today - 1)) {
+  // Lundi = index 0 → getDay() = 1
+  const dayIndex = today === 0 ? 6 : today - 1;
+
+  if (index === dayIndex) {
     day.style.color = "#d4af37";
-    day.style.fontWeight = "bold";
+    day.style.fontWeight = "600";
   }
 });
 
 
-// Ouvrir la modale
-btn.onclick = function() {
-  modal.style.display = "block";
-}
+// ===============================
+// ANIMATION AU SCROLL (OPTIONNEL PREMIUM)
+// ===============================
+const revealElements = document.querySelectorAll("section");
 
-// Fermer la modale
-span.onclick = function() {
-  modal.style.display = "none";
-}
+const revealOnScroll = () => {
+  const trigger = window.innerHeight * 0.85;
 
-// Fermer en cliquant en dehors de la modale
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-}
+  revealElements.forEach(el => {
+    const top = el.getBoundingClientRect().top;
+    if (top < trigger) {
+      el.classList.add("visible");
+    }
+  });
+};
+
+window.addEventListener("scroll", revealOnScroll);
+revealOnScroll();
