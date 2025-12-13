@@ -4,127 +4,138 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Star Barbershop</title>
-  <!-- Google Fonts pour un style moderne -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <!-- Font Awesome pour les icônes -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link rel="stylesheet" href="style.css" />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header>
+
+<header class="header">
   <img src="image/logo.png" alt="Star Barbershop" class="logo">
 
   <div class="burger" id="burger">☰</div>
 
   <nav id="menu">
     <a href="#accueil">Accueil</a>
-    <a href="#services">Services & Tarifs</a>
+    <a href="#infos">Horaires & Tarifs</a>
+    <a href="#why">Pourquoi nous</a>
     <a href="#equipe">Équipe</a>
     <a href="#galerie">Galerie</a>
-    <a href="#reservation">Réservation</a>
     <a href="#contact">Contact</a>
   </nav>
 </header>
 
+<!-- HERO -->
 <section id="accueil" class="hero">
-  <h1>Bienvenue chez <span>Star Barbershop</span></h1>
-  <p>Un lieu convivial où tradition et modernité se rencontrent.</p>
-  
-  <!-- BOUTON BOOKSY -->
-  <a href="https://booksy.com/fr-fr/65816_star-barbershop_barbier_93877_mourmelon-le-grand#ba_s=vl_1" 
-     target="_blank" class="btn">
-    <i class="fa-solid fa-calendar-check"></i> Réserver via Booksy
-  </a>
-</section>
-  
-<section class="hours">
-  <div class="container">
-    <h2>Horaires d’ouverture</h2>
-    <ul>
-      <li><span>Lundi</span><span>09h00 – 19h00</span></li>
-      <li><span>Mardi</span><span>09h00 – 19h00</span></li>
-      <li><span>Mercredi</span><span>09h00 – 19h00</span></li>
-      <li><span>Jeudi</span><span>09h00 – 19h00</span></li>
-      <li><span>Vendredi</span><span>09h00 – 20h00</span></li>
-      <li><span>Samedi</span><span>09h00 – 18h00</span></li>
-      <li class="closed"><span>Dimanche</span><span>Fermé</span></li>
-    </ul>
+  <div class="hero-content">
+    <h1>Star <span>Barbershop</span></h1>
+    <p>L’élégance masculine, le savoir-faire traditionnel.</p>
+
+    <a href="https://booksy.com/fr-fr/65816_star-barbershop_barbier_93877_mourmelon-le-grand"
+       target="_blank" class="btn">
+      <i class="fa-solid fa-calendar-check"></i> Réserver via Booksy
+    </a>
   </div>
 </section>
 
-<section id="services">
-  <h2>Nos Services & Tarifs</h2>
-  <ul>
-    <li>✂️ Coupe — 15€</li>
-    <li>🧔 Taille de barbe — 10€</li>
-    <li>💈 Coupe + barbe — 20€</li>
-    <li>💆 Soin visage Basique — 15€</li>
-    <li>✂️ Coupe Enfant — 13€</li>
-    <li>🧔 Rasage — 10€</li>
-    <li>💈 Buzz Cut — 13€</li>
-    <li>💈 Taper — 15€</li>
-  </ul>
+<!-- HORAIRES + TARIFS -->
+<section id="infos" class="infos">
+  <div class="infos-container">
+
+    <div class="infos-box">
+      <h2>Horaires</h2>
+      <ul>
+        <li><span>Lundi</span><span>09h – 19h</span></li>
+        <li><span>Mardi</span><span>09h – 19h</span></li>
+        <li><span>Mercredi</span><span>09h – 19h</span></li>
+        <li><span>Jeudi</span><span>09h – 19h</span></li>
+        <li><span>Vendredi</span><span>09h – 20h</span></li>
+        <li><span>Samedi</span><span>09h – 18h</span></li>
+        <li class="closed"><span>Dimanche</span><span>Fermé</span></li>
+      </ul>
+    </div>
+
+    <div class="infos-box">
+      <h2>Tarifs</h2>
+      <ul>
+        <li><span>Coupe</span><span>15€</span></li>
+        <li><span>Barbe</span><span>10€</span></li>
+        <li><span>Coupe + Barbe</span><span>20€</span></li>
+        <li><span>Soin visage</span><span>15€</span></li>
+        <li><span>Enfant</span><span>13€</span></li>
+        <li><span>Buzz Cut</span><span>13€</span></li>
+      </ul>
+    </div>
+
+  </div>
 </section>
 
+<!-- POURQUOI NOUS -->
+<section id="why" class="why">
+  <h2>Pourquoi nous choisir ?</h2>
+
+  <div class="why-grid">
+    <div class="why-box">
+      <i class="fa-solid fa-scissors"></i>
+      <h3>Savoir-faire</h3>
+      <p>Des coupes précises et modernes réalisées par des barbiers expérimentés.</p>
+    </div>
+
+    <div class="why-box">
+      <i class="fa-solid fa-star"></i>
+      <h3>Qualité premium</h3>
+      <p>Produits haut de gamme et finitions irréprochables.</p>
+    </div>
+
+    <div class="why-box">
+      <i class="fa-solid fa-crown"></i>
+      <h3>Ambiance élégante</h3>
+      <p>Un lieu chic, convivial et 100% masculin.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ÉQUIPE -->
 <section id="equipe">
   <h2>Notre Équipe</h2>
   <div class="team">
     <div class="member">
-      <img src="image/barber1.jpg" alt="Barbier 1">
+      <img src="image/barber1.jpg" alt="Moise">
       <h3>MOISE</h3>
-      <p>Spécialiste en dégradés et coiffures modernes.</p>
+      <p>Spécialiste dégradés & styles modernes.</p>
     </div>
-   
-</section>
-
-<section id="galerie">
-  <h2>Galerie Photo</h2>
-  <div class="gallery">
-    <img src="images/salon1.jpg" alt="Salon 1">
-    <img src="image/Salon2.JPEG" alt="Salon 2">
-    <img src="images/salon3.jpg" alt="Salon 3">
   </div>
 </section>
 
-<section id="reservation">
-  <h2>Réserver un créneau</h2>
-
-  <!-- BOUTON BOOKSY -->
-  <p style="text-align:center; margin-bottom:20px;">
-    <a href="https://booksy.com/fr-fr/65816_star-barbershop_barbier_93877_mourmelon-le-grand#ba_s=vl_1" 
-       target="_blank" class="btn">
-      <i class="fa-solid fa-calendar-check"></i> Réserver via Booksy
-    </a>
-  </p>
-  
-  <!-- BOUTON GOOGLE -->
-  <p style="text-align:center; margin-bottom:30px;">
-  <a href="https://www.google.com/search?sca_esv=d878df9cdf7e300a&hl=fr-FR&sxsrf=AE3TifOtWAe8wSJEruWNYzT08DzWLHdNfg:1765375985485&q=avis+sur+star+barbershop+12+rue+du+mar%C3%A9chal+foch,+mourmelon+le+grand+51400&uds=AOm0WdE2fekQnsyfYEw8JPYozOKzxHMOwXVAFWx4Mz00mQGTmOs_ksQVpt8gNbq3zh_rBa4MpFqy_KUNdvz9AgSrcVmbvpNWzB7eRibnafWlBk8dhtcoqlYnYigmJIPnqQB7SAi-ElT75siT52feo3eX1IY7ZqQBVctrD_k0NI-0zImIDhME4f-JRjOTKm-EcP0kE2cXdeb8W_is_QVVm3MucWFlhxBTRLicYn7outZWWkw8RoNvPOgFbtygUJYTPFAjMF6-EqwECsMIJk0YUk-z8KkvHWulU3BK-LOTdTcdUDodykFOlzY&si=AMgyJEtREmoPL4P1I5IDCfuA8gybfVI2d5Uj7QMwYCZHKDZ-E8IsiJd_e90cBSiYF1cUXCbCg6tuwX2mjKIs6XlR6xy1bNoQY4KM8BP7eOTt7du8ak7cPXG6Sh8xcSc1pWs3MKTGtPzLT-XVvmhnyNNqTMWYO7G59dV_PcuJAxjxR_la0qBVaGP57U4BNf2sZqpLjzsrVGlFKUVtZnu2vGP6FM4ONWtoAw%3D%3D&sa=X&ved=2ahUKEwjX8ImEmrORAxUqXaQEHfEuB0kQxKsJKAB6BAgREAE&ictx=1&stq=1&cs=1&lei=8X85aZe0Haq6kdUP8d2cyAQ" 
-     target="_blank" 
-     class="btn google-btn">
-    <i class="fa-brands fa-google"></i> Voir les avis Google
-  </a>
-</p>
+<!-- GALERIE -->
+<section id="galerie">
+  <h2>Galerie</h2>
+  <div class="gallery">
+    <img src="image/salon1.jpg">
+    <img src="image/salon2.jpg">
+    <img src="image/salon3.jpg">
+  </div>
 </section>
 
+<!-- CONTACT -->
 <section id="contact">
-  <h2>Contact & Localisation</h2>
-  <p>📍12 Rue du Maréchal Foch, 51400, Mourmelon-le-Grand</p>
+  <h2>Contact</h2>
+  <p>📍 12 Rue du Maréchal Foch, Mourmelon-le-Grand</p>
   <p>📞 09 82 33 27 02</p>
-  <p>✉️ info@starbarbershop.fr</p>
 
   <iframe
-    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2625.9782577027173!2d4.331187715674146!3d49.19836187933301!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e5d7b62d051d95%3A0xfbd89a15d2e07f0f!2s12%20Rue%20du%20Mar%C3%A9chal%20Foch%2C%2051400%20Mourmelon-le-Grand!5e0!3m2!1sfr!2sfr!4v1702212961234!5m2!1sfr!2sfr"
-    width="100%" 
-    height="250" 
-    style="border:0;" 
-    allowfullscreen="" 
-    loading="lazy">
+    src="https://www.google.com/maps/embed?pb=!1m18..."
+    width="100%" height="250" style="border:0;" loading="lazy">
   </iframe>
 </section>
 
 <footer>
-  <p>© 2025 Star Barbershop - Tous droits réservés.</p>
+  © 2025 Star Barbershop
 </footer>
 
 <script src="script.js"></script>
