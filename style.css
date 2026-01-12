@@ -230,16 +230,17 @@ section.visible {
 
 /* === GALERIE === */
 .gallery {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 15px;
-  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  width: 90%;
+  max-width: 1200px;
 }
 
 .gallery img {
-  max-width: 280px;
-  width: 100%;
+  width: 280px;
+  height: 200px;
+  object-fit: cover;
   border-radius: 8px;
   transition: transform 0.4s, box-shadow 0.4s;
 }
