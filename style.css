@@ -1,0 +1,423 @@
+/* === RESET & BASE === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #111;
+  color: #f5f5f5;
+  padding-top: 180px; /* hauteur du header + espace */
+  overflow-x: hidden;
+}
+
+html {
+  scroll-behavior: smooth; /* défilement fluide */
+  scroll-padding-top: 180px; /* espace au-dessus des sections pour header fixe */
+}
+
+/* === TITRES === */
+h1, h2 {
+  font-family: 'Playfair Display', serif;
+  text-align: center;
+}
+
+h2::after {
+  content: "";
+  width: 60px;
+  height: 3px;
+  background: #d4af37;
+  display: block;
+  margin: 10px auto;
+}
+
+/* === HEADER === */
+header, .header {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  background: linear-gradient(90deg, rgba(0,0,0,0.95), rgba(20,20,20,0.85));
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 50px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  border-bottom: 2px solid #d4af37; /* touche dorée subtile */
+  z-index: 1000;
+  backdrop-filter: blur(5px); /* effet glass */
+}
+
+header::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(to right, #d4af37, #fff, #d4af37);
+}
+
+.logo {
+  height: 160px;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.logo:hover {
+  transform: scale(1.05);
+  filter: drop-shadow(0 0 8px #d4af37);
+}
+
+nav a {
+  color: #f5f5f5;
+  margin: 0 15px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+nav a i {
+  color: #d4af37;
+  font-size: 0.9em;
+}
+
+nav a:hover {
+  color: #d4af37;
+}
+nav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;                   /* espace icône ↔ texte */
+}
+
+/* === HERO (avec parallaxe léger) === */
+.hero {
+  width: 100%;
+  height: 60vh; /* réduit la hauteur de la partie noire */
+  text-align: center;
+  padding: 60px 20px;
+  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+              url("image/hero.jpg") center/cover no-repeat fixed; /* parallaxe léger */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.hero h1 {
+  font-size: 2.8rem;
+  line-height: 1.2;
+}
+
+.hero h1 span {
+  color: #d4af37;
+}
+
+.hero p {
+  margin: 15px 0;
+  font-size: 1.2rem;
+}
+
+/* === BOUTONS === */
+.btn {
+  background-color: #d4af37;
+  color: #000;
+  padding: 12px 25px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  margin: auto;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 15px rgba(212, 175, 55, 0.5);
+}
+
+.google-btn {
+  background-color: #4285F4;
+  color: #fff;
+}
+
+/* === SECTIONS === */
+section {
+  width: 100%;
+  padding: 60px 20px;
+  margin: auto;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  scroll-margin-top: 180px; /* pour ancres */
+}
+
+section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* === INFOS BOX (Horaires et Tarifs) === */
+.infos, .why {
+  padding: 80px 20px;
+}
+
+.infos-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+
+.infos-box {
+  flex: 0 1 300px;
+  background: #1c1c1c;
+  padding: 40px;
+  border-radius: 20px;
+  text-align: center;
+  border: 2px solid rgba(212,175,55,0.6);
+  box-shadow: 0 8px 20px rgba(212,175,55,0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.infos-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(212,175,55,0.5);
+}
+
+.infos-box li {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #333;
+}
+
+/* === WHY BOX (Savoir-faire, Qualité, Ambiance) === */
+.why-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  width: 100%;
+}
+
+.why-box {
+  flex: 0 1 280px;
+  background: #222;
+  padding: 35px;
+  border-radius: 20px;
+  text-align: center;
+  border: 2px solid rgba(212,175,55,0.3);
+  box-shadow: 0 6px 18px rgba(212,175,55,0.2);
+  transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.why-box:hover {
+  transform: translateY(-5px);
+  background: #2a2a2a;
+  box-shadow: 0 10px 25px rgba(212,175,55,0.4);
+}
+
+.why-box i {
+  font-size: 2.5rem;
+  color: #d4af37;
+  margin-bottom: 15px;
+}
+
+/* === GALERIE === */
+.gallery {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  width: 100%;
+}
+
+.gallery img {
+  max-width: 280px;
+  width: 100%;
+  border-radius: 8px;
+  transition: transform 0.4s, box-shadow 0.4s;
+}
+
+.gallery img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4);
+}
+
+/* === ÉQUIPE === */
+.team {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.member {
+  text-align: center;
+  flex: 0 1 250px;
+}
+
+.member img {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+/* === FOOTER === */
+footer {
+  width: 100%;
+  text-align: center;
+  padding: 20px;
+  background-color: #000;
+  color: #777;
+}
+
+/* === MODALE === */
+.modal {
+  display: none; 
+  position: fixed; 
+  z-index: 1000; 
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%; 
+  overflow: auto; 
+  background-color: rgba(0,0,0,0.7);
+  animation: fadeIn 0.3s;
+}
+
+.modal-content {
+  background-color: #111;
+  margin: 50px auto; 
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 900px;
+  box-shadow: 0 8px 20px rgba(212,175,55,0.5);
+  position: relative;
+}
+
+.close {
+  color: #d4af37;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: #fff;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+/* === FORMULAIRES === */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+form input, form select, form button {
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+}
+
+form button {
+  background-color: #d4af37;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+form button:hover {
+  transform: scale(1.03);
+  box-shadow: 0 5px 12px rgba(212, 175, 55, 0.4);
+}
+
+/* === MENU BURGER === */
+.burger {
+  display: none;
+  font-size: 2em;
+  color: #d4af37;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.burger.active {
+  transform: rotate(90deg);
+}
+
+#menu {
+  background-color: rgba(0, 0, 0, 0.85);
+  border-radius: 12px;
+  padding: 10px 20px;
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 1024px) {
+  header { flex-direction: column; text-align: center; }
+  nav { margin-top: 10px; }
+  nav a { display: inline-block; margin: 8px 10px; }
+}
+
+@media (max-width: 768px) {
+  body { font-size: 15px; }
+  header { padding: 10px 20px; }
+  .logo { height: 50px; }
+  .hero { height: 50vh; padding: 50px 20px; }
+  .hero h1 { font-size: 1.8em; }
+  .btn { padding: 12px 25px; font-size: 0.9em; }
+  section { padding: 40px 20px; }
+  .team { flex-direction: column; align-items: center; }
+  .member { width: 90%; }
+  .member img { width: 100%; border-radius: 8px; }
+  .gallery { flex-direction: column; align-items: center; }
+  .gallery img { width: 90%; }
+  form { width: 100%; max-width: 90%; }
+  form input, form select, form button { width: 100%; }
+  iframe { height: 200px; }
+  .burger { display: block; }
+  #menu {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background-color: #000;
+    text-align: center;
+    position: absolute;
+    top: 75px;
+    left: 0;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    border-top: 2px solid #d4af37;
+  }
+ #menu.active {
+  max-height: 90vh;           /* prend presque tout l’écran */
+  opacity: 1;
+  overflow-y: auto;           /* scroll si nécessaire */
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+}
+  #menu a { display: block; margin: 12px 0; padding: 8px; font-size: 1.1em; color: #f5f5f5; transition: color 0.3s ease; }
+  #menu a:hover { color: #d4af37; }
+}
+
+@media (max-width: 480px) {
+  nav a { display: block; margin: 6px 0; }
+  h1, h2 { font-size: 1.3em; }
+  .btn { font-size: 0.8em; padding: 10px 20px; }
+  footer { font-size: 0.8em; }
+}
