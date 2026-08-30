@@ -25,7 +25,7 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 12px;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
 }
 
 .game-tab {
@@ -33,17 +33,15 @@
   color: #f5f5f5;
   border: 2px solid rgba(212, 175, 55, 0.4);
   border-radius: 50px;
-  padding: 10px 22px;
+  padding: 10px 20px;
   font-family: inherit;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
-.game-tab:hover {
-  border-color: #d4af37;
-}
+.game-tab:hover { border-color: #d4af37; }
 
 .game-tab.active {
   background: #d4af37;
@@ -58,9 +56,111 @@
   align-items: center;
 }
 
-.game-panel.active {
+.game-panel.active { display: flex; }
+
+/* --- Sélecteur de niveau (réutilisé par les 8 jeux) --- */
+.level-selector {
   display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
+
+.level-btn {
+  background: #222;
+  color: #ccc;
+  border: 2px solid rgba(212, 175, 55, 0.3);
+  border-radius: 50px;
+  padding: 7px 18px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.level-btn:hover { border-color: #d4af37; }
+
+.level-btn.active {
+  background: #d4af37;
+  color: #000;
+  border-color: #d4af37;
+  font-weight: 600;
+}
+
+.timer-display {
+  color: #d4af37;
+  font-weight: 600;
+}
+
+/* --- Enregistrement de score (réutilisé) --- */
+.score-submit {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.score-submit input {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 2px solid rgba(212, 175, 55, 0.4);
+  background: #1c1c1c;
+  color: #f5f5f5;
+  font-family: inherit;
+  font-size: 0.9rem;
+  max-width: 180px;
+}
+
+.score-submit input::placeholder { color: #777; }
+.score-submit .btn { margin: 0; }
+
+/* --- Classement (réutilisé) --- */
+.leaderboard {
+  width: 100%;
+  max-width: 420px;
+  margin-top: 20px;
+}
+
+.leaderboard h4 {
+  text-align: center;
+  color: #d4af37;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  margin-bottom: 10px;
+}
+
+.leaderboard-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.leaderboard-item {
+  display: grid;
+  grid-template-columns: 26px 1fr auto auto;
+  align-items: center;
+  gap: 10px;
+  background: #1c1c1c;
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.82rem;
+}
+
+.leaderboard-rank { color: #d4af37; font-weight: 700; text-align: center; }
+.leaderboard-name {
+  color: #f5f5f5;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.leaderboard-score { color: #d4af37; font-weight: 700; white-space: nowrap; }
+.leaderboard-level { color: #888; font-size: 0.72rem; white-space: nowrap; }
+.leaderboard-empty { color: #777; text-align: center; font-size: 0.85rem; }
 
 /* ============================
    JEU 1 — Attrape la mèche
@@ -95,11 +195,7 @@
   justify-content: center;
 }
 
-.catch-message {
-  color: #999;
-  text-align: center;
-  padding: 0 20px;
-}
+.catch-message { color: #999; text-align: center; padding: 0 20px; }
 
 .falling-object {
   position: absolute;
@@ -110,14 +206,8 @@
   transition: transform 0.15s ease, opacity 0.15s ease;
 }
 
-.falling-object:hover {
-  transform: scale(1.15);
-}
-
-.falling-object.caught {
-  transform: scale(1.6);
-  opacity: 0;
-}
+.falling-object:hover { transform: scale(1.15); }
+.falling-object.caught { transform: scale(1.6); opacity: 0; }
 
 /* ============================
    JEU 2 — Memory
@@ -131,10 +221,7 @@
   gap: 15px;
 }
 
-.memory-stats {
-  font-weight: 600;
-  color: #d4af37;
-}
+.memory-stats { font-weight: 600; color: #d4af37; }
 
 .memory-grid {
   display: grid;
@@ -143,11 +230,7 @@
   width: 100%;
 }
 
-.memory-card {
-  aspect-ratio: 1 / 1;
-  perspective: 600px;
-  cursor: pointer;
-}
+.memory-card { aspect-ratio: 1 / 1; perspective: 600px; cursor: pointer; }
 
 .memory-card-inner {
   position: relative;
@@ -158,9 +241,7 @@
 }
 
 .memory-card.flipped .memory-card-inner,
-.memory-card.matched .memory-card-inner {
-  transform: rotateY(180deg);
-}
+.memory-card.matched .memory-card-inner { transform: rotateY(180deg); }
 
 .memory-card-back,
 .memory-card-front {
@@ -172,7 +253,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.8rem;
+  font-size: 1.6rem;
 }
 
 .memory-card-back {
@@ -183,11 +264,7 @@
   font-weight: 700;
 }
 
-.memory-card-front {
-  background: #d4af37;
-  color: #000;
-  transform: rotateY(180deg);
-}
+.memory-card-front { background: #d4af37; color: #000; transform: rotateY(180deg); }
 
 .memory-card.matched .memory-card-front {
   background: #2a2a2a;
@@ -195,16 +272,13 @@
   border: 2px solid #d4af37;
 }
 
-.memory-win-message {
-  color: #d4af37;
-  font-weight: 600;
-  text-align: center;
-}
+.memory-win-message { color: #d4af37; font-weight: 600; text-align: center; }
 
 /* ============================
-   JEU 3 — Quiz Barbershop
+   JEU 3 — Quiz / JEU 8 — Bonne coupe (styles partagés)
    ============================ */
-.quiz-game {
+.quiz-game,
+.haircut-game {
   width: 100%;
   max-width: 550px;
   display: flex;
@@ -213,7 +287,8 @@
   gap: 15px;
 }
 
-.quiz-question-block {
+.quiz-question-block,
+.haircut-block {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -221,23 +296,21 @@
   gap: 15px;
 }
 
-.quiz-progress {
-  color: #999;
-  font-size: 0.9rem;
-}
+.quiz-progress { color: #999; font-size: 0.9rem; }
+.quiz-question { font-family: 'Playfair Display', serif; font-size: 1.3rem; text-align: center; }
 
-.quiz-question {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.3rem;
+.haircut-request {
+  font-style: italic;
+  color: #ddd;
   text-align: center;
+  line-height: 1.6;
+  background: #1c1c1c;
+  border: 2px solid rgba(212, 175, 55, 0.3);
+  border-radius: 14px;
+  padding: 20px;
 }
 
-.quiz-options {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
+.quiz-options { width: 100%; display: flex; flex-direction: column; gap: 10px; }
 
 .quiz-option {
   background: #1c1c1c;
@@ -252,38 +325,14 @@
   transition: all 0.2s ease;
 }
 
-.quiz-option:hover:not(:disabled) {
-  border-color: #d4af37;
-}
+.quiz-option:hover:not(:disabled) { border-color: #d4af37; }
+.quiz-option:disabled { cursor: default; }
+.quiz-option.correct { background: rgba(60, 160, 90, 0.25); border-color: #3ca05a; }
+.quiz-option.incorrect { background: rgba(200, 70, 70, 0.25); border-color: #c84646; }
 
-.quiz-option:disabled {
-  cursor: default;
-}
-
-.quiz-option.correct {
-  background: rgba(60, 160, 90, 0.25);
-  border-color: #3ca05a;
-}
-
-.quiz-option.incorrect {
-  background: rgba(200, 70, 70, 0.25);
-  border-color: #c84646;
-}
-
-.quiz-feedback {
-  text-align: center;
-  font-size: 0.9rem;
-  line-height: 1.5;
-  min-height: 1.2em;
-}
-
-.quiz-feedback-correct {
-  color: #6fcf8f;
-}
-
-.quiz-feedback-incorrect {
-  color: #e08a8a;
-}
+.quiz-feedback { text-align: center; font-size: 0.9rem; line-height: 1.5; min-height: 1.2em; }
+.quiz-feedback-correct { color: #6fcf8f; }
+.quiz-feedback-incorrect { color: #e08a8a; }
 
 .quiz-result {
   text-align: center;
@@ -291,20 +340,138 @@
   flex-direction: column;
   align-items: center;
   gap: 15px;
+  width: 100%;
 }
 
-.quiz-result p {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.5rem;
-  color: #d4af37;
+.quiz-result p { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: #d4af37; }
+
+/* ============================
+   JEU 4 — Suite de rythme (Simon)
+   ============================ */
+.simon-game { display: flex; flex-direction: column; align-items: center; gap: 15px; }
+.simon-stats { color: #d4af37; font-weight: 600; }
+
+.simon-board {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  width: 220px;
+  height: 220px;
 }
+
+.simon-pad {
+  background: var(--pad-color);
+  border-radius: 16px;
+  border: 3px solid #111;
+  cursor: pointer;
+  opacity: 0.55;
+  transition: opacity 0.15s ease, box-shadow 0.15s ease;
+}
+
+.simon-pad:disabled { cursor: default; }
+.simon-pad.active { opacity: 1; box-shadow: 0 0 25px var(--pad-color); }
+.simon-message { color: #ccc; text-align: center; min-height: 1.4em; }
+
+/* ============================
+   JEU 5 — Tic-tac-toe
+   ============================ */
+.ttt-game { display: flex; flex-direction: column; align-items: center; gap: 15px; }
+.ttt-status { color: #d4af37; font-weight: 600; }
+.ttt-stats { color: #ccc; font-size: 0.85rem; }
+
+.ttt-board {
+  display: grid;
+  grid-template-columns: repeat(3, 80px);
+  grid-template-rows: repeat(3, 80px);
+  gap: 8px;
+}
+
+.ttt-cell {
+  background: #1c1c1c;
+  border: 2px solid rgba(212, 175, 55, 0.4);
+  border-radius: 10px;
+  font-size: 2rem;
+  font-family: 'Playfair Display', serif;
+  color: #d4af37;
+  cursor: pointer;
+}
+
+.ttt-cell:disabled { cursor: default; }
+
+/* ============================
+   JEU 6 — Puzzle glissant
+   ============================ */
+.puzzle-game { display: flex; flex-direction: column; align-items: center; gap: 15px; }
+.puzzle-stats { color: #d4af37; font-weight: 600; }
+
+.puzzle-board {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  border: 2px solid rgba(212, 175, 55, 0.5);
+  border-radius: 10px;
+  overflow: hidden;
+  background: #1c1c1c;
+}
+
+.puzzle-tile {
+  position: absolute;
+  cursor: pointer;
+  transition: top 0.2s ease, left 0.2s ease;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.4);
+  background-image: url('image/hero.jpg');
+}
+
+.puzzle-win-message { color: #d4af37; font-weight: 600; text-align: center; }
+
+/* ============================
+   JEU 7 — Jeu des différences
+   ============================ */
+.diff-game { display: flex; flex-direction: column; align-items: center; gap: 15px; width: 100%; }
+.diff-stats { color: #d4af37; font-weight: 600; }
+.diff-boards { display: flex; flex-wrap: wrap; gap: 25px; justify-content: center; }
+.diff-label { text-align: center; color: #999; font-size: 0.8rem; margin-bottom: 8px; max-width: 240px; }
+
+.diff-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 55px);
+  grid-template-rows: repeat(3, 55px);
+  gap: 6px;
+  background: #1c1c1c;
+  border: 2px solid rgba(212, 175, 55, 0.4);
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.diff-grid.diff-grid-3 { grid-template-columns: repeat(3, 55px); grid-template-rows: repeat(3, 55px); }
+.diff-grid.diff-grid-4x4 { grid-template-columns: repeat(4, 55px); grid-template-rows: repeat(4, 55px); }
+
+.diff-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  border-radius: 8px;
+  background: #222;
+}
+
+.diff-slot.clickable { cursor: pointer; }
+.diff-slot.found { outline: 2px solid #3ca05a; background: rgba(60, 160, 90, 0.25); }
+.diff-slot.wrong { outline: 2px solid #c84646; }
+.diff-win-message { color: #d4af37; font-weight: 600; text-align: center; }
 
 /* === RESPONSIVE === */
 @media (max-width: 600px) {
-  .memory-grid {
-    grid-template-columns: repeat(3, 1fr);
+  .memory-grid { grid-template-columns: repeat(3, 1fr); }
+  .catch-area { height: 320px; }
+  .puzzle-board { width: 240px; height: 240px; }
+  .ttt-board { grid-template-columns: repeat(3, 65px); grid-template-rows: repeat(3, 65px); }
+  .diff-grid,
+  .diff-grid.diff-grid-3,
+  .diff-grid.diff-grid-4x4 {
+    grid-template-columns: repeat(4, 46px);
+    grid-template-rows: repeat(4, 46px);
   }
-  .catch-area {
-    height: 320px;
-  }
+  .leaderboard-item { grid-template-columns: 22px 1fr auto; }
+  .leaderboard-level { display: none; }
 }
