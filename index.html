@@ -3,7 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Star Barbershop</title>
+  <title>Star Barbershop — Barbier à Mourmelon-le-Grand</title>
+
+  <!-- SEO -->
+  <meta name="description" content="Star Barbershop à Mourmelon-le-Grand : coupes, tailles de barbe et rasage par des barbiers expérimentés. Note 4,9/5 sur Google (227 avis). Réservez en ligne via Booksy.">
+  <link rel="canonical" href="https://www.starbarbershop.fr/">
+
+  <!-- Open Graph (aperçu de partage) -->
+  <meta property="og:title" content="Star Barbershop — Barbier à Mourmelon-le-Grand">
+  <meta property="og:description" content="Coupes, barbe et rasage dans une ambiance chic et conviviale. Note 4,9/5 sur Google. Réservation en ligne via Booksy.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.starbarbershop.fr/">
+  <meta property="og:image" content="https://www.starbarbershop.fr/image/hero.jpg">
+  <meta property="og:locale" content="fr_FR">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
 
   <!-- Google Fonts pour un style moderne -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
@@ -11,7 +26,48 @@
   <!-- Font Awesome pour les icônes -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   
-  <link rel="stylesheet" href="style.css" />  
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Données structurées Schema.org (référencement local) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HairSalon",
+    "name": "Star Barbershop",
+    "alternateName": "Elegance Barbershop",
+    "image": "https://www.starbarbershop.fr/image/hero.jpg",
+    "url": "https://www.starbarbershop.fr/",
+    "telephone": "+33982332702",
+    "email": "info@starbarbershop.fr",
+    "priceRange": "10€-20€",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "12 Rue du Maréchal Foch",
+      "addressLocality": "Mourmelon-le-Grand",
+      "postalCode": "51400",
+      "addressCountry": "FR"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 49.1402285,
+      "longitude": 4.3647055
+    },
+    "openingHoursSpecification": [
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": "Monday", "opens": "11:30", "closes": "19:00" },
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": "Tuesday", "opens": "09:00", "closes": "19:00" },
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": "Wednesday", "opens": "09:00", "closes": "19:00" },
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": "Thursday", "opens": "09:00", "closes": "19:00" },
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": "Friday", "opens": "09:00", "closes": "20:00" },
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "09:00", "closes": "19:00" },
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "09:30", "closes": "15:00" }
+    ],
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "reviewCount": "227"
+    }
+  }
+  </script>
 </head>
 <body>
 
@@ -152,21 +208,26 @@
   <span class="eyebrow">Galerie</span>
   <h2>Galerie</h2>
   <div class="gallery">
-    <img src="image/Salon1.JPEG" alt="Intérieur du salon Star Barbershop - vue 1">
-    <img src="image/Salon2.JPEG" alt="Intérieur du salon Star Barbershop - vue 2">
-    <img src="image/Salon3.JPEG" alt="Intérieur du salon Star Barbershop - vue 3">
+    <img src="image/Salon1.JPEG" alt="Intérieur du salon Star Barbershop - vue 1" loading="lazy">
+    <img src="image/Salon2.JPEG" alt="Intérieur du salon Star Barbershop - vue 2" loading="lazy">
+    <img src="image/Salon3.JPEG" alt="Intérieur du salon Star Barbershop - vue 3" loading="lazy">
+    <!-- PHOTOS BOOKSY : dépose tes fichiers exportés dans /image/ (ex: Booksy1.jpg)
+         puis ajoute une ligne ici, sur ce modèle :
+         <img src="image/Booksy1.jpg" alt="Description de la coupe/réalisation" loading="lazy"> -->
   </div>
-  <!-- Emplacement prévu pour les photos publiées sur Booksy : dépose les fichiers
-       dans /image/ (ex : Booksy1.jpg, Booksy2.jpg...) puis ajoute une balise <img>
-       ici, sur le même modèle que les 3 lignes ci-dessus. -->
   <p class="gallery-note">D'autres réalisations sont à découvrir sur notre profil Booksy.</p>
 </section>
 
+<!-- RÉSERVATION -->
 <section id="reservation">
   <span class="eyebrow">Réservation</span>
   <h2>Réserver un créneau</h2>
 
-  <!-- BOUTON BOOKSY -->
+  <!-- Emplacement du widget de réservation Booksy intégré à la page.
+       Pour l'activer : va dans ton compte Booksy Business > Réglages > Réservation en ligne
+       > "Votre site web", copie le code fourni (unique à ton salon), et colle-le
+       à la place de ce commentaire. Le bouton ci-dessous reste en secours. -->
+
   <p style="text-align:center; margin-bottom:20px;">
     <a href="https://booksy.com/fr-fr/65816_star-barbershop_barbier_93877_mourmelon-le-grand#ba_s=vl_1" 
        target="_blank" class="btn">
@@ -183,14 +244,22 @@
   <p>📞 09 82 33 27 02</p>
   <p>✉️ info@starbarbershop.fr</p>
 
-  <iframe
-  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2625.9782577027173!2d4.331187715674146!3d49.19836187933301!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e5d7b62d051d95%3A0xfbd89a15d2e07f0f!2s12%20Rue%20du%20Mar%C3%A9chal%20Foch%2C%2051400%20Mourmelon-le-Grand!5e0!3m2!1sfr!2sfr!4v1702212961234!5m2!1sfr!2sfr"
-  width="100%"
-  height="250"
-  style="border:0;"
-  allowfullscreen=""
-  loading="lazy">
-</iframe>
+  <div class="map-container">
+    <div id="map-placeholder" class="map-placeholder">
+      <p>La carte Google Maps nécessite votre consentement (elle dépose des cookies tiers). Consultez notre <a href="politique-de-confidentialite.html" style="color:#d4af37;">politique de confidentialité</a>.</p>
+      <button id="load-map-btn" class="btn">Afficher la carte</button>
+    </div>
+    <iframe
+      id="gmap-iframe"
+      data-src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2625.9782577027173!2d4.331187715674146!3d49.19836187933301!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e5d7b62d051d95%3A0xfbd89a15d2e07f0f!2s12%20Rue%20du%20Mar%C3%A9chal%20Foch%2C%2051400%20Mourmelon-le-Grand!5e0!3m2!1sfr!2sfr!4v1702212961234!5m2!1sfr!2sfr"
+      width="100%"
+      height="250"
+      style="display:none;"
+      allowfullscreen=""
+      loading="lazy"
+      title="Localisation de Star Barbershop">
+    </iframe>
+  </div>
 </section>
 
 <footer>
@@ -198,12 +267,21 @@
     <h3>Informations légales</h3>
     <div class="footer-legal-links">
       <a href="mentions-legales.html">Mentions légales</a>
+      <a href="politique-de-confidentialite.html">Politique de confidentialité</a>
     </div>
   </div>
   <p>© 2025 Star Barbershop - Tous droits réservés.</p>
 </footer>
 
+<!-- BANDEAU CONSENTEMENT COOKIES -->
+<div id="cookie-banner" class="cookie-banner hidden" role="dialog" aria-live="polite" aria-label="Consentement cookies">
+  <p>Ce site utilise Google Maps, qui peut déposer des cookies tiers lors de l'affichage de la carte. <a href="politique-de-confidentialite.html">En savoir plus</a></p>
+  <div class="cookie-actions">
+    <button id="cookie-refuse" class="btn btn-outline">Refuser</button>
+    <button id="cookie-accept" class="btn">Accepter</button>
+  </div>
+</div>
+
 <script src="script.js"></script>
 </body>
 </html>
-
