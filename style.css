@@ -33,6 +33,17 @@ h2::after {
   margin: 10px auto;
 }
 
+.eyebrow {
+  display: block;
+  text-align: center;
+  color: #d4af37;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
 /* === HEADER === */
 header, .header {
   position: fixed;
@@ -88,6 +99,13 @@ nav a {
   gap: 8px;                   /* espace icône ↔ texte */
 }
 
+nav a:focus-visible,
+.btn:focus-visible,
+.gallery img:focus-visible {
+  outline: 2px solid #d4af37;
+  outline-offset: 3px;
+}
+
 /* === HERO (avec parallaxe léger) === */
 .hero {
   width: 100%;
@@ -114,6 +132,20 @@ nav a {
 .hero p {
   margin: 15px 0;
   font-size: 1.2rem;
+}
+
+.hero-trust {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #d4af37;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 10px;
+}
+
+.hero-trust i {
+  font-size: 0.85em;
 }
 
 /* === BOUTONS === */
@@ -228,6 +260,59 @@ section.visible {
   margin-bottom: 15px;
 }
 
+/* === AVIS CLIENTS (Google) === */
+.avis {
+  padding: 80px 20px;
+}
+
+.avis-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  max-width: 800px;
+  margin-bottom: 30px;
+}
+
+.rating-circle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #1c1c1c;
+  border: 2px solid rgba(212,175,55,0.6);
+  border-radius: 20px;
+  padding: 30px 40px;
+  box-shadow: 0 8px 20px rgba(212,175,55,0.3);
+}
+
+.rating-number {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  font-weight: 700;
+  color: #d4af37;
+  line-height: 1;
+}
+
+.stars {
+  margin: 10px 0;
+  color: #d4af37;
+  font-size: 1.1rem;
+  letter-spacing: 3px;
+}
+
+.rating-count {
+  color: #ccc;
+  font-size: 0.9rem;
+}
+
+.avis-text {
+  flex: 1 1 280px;
+  color: #ddd;
+  line-height: 1.7;
+  text-align: center;
+}
+
 /* === GALERIE === */
 .gallery {
   display: flex;
@@ -247,6 +332,13 @@ section.visible {
 .gallery img:hover {
   transform: scale(1.05);
   box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4);
+}
+
+.gallery-note {
+  color: #999;
+  font-size: 0.85rem;
+  margin-top: 15px;
+  text-align: center;
 }
 
 /* === ÉQUIPE === */
@@ -275,6 +367,104 @@ footer {
   padding: 20px;
   background-color: #000;
   color: #777;
+}
+
+/* === SECTION "INFORMATIONS LÉGALES" DANS LE FOOTER === */
+.footer-legal {
+  margin-bottom: 15px;
+}
+
+.footer-legal h3 {
+  font-family: 'Playfair Display', serif;
+  color: #d4af37;
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+
+.footer-legal-links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.footer-legal-links a {
+  color: #999;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+.footer-legal-links a:hover {
+  color: #d4af37;
+}
+
+/* === PAGE LÉGALE (Mentions légales, etc.) === */
+.legal-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding-top: 40px;
+  text-align: left;
+}
+
+.legal-page h1 {
+  font-size: 2.2rem;
+}
+
+.last-updated {
+  text-align: center;
+  color: #999;
+  font-style: italic;
+  margin-bottom: 40px;
+}
+
+.legal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  width: 100%;
+}
+
+.legal-block {
+  background: #1c1c1c;
+  padding: 30px;
+  border-radius: 20px;
+  border: 2px solid rgba(212, 175, 55, 0.3);
+  box-shadow: 0 6px 18px rgba(212, 175, 55, 0.15);
+}
+
+.legal-block h2 {
+  text-align: left;
+  font-size: 1.4rem;
+  margin-bottom: 15px;
+}
+
+.legal-block h2::after {
+  margin: 10px 0;
+}
+
+.legal-text {
+  color: #ddd;
+  line-height: 1.6;
+}
+
+.legal-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 10px 0;
+  border-bottom: 1px solid #333;
+  color: #ddd;
+}
+
+.legal-list li span:first-child {
+  color: #d4af37;
+  font-weight: 600;
+  flex: 0 0 auto;
+}
+
+.legal-list li span:last-child {
+  text-align: right;
 }
 
 /* === MODALE === */
@@ -375,13 +565,20 @@ form button:hover {
 }
 
 @media (max-width: 768px) {
-  body { font-size: 15px; }
+  body {
+    font-size: 15px;
+    padding-top: 100px; /* CORRECTION : header mobile plus bas (~70-90px), évite le grand vide */
+  }
+  html {
+    scroll-padding-top: 100px; /* CORRECTION : cohérent avec le nouveau padding-top mobile */
+  }
   header { padding: 10px 20px; }
   .logo { height: 50px; }
   .hero { height: 50vh; padding: 50px 20px; }
   .hero h1 { font-size: 1.8em; }
   .btn { padding: 12px 25px; font-size: 0.9em; }
-  section { padding: 40px 20px; }
+  section { padding: 40px 20px; scroll-margin-top: 100px; }
+  .avis-content { gap: 25px; }
   .team { flex-direction: column; align-items: center; }
   .member { width: 90%; }
   .member img { width: 100%; border-radius: 8px; }
@@ -391,6 +588,13 @@ form button:hover {
   form input, form select, form button { width: 100%; }
   iframe { height: 200px; }
   .burger { display: block; }
+  .legal-list li {
+    flex-direction: column;
+    gap: 4px;
+  }
+  .legal-list li span:last-child {
+    text-align: left;
+  }
   #menu {
     display: flex;
     flex-direction: column;
@@ -420,4 +624,10 @@ form button:hover {
   h1, h2 { font-size: 1.3em; }
   .btn { font-size: 0.8em; padding: 10px 20px; }
   footer { font-size: 0.8em; }
+}
+
+/* === ACCESSIBILITÉ : mouvement réduit === */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  section, .rating-number { transition: none; }
 }
