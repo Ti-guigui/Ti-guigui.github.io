@@ -88,3 +88,52 @@ if (ratingEl) {
   }, { threshold: 0.5 });
   ratingObserver.observe(ratingEl);
 }
+
+// ===============================
+// CONSENTEMENT COOKIES + CHARGEMENT DE LA CARTE GOOGLE MAPS
+// ===============================
+const cookieBanner = document.getElementById("cookie-banner");
+const acceptBtn = document.getElementById("cookie-accept");
+const refuseBtn = document.getElementById("cookie-refuse");
+const loadMapBtn = document.getElementById("load-map-btn");
+const mapPlaceholder = document.getElementById("map-placeholder");
+const mapIframe = document.getElementById("gmap-iframe");
+
+function loadMap() {
+  if (mapIframe && !mapIframe.src) {
+    mapIframe.src = mapIframe.dataset.src;
+    mapIframe.style.display = "block";
+    if (mapPlaceholder) mapPlaceholder.style.display = "none";
+  }
+}
+
+const consent = localStorage.getItem("cookieConsent");
+
+if (consent === "accepted") {
+  loadMap();
+  if (cookieBanner) cookieBanner.classList.add("hidden");
+} else if (!consent && cookieBanner) {
+  cookieBanner.classList.remove("hidden");
+}
+
+if (acceptBtn) {
+  acceptBtn.addEventListener("click", () => {
+    localStorage.setItem("cookieConsent", "accepted");
+    cookieBanner.classList.add("hidden");
+    loadMap();
+  });
+}
+
+if (refuseBtn) {
+  refuseBtn.addEventListener("click", () => {
+    localStorage.setItem("cookieConsent", "refused");
+    cookieBanner.classList.add("hidden");
+  });
+}
+
+// Un clic manuel sur "Afficher la carte" vaut consentement pour ce composant précis
+if (loadMapBtn) {
+  loadMapBtn.addEventListener("click", () => {
+    loadMap();
+  });
+}
