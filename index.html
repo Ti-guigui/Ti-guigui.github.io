@@ -24,6 +24,7 @@
   <a href="#accueil"><i class="fa-solid fa-house"></i> Accueil</a>
   <a href="#infos"><i class="fa-solid fa-clock"></i> Horaires & Tarifs</a>
   <a href="#why"><i class="fa-solid fa-star"></i> Pourquoi nous </a>
+  <a href="#avis"><i class="fa-solid fa-comment-dots"></i> Avis</a>
   <a href="#equipe"><i class="fa-solid fa-user"></i> Équipe</a>
   <a href="#galerie"><i class="fa-solid fa-images"></i> Galerie</a>
   <a href="#reservation"><i class="fa-solid fa-calendar-check"></i> Réservation</a>
@@ -34,6 +35,7 @@
 
 <!-- HERO -->
 <section id="accueil" class="hero">
+  <p class="hero-trust"><i class="fa-solid fa-star"></i> 4,9/5 sur Google · 227 avis</p>
   <h1>Bienvenue chez <span>Star Barbershop</span></h1>
   <p>Un lieu convivial où tradition et modernité se rencontrent.</p>
   
@@ -46,6 +48,7 @@
 
 <!-- HORAIRES + TARIFS -->
 <section id="infos" class="infos">
+  <span class="eyebrow">Infos pratiques</span>
   <div class="infos-container">
 
     <div class="infos-box">
@@ -80,6 +83,7 @@
 
 <!-- POURQUOI NOUS -->
 <section id="why" class="why">
+  <span class="eyebrow">Notre engagement</span>
   <h2>Pourquoi nous choisir ?</h2>
 
   <div class="why-grid">
@@ -103,12 +107,40 @@
   </div>
 </section>
 
+<!-- AVIS CLIENTS (GOOGLE) -->
+<section id="avis" class="avis">
+  <span class="eyebrow">Avis clients</span>
+  <h2>Ce que disent nos clients</h2>
+
+  <div class="avis-content">
+    <div class="rating-circle">
+      <span class="rating-number" data-target="4.9">0.0</span>
+      <div class="stars" aria-hidden="true">
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+      </div>
+      <p class="rating-count">227 avis sur Google</p>
+    </div>
+    <p class="avis-text">Merci à tous nos clients pour leur confiance et leurs retours. Passez au salon et laissez-nous, vous aussi, votre avis sur Google.</p>
+  </div>
+
+  <a href="https://www.google.com/maps?cid=18147424117012332303" 
+     target="_blank" 
+     class="btn google-btn">
+    <i class="fa-brands fa-google"></i> Voir tous les avis
+  </a>
+</section>
+
 <!-- ÉQUIPE -->
 <section id="equipe">
+  <span class="eyebrow">L'équipe</span>
   <h2>Notre Équipe</h2>
   <div class="team">
     <div class="member">
-      <img src="image/barber1.jpg" alt="Moise">
+      <img src="image/barber1.jpg" alt="Moise, barbier chez Star Barbershop, spécialiste dégradés et styles modernes">
       <h3>MOISE</h3>
       <p>Spécialiste dégradés & styles modernes.</p>
     </div>
@@ -117,15 +149,21 @@
 
 <!-- GALERIE -->
 <section id="galerie">
+  <span class="eyebrow">Galerie</span>
   <h2>Galerie</h2>
   <div class="gallery">
-    <img src="image/Salon1.JPEG">
-    <img src="image/Salon2.JPEG">
-    <img src="image/Salon3.JPEG">
+    <img src="image/Salon1.JPEG" alt="Intérieur du salon Star Barbershop - vue 1">
+    <img src="image/Salon2.JPEG" alt="Intérieur du salon Star Barbershop - vue 2">
+    <img src="image/Salon3.JPEG" alt="Intérieur du salon Star Barbershop - vue 3">
   </div>
+  <!-- Emplacement prévu pour les photos publiées sur Booksy : dépose les fichiers
+       dans /image/ (ex : Booksy1.jpg, Booksy2.jpg...) puis ajoute une balise <img>
+       ici, sur le même modèle que les 3 lignes ci-dessus. -->
+  <p class="gallery-note">D'autres réalisations sont à découvrir sur notre profil Booksy.</p>
 </section>
 
 <section id="reservation">
+  <span class="eyebrow">Réservation</span>
   <h2>Réserver un créneau</h2>
 
   <!-- BOUTON BOOKSY -->
@@ -135,19 +173,11 @@
       <i class="fa-solid fa-calendar-check"></i> Réserver via Booksy
     </a>
   </p>
-  
-  <!-- BOUTON GOOGLE -->
-  <p style="text-align:center; margin-bottom:30px;">
-  <a href="https://www.google.com/search?sca_esv=d878df9cdf7e300a&hl=fr-FR&sxsrf=AE3TifOtWAe8wSJEruWNYzT08DzWLHdNfg:1765375985485&q=avis+sur+star+barbershop+12+rue+du+mar%C3%A9chal+foch,+mourmelon+le+grand+51400&uds=AOm0WdE2fekQnsyfYEw8JPYozOKzxHMOwXVAFWx4Mz00mQGTmOs_ksQVpt8gNbq3zh_rBa4MpFqy_KUNdvz9AgSrcVmbvpNWzB7eRibnafWlBk8dhtcoqlYnYigmJIPnqQB7SAi-ElT75siT52feo3eX1IY7ZqQBVctrD_k0NI-0zImIDhME4f-JRjOTKm-EcP0kE2cXdeb8W_is_QVVm3MucWFlhxBTRLicYn7outZWWkw8RoNvPOgFbtygUJYTPFAjMF6-EqwECsMIJk0YUk-z8KkvHWulU3BK-LOTdTcdUDodykFOlzY&si=AMgyJEtREmoPL4P1I5IDCfuA8gybfVI2d5Uj7QMwYCZHKDZ-E8IsiJd_e90cBSiYF1cUXCbCg6tuwX2mjKIs6XlR6xy1bNoQY4KM8BP7eOTt7du8ak7cPXG6Sh8xcSc1pWs3MKTGtPzLT-XVvmhnyNNqTMWYO7G59dV_PcuJAxjxR_la0qBVaGP57U4BNf2sZqpLjzsrVGlFKUVtZnu2vGP6FM4ONWtoAw%3D%3D&sa=X&ved=2ahUKEwjX8ImEmrORAxUqXaQEHfEuB0kQxKsJKAB6BAgREAE&ictx=1&stq=1&cs=1&lei=8X85aZe0Haq6kdUP8d2cyAQ" 
-     target="_blank" 
-     class="btn google-btn">
-    <i class="fa-brands fa-google"></i> Voir les avis Google
-  </a>
-</p>
 </section>
 
 <!-- CONTACT -->
 <section id="contact">
+  <span class="eyebrow">Contact</span>
   <h2>Contact & Localisation</h2>
   <p>📍12 Rue du Maréchal Foch, 51400, Mourmelon-le-Grand</p>
   <p>📞 09 82 33 27 02</p>
@@ -164,9 +194,16 @@
 </section>
 
 <footer>
+  <div class="footer-legal">
+    <h3>Informations légales</h3>
+    <div class="footer-legal-links">
+      <a href="mentions-legales.html">Mentions légales</a>
+    </div>
+  </div>
   <p>© 2025 Star Barbershop - Tous droits réservés.</p>
 </footer>
 
 <script src="script.js"></script>
 </body>
 </html>
+
