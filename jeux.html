@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jeux — Star Barbershop</title>
-  <meta name="description" content="Patientez en jouant : trois mini-jeux gratuits sur le site de Star Barbershop, salon de coiffure à Mourmelon-le-Grand.">
+  <meta name="description" content="Patientez en jouant : plusieurs mini-jeux gratuits avec niveaux de difficulté et classement, sur le site de Star Barbershop à Mourmelon-le-Grand.">
   <link rel="canonical" href="https://www.starbarbershop.fr/jeux.html">
 
   <link rel="icon" type="image/svg+xml" href="favicon.svg?v=2">
@@ -41,7 +41,7 @@
 <section id="jeux-intro" class="games-intro">
   <span class="eyebrow">En attendant votre tour</span>
   <h1>Salle de jeux</h1>
-  <p>Trois petits jeux gratuits pour patienter avant votre coupe. Choisissez-en un ci-dessous !</p>
+  <p>Huit petits jeux gratuits, plusieurs niveaux de difficulté, et un classement des meilleurs scores sur cet appareil. Choisissez-en un ci-dessous !</p>
 </section>
 
 <section id="jeux" class="games">
@@ -49,11 +49,21 @@
     <button class="game-tab active" data-game="catch">✂️ Attrape la mèche</button>
     <button class="game-tab" data-game="memory">🃏 Memory</button>
     <button class="game-tab" data-game="quiz">❓ Quiz Coiffure</button>
+    <button class="game-tab" data-game="simon">🎵 Suite de rythme</button>
+    <button class="game-tab" data-game="tictactoe">⭕ Morpion</button>
+    <button class="game-tab" data-game="puzzle">🧩 Puzzle glissant</button>
+    <button class="game-tab" data-game="diff">🔍 Trouve les différences</button>
+    <button class="game-tab" data-game="haircut">💇 Trouve la bonne coupe</button>
   </div>
 
   <!-- JEU 1 : ATTRAPE LA MÈCHE -->
   <div id="game-catch" class="game-panel active">
     <div class="catch-game">
+      <div id="catch-level-select" class="level-selector">
+        <button class="level-btn" data-level="facile">Facile</button>
+        <button class="level-btn active" data-level="moyen">Moyen</button>
+        <button class="level-btn" data-level="difficile">Difficile</button>
+      </div>
       <div class="catch-stats">
         <span>Score : <strong id="catch-score">0</strong></span>
         <span id="catch-lives">❤️❤️❤️</span>
@@ -62,24 +72,51 @@
         <p class="catch-message">Cliquez sur les objets avant qu'ils touchent le sol !</p>
       </div>
       <button id="catch-start-btn" class="btn">Démarrer</button>
+      <div id="catch-score-submit" class="score-submit" style="display:none;">
+        <input type="text" id="catch-name-input" maxlength="16" placeholder="Votre pseudo">
+        <button id="catch-save-score-btn" class="btn">Enregistrer le score</button>
+      </div>
+      <div class="leaderboard">
+        <h4>🏆 Meilleurs scores (cet appareil)</h4>
+        <div id="catch-leaderboard"></div>
+      </div>
     </div>
   </div>
 
   <!-- JEU 2 : MEMORY -->
   <div id="game-memory" class="game-panel">
     <div class="memory-game">
+      <div id="memory-level-select" class="level-selector">
+        <button class="level-btn" data-level="facile">Facile</button>
+        <button class="level-btn active" data-level="moyen">Moyen</button>
+        <button class="level-btn" data-level="difficile">Difficile</button>
+      </div>
       <div class="memory-stats">Coups : <strong id="memory-moves">0</strong></div>
       <div id="memory-grid" class="memory-grid"></div>
       <p id="memory-win-message" class="memory-win-message" style="display:none;"></p>
       <button id="memory-restart-btn" class="btn">Recommencer</button>
+      <div id="memory-score-submit" class="score-submit" style="display:none;">
+        <input type="text" id="memory-name-input" maxlength="16" placeholder="Votre pseudo">
+        <button id="memory-save-score-btn" class="btn">Enregistrer le score</button>
+      </div>
+      <div class="leaderboard">
+        <h4>🏆 Meilleurs scores (cet appareil)</h4>
+        <div id="memory-leaderboard"></div>
+      </div>
     </div>
   </div>
 
   <!-- JEU 3 : QUIZ -->
   <div id="game-quiz" class="game-panel">
     <div class="quiz-game">
+      <div id="quiz-level-select" class="level-selector">
+        <button class="level-btn" data-level="facile">Facile</button>
+        <button class="level-btn active" data-level="moyen">Moyen</button>
+        <button class="level-btn" data-level="difficile">Difficile</button>
+      </div>
       <div id="quiz-question-block" class="quiz-question-block">
-        <p id="quiz-progress" class="quiz-progress">Question 1/6</p>
+        <p id="quiz-progress" class="quiz-progress">Question 1</p>
+        <span id="quiz-timer" class="timer-display"></span>
         <h3 id="quiz-question" class="quiz-question"></h3>
         <div id="quiz-options" class="quiz-options"></div>
         <p id="quiz-feedback" class="quiz-feedback"></p>
@@ -88,6 +125,168 @@
       <div id="quiz-result" class="quiz-result" style="display:none;">
         <p id="quiz-score-text"></p>
         <button id="quiz-restart-btn" class="btn">Recommencer</button>
+      </div>
+      <div id="quiz-score-submit" class="score-submit" style="display:none;">
+        <input type="text" id="quiz-name-input" maxlength="16" placeholder="Votre pseudo">
+        <button id="quiz-save-score-btn" class="btn">Enregistrer le score</button>
+      </div>
+      <div class="leaderboard">
+        <h4>🏆 Meilleurs scores (cet appareil)</h4>
+        <div id="quiz-leaderboard"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JEU 4 : SIMON / SUITE DE RYTHME -->
+  <div id="game-simon" class="game-panel">
+    <div class="simon-game">
+      <div id="simon-level-select" class="level-selector">
+        <button class="level-btn" data-level="facile">Facile</button>
+        <button class="level-btn active" data-level="moyen">Moyen</button>
+        <button class="level-btn" data-level="difficile">Difficile</button>
+      </div>
+      <p class="simon-stats">Niveau : <strong id="simon-level">0</strong></p>
+      <div class="simon-board">
+        <button class="simon-pad" data-pad="0" style="--pad-color:#d4af37;" disabled></button>
+        <button class="simon-pad" data-pad="1" style="--pad-color:#4285F4;" disabled></button>
+        <button class="simon-pad" data-pad="2" style="--pad-color:#3ca05a;" disabled></button>
+        <button class="simon-pad" data-pad="3" style="--pad-color:#c84646;" disabled></button>
+      </div>
+      <p id="simon-message" class="simon-message">Cliquez sur Démarrer pour jouer</p>
+      <button id="simon-start-btn" class="btn">Démarrer</button>
+      <div id="simon-score-submit" class="score-submit" style="display:none;">
+        <input type="text" id="simon-name-input" maxlength="16" placeholder="Votre pseudo">
+        <button id="simon-save-score-btn" class="btn">Enregistrer le score</button>
+      </div>
+      <div class="leaderboard">
+        <h4>🏆 Meilleurs niveaux (cet appareil)</h4>
+        <div id="simon-leaderboard"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JEU 5 : MORPION -->
+  <div id="game-tictactoe" class="game-panel">
+    <div class="ttt-game">
+      <div id="ttt-mode-select" class="level-selector ttt-mode-selector">
+        <button class="level-btn active" data-mode="2joueurs">2 joueurs</button>
+        <button class="level-btn" data-mode="ia">Contre l'ordinateur</button>
+      </div>
+      <div id="ttt-level-select" class="level-selector" style="display:none;">
+        <button class="level-btn" data-level="facile">Facile</button>
+        <button class="level-btn active" data-level="moyen">Moyen</button>
+        <button class="level-btn" data-level="difficile">Difficile</button>
+      </div>
+      <p id="ttt-status" class="ttt-status">Au tour de X</p>
+      <p id="ttt-stats" class="ttt-stats"></p>
+      <div id="ttt-board" class="ttt-board">
+        <button class="ttt-cell" data-i="0"></button>
+        <button class="ttt-cell" data-i="1"></button>
+        <button class="ttt-cell" data-i="2"></button>
+        <button class="ttt-cell" data-i="3"></button>
+        <button class="ttt-cell" data-i="4"></button>
+        <button class="ttt-cell" data-i="5"></button>
+        <button class="ttt-cell" data-i="6"></button>
+        <button class="ttt-cell" data-i="7"></button>
+        <button class="ttt-cell" data-i="8"></button>
+      </div>
+      <button id="ttt-restart-btn" class="btn">Recommencer</button>
+      <div id="ttt-score-submit" class="score-submit" style="display:none;">
+        <input type="text" id="ttt-name-input" maxlength="16" placeholder="Votre pseudo">
+        <button id="ttt-save-score-btn" class="btn">Enregistrer le score</button>
+      </div>
+      <div class="leaderboard">
+        <h4>🏆 Victoires contre l'IA (cet appareil)</h4>
+        <div id="ttt-leaderboard"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JEU 6 : PUZZLE GLISSANT -->
+  <div id="game-puzzle" class="game-panel">
+    <div class="puzzle-game">
+      <div id="puzzle-level-select" class="level-selector">
+        <button class="level-btn active" data-level="facile">Facile</button>
+        <button class="level-btn" data-level="moyen">Moyen</button>
+        <button class="level-btn" data-level="difficile">Difficile</button>
+      </div>
+      <p class="puzzle-stats">Coups : <strong id="puzzle-moves">0</strong></p>
+      <div id="puzzle-board" class="puzzle-board"></div>
+      <p id="puzzle-win-message" class="puzzle-win-message" style="display:none;"></p>
+      <button id="puzzle-restart-btn" class="btn">Mélanger</button>
+      <div id="puzzle-score-submit" class="score-submit" style="display:none;">
+        <input type="text" id="puzzle-name-input" maxlength="16" placeholder="Votre pseudo">
+        <button id="puzzle-save-score-btn" class="btn">Enregistrer le score</button>
+      </div>
+      <div class="leaderboard">
+        <h4>🏆 Meilleurs scores (cet appareil)</h4>
+        <div id="puzzle-leaderboard"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JEU 7 : JEU DES DIFFÉRENCES -->
+  <div id="game-diff" class="game-panel">
+    <div class="diff-game">
+      <div id="diff-level-select" class="level-selector">
+        <button class="level-btn" data-level="facile">Facile</button>
+        <button class="level-btn active" data-level="moyen">Moyen</button>
+        <button class="level-btn" data-level="difficile">Difficile</button>
+      </div>
+      <p class="diff-stats">
+        Différences trouvées : <strong id="diff-found">0</strong> / <span id="diff-total">6</span>
+        &nbsp;·&nbsp;<span id="diff-timer" class="timer-display"></span>
+      </p>
+      <div class="diff-boards">
+        <div>
+          <p class="diff-label">Étagère A (référence)</p>
+          <div id="diff-grid-a" class="diff-grid"></div>
+        </div>
+        <div>
+          <p class="diff-label">Étagère B — cliquez sur ce qui a changé</p>
+          <div id="diff-grid-b" class="diff-grid"></div>
+        </div>
+      </div>
+      <p id="diff-win-message" class="diff-win-message" style="display:none;"></p>
+      <button id="diff-restart-btn" class="btn">Nouvelle partie</button>
+      <div id="diff-score-submit" class="score-submit" style="display:none;">
+        <input type="text" id="diff-name-input" maxlength="16" placeholder="Votre pseudo">
+        <button id="diff-save-score-btn" class="btn">Enregistrer le score</button>
+      </div>
+      <div class="leaderboard">
+        <h4>🏆 Temps les plus rapides (cet appareil)</h4>
+        <div id="diff-leaderboard"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JEU 8 : TROUVE LA BONNE COUPE -->
+  <div id="game-haircut" class="game-panel">
+    <div class="haircut-game">
+      <div id="haircut-level-select" class="level-selector">
+        <button class="level-btn" data-level="facile">Facile</button>
+        <button class="level-btn active" data-level="moyen">Moyen</button>
+        <button class="level-btn" data-level="difficile">Difficile</button>
+      </div>
+      <div id="haircut-block" class="haircut-block">
+        <p id="haircut-progress" class="quiz-progress">Client 1</p>
+        <span id="haircut-timer" class="timer-display"></span>
+        <p id="haircut-request" class="haircut-request"></p>
+        <div id="haircut-options" class="quiz-options"></div>
+        <p id="haircut-feedback" class="quiz-feedback"></p>
+        <button id="haircut-next-btn" class="btn" style="display:none;">Client suivant</button>
+      </div>
+      <div id="haircut-result" class="quiz-result" style="display:none;">
+        <p id="haircut-score-text"></p>
+        <button id="haircut-restart-btn" class="btn">Recommencer</button>
+      </div>
+      <div id="haircut-score-submit" class="score-submit" style="display:none;">
+        <input type="text" id="haircut-name-input" maxlength="16" placeholder="Votre pseudo">
+        <button id="haircut-save-score-btn" class="btn">Enregistrer le score</button>
+      </div>
+      <div class="leaderboard">
+        <h4>🏆 Meilleurs scores (cet appareil)</h4>
+        <div id="haircut-leaderboard"></div>
       </div>
     </div>
   </div>
