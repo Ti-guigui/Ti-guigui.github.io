@@ -3,268 +3,292 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Star Barbershop — Barbier à Mourmelon-le-Grand</title>
+  <title>Jeux — Star Barbershop</title>
+  <meta name="description" content="Patientez en jouant : plusieurs mini-jeux gratuits avec niveaux de difficulté et classement, sur le site de Star Barbershop à Mourmelon-le-Grand.">
+  <link rel="canonical" href="https://www.starbarbershop.fr/jeux.html">
 
-  <!-- SEO -->
-  <meta name="description" content="Star Barbershop à Mourmelon-le-Grand : coupes, tailles de barbe et rasage par des barbiers expérimentés. Note 4,9/5 sur Google (227 avis). Réservez en ligne via Booksy.">
-  <link rel="canonical" href="https://www.starbarbershop.fr/">
-
-  <!-- Open Graph (aperçu de partage) -->
-  <meta property="og:title" content="Star Barbershop — Barbier à Mourmelon-le-Grand">
-  <meta property="og:description" content="Coupes, barbe et rasage dans une ambiance chic et conviviale. Note 4,9/5 sur Google. Réservation en ligne via Booksy.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://www.starbarbershop.fr/">
-  <meta property="og:image" content="https://www.starbarbershop.fr/image/hero.jpg">
-  <meta property="og:locale" content="fr_FR">
-
-  <!-- Favicon (SVG en priorité pour les navigateurs modernes, ICO/PNG en repli pour Safari, iOS et les autres) -->
-  <!-- ?v=2 force les navigateurs (notamment Chrome) à retélécharger le favicon au lieu de garder l'ancien en cache -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg?v=2">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png?v=2">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png?v=2">
   <link rel="icon" href="favicon.ico?v=2" sizes="any">
   <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
 
-  <!-- Google Fonts pour un style moderne -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  
-  <!-- Font Awesome pour les icônes -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  
   <link rel="stylesheet" href="style.css" />
-
-  <!-- Données structurées Schema.org (référencement local) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "HairSalon",
-    "name": "Star Barbershop",
-    "alternateName": "Elegance Barbershop",
-    "image": "https://www.starbarbershop.fr/image/hero.jpg",
-    "url": "https://www.starbarbershop.fr/",
-    "telephone": "+33982332702",
-    "email": "info@starbarbershop.fr",
-    "priceRange": "10€-20€",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "12 Rue du Maréchal Foch",
-      "addressLocality": "Mourmelon-le-Grand",
-      "postalCode": "51400",
-      "addressCountry": "FR"
-    },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": 49.1402285,
-      "longitude": 4.3647055
-    },
-    "openingHoursSpecification": [
-      { "@type": "OpeningHoursSpecification", "dayOfWeek": "Monday", "opens": "11:30", "closes": "19:00" },
-      { "@type": "OpeningHoursSpecification", "dayOfWeek": "Tuesday", "opens": "09:00", "closes": "19:00" },
-      { "@type": "OpeningHoursSpecification", "dayOfWeek": "Wednesday", "opens": "09:00", "closes": "19:00" },
-      { "@type": "OpeningHoursSpecification", "dayOfWeek": "Thursday", "opens": "09:00", "closes": "19:00" },
-      { "@type": "OpeningHoursSpecification", "dayOfWeek": "Friday", "opens": "09:00", "closes": "20:00" },
-      { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "09:00", "closes": "19:00" },
-      { "@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "09:30", "closes": "15:00" }
-    ],
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.9",
-      "reviewCount": "227"
-    }
-  }
-  </script>
+  <link rel="stylesheet" href="games.css" />
 </head>
 <body>
 
 <header class="header">
-  <img src="image/logo.png" alt="Star Barbershop" class="logo">
+  <a href="index.html"><img src="image/logo.png" alt="Star Barbershop" class="logo"></a>
 
   <div class="burger" id="burger">☰</div>
 
-<nav id="menu">
-  <a href="#accueil"><i class="fa-solid fa-house"></i> Accueil</a>
-  <a href="#infos"><i class="fa-solid fa-clock"></i> Horaires & Tarifs</a>
-  <a href="#why"><i class="fa-solid fa-star"></i> Pourquoi nous </a>
-  <a href="#avis"><i class="fa-solid fa-comment-dots"></i> Avis</a>
-  <a href="#equipe"><i class="fa-solid fa-user"></i> Équipe</a>
-  <a href="#galerie"><i class="fa-solid fa-images"></i> Galerie</a>
-  <a href="jeux.html"><i class="fa-solid fa-gamepad"></i> Jeux</a>
-  <a href="#reservation"><i class="fa-solid fa-calendar-check"></i> Réservation</a>
-  <a href="#contact"><i class="fa-solid fa-envelope"></i> Contact</a>
- </nav>
-
+  <nav id="menu">
+    <a href="index.html#accueil"><i class="fa-solid fa-house"></i> Accueil</a>
+    <a href="index.html#infos"><i class="fa-solid fa-clock"></i> Horaires & Tarifs</a>
+    <a href="index.html#why"><i class="fa-solid fa-star"></i> Pourquoi nous</a>
+    <a href="index.html#avis"><i class="fa-solid fa-comment-dots"></i> Avis</a>
+    <a href="index.html#equipe"><i class="fa-solid fa-user"></i> Équipe</a>
+    <a href="index.html#galerie"><i class="fa-solid fa-images"></i> Galerie</a>
+    <a href="jeux.html"><i class="fa-solid fa-gamepad"></i> Jeux</a>
+    <a href="index.html#reservation"><i class="fa-solid fa-calendar-check"></i> Réservation</a>
+    <a href="index.html#contact"><i class="fa-solid fa-envelope"></i> Contact</a>
+  </nav>
 </header>
 
-<!-- HERO -->
-<section id="accueil" class="hero">
-  <p class="hero-trust"><i class="fa-solid fa-star"></i> 4,9/5 sur Google · 227 avis</p>
-  <h1>Bienvenue chez <span>Star Barbershop</span></h1>
-  <p>Un lieu convivial où tradition et modernité se rencontrent.</p>
-  
-  <!-- BOUTON BOOKSY -->
-  <a href="https://booksy.com/fr-fr/65816_star-barbershop_barbier_93877_mourmelon-le-grand#ba_s=vl_1" 
-     target="_blank" class="btn">
-    <i class="fa-solid fa-calendar-check"></i> Réserver via Booksy
-  </a>
+<section id="jeux-intro" class="games-intro">
+  <span class="eyebrow">En attendant votre tour</span>
+  <h1>Salle de jeux</h1>
+  <p>Huit petits jeux gratuits, plusieurs niveaux de difficulté, et un classement des meilleurs scores sur cet appareil. Choisissez-en un ci-dessous !</p>
 </section>
 
-<!-- HORAIRES + TARIFS -->
-<section id="infos" class="infos">
-  <span class="eyebrow">Infos pratiques</span>
-  <div class="infos-container">
-
-    <div class="infos-box">
-      <h2>Horaires</h2>
-      <ul>
-        <li><span>Lundi</span><span>11h30 – 19h</span></li>
-        <li><span>Mardi</span><span>09h – 19h</span></li>
-        <li><span>Mercredi</span><span>09h – 19h</span></li>
-        <li><span>Jeudi</span><span>09h – 19h</span></li>
-        <li><span>Vendredi</span><span>09h – 20h</span></li>
-        <li><span>Samedi</span><span>09h – 19h</span></li>
-        <li><span>Dimanche</span><span>09h30 – 15h</span></li>
-      </ul>
-    </div>
-
-    <div class="infos-box">
-      <h2>Tarifs</h2>
-      <ul>
-        <li><span>✂️ Coupe</span><span>15€</span></li>
-        <li><span>🧔 Taille de barbe</span><span>10€</span></li>
-        <li><span>💈 Coupe + barbe</span><span>20€</span></li>
-        <li><span>💆 Soin visage</span><span>15€</span></li>
-        <li><span>✂️ Coupe Enfant</span><span>13€</span></li>
-        <li><span>💈 Buzz Cut</span><span>13€</span></li>
-        <li><span>🧔 Rasage</span><span>10€</span></li>
-        <li><span>💈 Taper</span><span>15€</span></li>
-      </ul>
-    </div>
-
+<section id="jeux" class="games">
+  <div class="game-selector">
+    <button class="game-tab active" data-game="catch">✂️ Attrape la mèche</button>
+    <button class="game-tab" data-game="memory">🃏 Memory</button>
+    <button class="game-tab" data-game="quiz">❓ Quiz Coiffure</button>
+    <button class="game-tab" data-game="simon">🎵 Suite de rythme</button>
+    <button class="game-tab" data-game="tictactoe">⭕ Morpion</button>
+    <button class="game-tab" data-game="puzzle">🧩 Puzzle glissant</button>
+    <button class="game-tab" data-game="diff">🔍 Trouve les différences</button>
+    <button class="game-tab" data-game="haircut">💇 Trouve la bonne coupe</button>
   </div>
-</section>
 
-<!-- POURQUOI NOUS -->
-<section id="why" class="why">
-  <span class="eyebrow">Notre engagement</span>
-  <h2>Pourquoi nous choisir ?</h2>
-
-  <div class="why-grid">
-    <div class="why-box">
-      <i class="fa-solid fa-scissors"></i>
-      <h3>Savoir-faire</h3>
-      <p>Des coupes précises et modernes réalisées par des barbiers expérimentés.</p>
-    </div>
-
-    <div class="why-box">
-      <i class="fa-solid fa-star"></i>
-      <h3>Qualité premium</h3>
-      <p>Produits haut de gamme et finitions irréprochables.</p>
-    </div>
-
-    <div class="why-box">
-      <i class="fa-solid fa-crown"></i>
-      <h3>Ambiance élégante</h3>
-      <p>Un lieu chic, convivial et 100% masculin.</p>
-    </div>
-  </div>
-</section>
-
-<!-- AVIS CLIENTS (GOOGLE) -->
-<section id="avis" class="avis">
-  <span class="eyebrow">Avis clients</span>
-  <h2>Ce que disent nos clients</h2>
-
-  <div class="avis-content">
-    <div class="rating-circle">
-      <span class="rating-number" data-target="4.9">0.0</span>
-      <div class="stars" aria-hidden="true">
-        <i class="fa-solid fa-star"></i>
-        <i class="fa-solid fa-star"></i>
-        <i class="fa-solid fa-star"></i>
-        <i class="fa-solid fa-star"></i>
-        <i class="fa-solid fa-star"></i>
+  <!-- JEU 1 : ATTRAPE LA MÈCHE -->
+  <div id="game-catch" class="game-panel active">
+    <div class="catch-game">
+      <div id="catch-level-select" class="level-selector">
+        <button class="level-btn" data-level="facile">Facile</button>
+        <button class="level-btn active" data-level="moyen">Moyen</button>
+        <button class="level-btn" data-level="difficile">Difficile</button>
       </div>
-      <p class="rating-count">227 avis sur Google</p>
-    </div>
-    <p class="avis-text">Merci à tous nos clients pour leur confiance et leurs retours. Passez au salon et laissez-nous, vous aussi, votre avis sur Google.</p>
-  </div>
-
-  <a href="https://www.google.com/maps?cid=18147424117012332303" 
-     target="_blank" 
-     class="btn google-btn">
-    <i class="fa-brands fa-google"></i> Voir tous les avis
-  </a>
-</section>
-
-<!-- ÉQUIPE -->
-<section id="equipe">
-  <span class="eyebrow">L'équipe</span>
-  <h2>Notre Équipe</h2>
-  <div class="team">
-    <div class="member">
-      <img src="image/barber1.jpg" alt="Moise, barbier chez Star Barbershop, spécialiste dégradés et styles modernes">
-      <h3>MOISE</h3>
-      <p>Spécialiste dégradés & styles modernes.</p>
+      <div class="catch-stats">
+        <span>Score : <strong id="catch-score">0</strong></span>
+        <span id="catch-lives">❤️❤️❤️</span>
+      </div>
+      <div id="catch-area" class="catch-area">
+        <p class="catch-message">Cliquez sur les objets avant qu'ils touchent le sol !</p>
+      </div>
+      <button id="catch-start-btn" class="btn">Démarrer</button>
+      <div id="catch-score-submit" class="score-submit" style="display:none;">
+        <input type="text" id="catch-name-input" maxlength="16" placeholder="Votre pseudo">
+        <button id="catch-save-score-btn" class="btn">Enregistrer le score</button>
+      </div>
+      <div class="leaderboard">
+        <h4>🏆 Meilleurs scores (cet appareil)</h4>
+        <div id="catch-leaderboard"></div>
+      </div>
     </div>
   </div>
-</section>
 
-<!-- GALERIE -->
-<section id="galerie">
-  <span class="eyebrow">Galerie</span>
-  <h2>Galerie</h2>
-  <div class="gallery">
-    <img src="image/Salon1.JPEG" alt="Intérieur du salon Star Barbershop - vue 1" loading="lazy">
-    <img src="image/Salon2.JPEG" alt="Intérieur du salon Star Barbershop - vue 2" loading="lazy">
-    <img src="image/Salon3.JPEG" alt="Intérieur du salon Star Barbershop - vue 3" loading="lazy">
-    <!-- PHOTOS BOOKSY : dépose tes fichiers exportés dans /image/ (ex: Booksy1.jpg)
-         puis ajoute une ligne ici, sur ce modèle :
-         <img src="image/Booksy1.jpg" alt="Description de la coupe/réalisation" loading="lazy"> -->
-  </div>
-  <p class="gallery-note">D'autres réalisations sont à découvrir sur notre profil Booksy.</p>
-</section>
-
-<!-- RÉSERVATION -->
-<section id="reservation">
-  <span class="eyebrow">Réservation</span>
-  <h2>Réserver un créneau</h2>
-
-  <!-- Emplacement du widget de réservation Booksy intégré à la page.
-       Pour l'activer : va dans ton compte Booksy Business > Réglages > Réservation en ligne
-       > "Votre site web", copie le code fourni (unique à ton salon), et colle-le
-       à la place de ce commentaire. Le bouton ci-dessous reste en secours. -->
-
-  <p style="text-align:center; margin-bottom:20px;">
-    <a href="https://booksy.com/fr-fr/65816_star-barbershop_barbier_93877_mourmelon-le-grand#ba_s=vl_1" 
-       target="_blank" class="btn">
-      <i class="fa-solid fa-calendar-check"></i> Réserver via Booksy
-    </a>
-  </p>
-</section>
-
-<!-- CONTACT -->
-<section id="contact">
-  <span class="eyebrow">Contact</span>
-  <h2>Contact & Localisation</h2>
-  <p>📍12 Rue du Maréchal Foch, 51400, Mourmelon-le-Grand</p>
-  <p>📞 09 82 33 27 02</p>
-  <p>✉️ info@starbarbershop.fr</p>
-
-  <div class="map-container">
-    <div id="map-placeholder" class="map-placeholder">
-      <p>La carte Google Maps nécessite votre consentement (elle dépose des cookies tiers). Consultez notre <a href="politique-de-confidentialite.html" style="color:#d4af37;">politique de confidentialité</a>.</p>
-      <button id="load-map-btn" class="btn">Afficher la carte</button>
+  <!-- JEU 2 : MEMORY -->
+  <div id="game-memory" class="game-panel">
+    <div class="memory-game">
+      <div id="memory-level-select" class="level-selector">
+        <button class="level-btn" data-level="facile">Facile</button>
+        <button class="level-btn active" data-level="moyen">Moyen</button>
+        <button class="level-btn" data-level="difficile">Difficile</button>
+      </div>
+      <div class="memory-stats">Coups : <strong id="memory-moves">0</strong></div>
+      <div id="memory-grid" class="memory-grid"></div>
+      <p id="memory-win-message" class="memory-win-message" style="display:none;"></p>
+      <button id="memory-restart-btn" class="btn">Recommencer</button>
+      <div id="memory-score-submit" class="score-submit" style="display:none;">
+        <input type="text" id="memory-name-input" maxlength="16" placeholder="Votre pseudo">
+        <button id="memory-save-score-btn" class="btn">Enregistrer le score</button>
+      </div>
+      <div class="leaderboard">
+        <h4>🏆 Meilleurs scores (cet appareil)</h4>
+        <div id="memory-leaderboard"></div>
+      </div>
     </div>
-    <iframe
-      id="gmap-iframe"
-      data-src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2625.9782577027173!2d4.331187715674146!3d49.19836187933301!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e5d7b62d051d95%3A0xfbd89a15d2e07f0f!2s12%20Rue%20du%20Mar%C3%A9chal%20Foch%2C%2051400%20Mourmelon-le-Grand!5e0!3m2!1sfr!2sfr!4v1702212961234!5m2!1sfr!2sfr"
-      width="100%"
-      height="250"
-      style="display:none;"
-      allowfullscreen=""
-      loading="lazy"
-      title="Localisation de Star Barbershop">
-    </iframe>
+  </div>
+
+  <!-- JEU 3 : QUIZ -->
+  <div id="game-quiz" class="game-panel">
+    <div class="quiz-game">
+      <div id="quiz-level-select" class="level-selector">
+        <button class="level-btn" data-level="facile">Facile</button>
+        <button class="level-btn active" data-level="moyen">Moyen</button>
+        <button class="level-btn" data-level="difficile">Difficile</button>
+      </div>
+      <div id="quiz-question-block" class="quiz-question-block">
+        <p id="quiz-progress" class="quiz-progress">Question 1</p>
+        <span id="quiz-timer" class="timer-display"></span>
+        <h3 id="quiz-question" class="quiz-question"></h3>
+        <div id="quiz-options" class="quiz-options"></div>
+        <p id="quiz-feedback" class="quiz-feedback"></p>
+        <button id="quiz-next-btn" class="btn" style="display:none;">Question suivante</button>
+      </div>
+      <div id="quiz-result" class="quiz-result" style="display:none;">
+        <p id="quiz-score-text"></p>
+        <button id="quiz-restart-btn" class="btn">Recommencer</button>
+      </div>
+      <div id="quiz-score-submit" class="score-submit" style="display:none;">
+        <input type="text" id="quiz-name-input" maxlength="16" placeholder="Votre pseudo">
+        <button id="quiz-save-score-btn" class="btn">Enregistrer le score</button>
+      </div>
+      <div class="leaderboard">
+        <h4>🏆 Meilleurs scores (cet appareil)</h4>
+        <div id="quiz-leaderboard"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JEU 4 : SIMON / SUITE DE RYTHME -->
+  <div id="game-simon" class="game-panel">
+    <div class="simon-game">
+      <div id="simon-level-select" class="level-selector">
+        <button class="level-btn" data-level="facile">Facile</button>
+        <button class="level-btn active" data-level="moyen">Moyen</button>
+        <button class="level-btn" data-level="difficile">Difficile</button>
+      </div>
+      <p class="simon-stats">Niveau : <strong id="simon-level">0</strong></p>
+      <div class="simon-board">
+        <button class="simon-pad" data-pad="0" style="--pad-color:#d4af37;" disabled></button>
+        <button class="simon-pad" data-pad="1" style="--pad-color:#4285F4;" disabled></button>
+        <button class="simon-pad" data-pad="2" style="--pad-color:#3ca05a;" disabled></button>
+        <button class="simon-pad" data-pad="3" style="--pad-color:#c84646;" disabled></button>
+      </div>
+      <p id="simon-message" class="simon-message">Cliquez sur Démarrer pour jouer</p>
+      <button id="simon-start-btn" class="btn">Démarrer</button>
+      <div id="simon-score-submit" class="score-submit" style="display:none;">
+        <input type="text" id="simon-name-input" maxlength="16" placeholder="Votre pseudo">
+        <button id="simon-save-score-btn" class="btn">Enregistrer le score</button>
+      </div>
+      <div class="leaderboard">
+        <h4>🏆 Meilleurs niveaux (cet appareil)</h4>
+        <div id="simon-leaderboard"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JEU 5 : MORPION -->
+  <div id="game-tictactoe" class="game-panel">
+    <div class="ttt-game">
+      <div id="ttt-mode-select" class="level-selector ttt-mode-selector">
+        <button class="level-btn active" data-mode="2joueurs">2 joueurs</button>
+        <button class="level-btn" data-mode="ia">Contre l'ordinateur</button>
+      </div>
+      <div id="ttt-level-select" class="level-selector" style="display:none;">
+        <button class="level-btn" data-level="facile">Facile</button>
+        <button class="level-btn active" data-level="moyen">Moyen</button>
+        <button class="level-btn" data-level="difficile">Difficile</button>
+      </div>
+      <p id="ttt-status" class="ttt-status">Au tour de X</p>
+      <p id="ttt-stats" class="ttt-stats"></p>
+      <div id="ttt-board" class="ttt-board">
+        <button class="ttt-cell" data-i="0"></button>
+        <button class="ttt-cell" data-i="1"></button>
+        <button class="ttt-cell" data-i="2"></button>
+        <button class="ttt-cell" data-i="3"></button>
+        <button class="ttt-cell" data-i="4"></button>
+        <button class="ttt-cell" data-i="5"></button>
+        <button class="ttt-cell" data-i="6"></button>
+        <button class="ttt-cell" data-i="7"></button>
+        <button class="ttt-cell" data-i="8"></button>
+      </div>
+      <button id="ttt-restart-btn" class="btn">Recommencer</button>
+      <div id="ttt-score-submit" class="score-submit" style="display:none;">
+        <input type="text" id="ttt-name-input" maxlength="16" placeholder="Votre pseudo">
+        <button id="ttt-save-score-btn" class="btn">Enregistrer le score</button>
+      </div>
+      <div class="leaderboard">
+        <h4>🏆 Victoires contre l'IA (cet appareil)</h4>
+        <div id="ttt-leaderboard"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JEU 6 : PUZZLE GLISSANT -->
+  <div id="game-puzzle" class="game-panel">
+    <div class="puzzle-game">
+      <div id="puzzle-level-select" class="level-selector">
+        <button class="level-btn active" data-level="facile">Facile</button>
+        <button class="level-btn" data-level="moyen">Moyen</button>
+        <button class="level-btn" data-level="difficile">Difficile</button>
+      </div>
+      <p class="puzzle-stats">Coups : <strong id="puzzle-moves">0</strong></p>
+      <div id="puzzle-board" class="puzzle-board"></div>
+      <p id="puzzle-win-message" class="puzzle-win-message" style="display:none;"></p>
+      <button id="puzzle-restart-btn" class="btn">Mélanger</button>
+      <div id="puzzle-score-submit" class="score-submit" style="display:none;">
+        <input type="text" id="puzzle-name-input" maxlength="16" placeholder="Votre pseudo">
+        <button id="puzzle-save-score-btn" class="btn">Enregistrer le score</button>
+      </div>
+      <div class="leaderboard">
+        <h4>🏆 Meilleurs scores (cet appareil)</h4>
+        <div id="puzzle-leaderboard"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JEU 7 : JEU DES DIFFÉRENCES -->
+  <div id="game-diff" class="game-panel">
+    <div class="diff-game">
+      <div id="diff-level-select" class="level-selector">
+        <button class="level-btn" data-level="facile">Facile</button>
+        <button class="level-btn active" data-level="moyen">Moyen</button>
+        <button class="level-btn" data-level="difficile">Difficile</button>
+      </div>
+      <p class="diff-stats">
+        Différences trouvées : <strong id="diff-found">0</strong> / <span id="diff-total">6</span>
+        &nbsp;·&nbsp;<span id="diff-timer" class="timer-display"></span>
+      </p>
+      <div class="diff-boards">
+        <div>
+          <p class="diff-label">Étagère A (référence)</p>
+          <div id="diff-grid-a" class="diff-grid"></div>
+        </div>
+        <div>
+          <p class="diff-label">Étagère B — cliquez sur ce qui a changé</p>
+          <div id="diff-grid-b" class="diff-grid"></div>
+        </div>
+      </div>
+      <p id="diff-win-message" class="diff-win-message" style="display:none;"></p>
+      <button id="diff-restart-btn" class="btn">Nouvelle partie</button>
+      <div id="diff-score-submit" class="score-submit" style="display:none;">
+        <input type="text" id="diff-name-input" maxlength="16" placeholder="Votre pseudo">
+        <button id="diff-save-score-btn" class="btn">Enregistrer le score</button>
+      </div>
+      <div class="leaderboard">
+        <h4>🏆 Temps les plus rapides (cet appareil)</h4>
+        <div id="diff-leaderboard"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JEU 8 : TROUVE LA BONNE COUPE -->
+  <div id="game-haircut" class="game-panel">
+    <div class="haircut-game">
+      <div id="haircut-level-select" class="level-selector">
+        <button class="level-btn" data-level="facile">Facile</button>
+        <button class="level-btn active" data-level="moyen">Moyen</button>
+        <button class="level-btn" data-level="difficile">Difficile</button>
+      </div>
+      <div id="haircut-block" class="haircut-block">
+        <p id="haircut-progress" class="quiz-progress">Client 1</p>
+        <span id="haircut-timer" class="timer-display"></span>
+        <p id="haircut-request" class="haircut-request"></p>
+        <div id="haircut-options" class="quiz-options"></div>
+        <p id="haircut-feedback" class="quiz-feedback"></p>
+        <button id="haircut-next-btn" class="btn" style="display:none;">Client suivant</button>
+      </div>
+      <div id="haircut-result" class="quiz-result" style="display:none;">
+        <p id="haircut-score-text"></p>
+        <button id="haircut-restart-btn" class="btn">Recommencer</button>
+      </div>
+      <div id="haircut-score-submit" class="score-submit" style="display:none;">
+        <input type="text" id="haircut-name-input" maxlength="16" placeholder="Votre pseudo">
+        <button id="haircut-save-score-btn" class="btn">Enregistrer le score</button>
+      </div>
+      <div class="leaderboard">
+        <h4>🏆 Meilleurs scores (cet appareil)</h4>
+        <div id="haircut-leaderboard"></div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -279,15 +303,7 @@
   <p>© 2025 Star Barbershop - Tous droits réservés.</p>
 </footer>
 
-<!-- BANDEAU CONSENTEMENT COOKIES -->
-<div id="cookie-banner" class="cookie-banner hidden" role="dialog" aria-live="polite" aria-label="Consentement cookies">
-  <p>Ce site utilise Google Maps, qui peut déposer des cookies tiers lors de l'affichage de la carte. <a href="politique-de-confidentialite.html">En savoir plus</a></p>
-  <div class="cookie-actions">
-    <button id="cookie-refuse" class="btn btn-outline">Refuser</button>
-    <button id="cookie-accept" class="btn">Accepter</button>
-  </div>
-</div>
-
 <script src="script.js"></script>
+<script src="games.js"></script>
 </body>
 </html>
