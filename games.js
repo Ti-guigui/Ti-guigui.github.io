@@ -923,6 +923,16 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
   restartBtn.addEventListener("click", shuffle);
   renderLeaderboard();
   shuffle();
+
+  // CORRECTION : au chargement, ce panneau est masqué (display:none) donc sa largeur
+  // mesurée vaut 0 → les pièces se dessinaient en taille zéro (invisibles), même si
+  // l'image se chargeait bien. On recalcule la taille dès que l'onglet devient visible.
+  const puzzleTab = document.querySelector('.game-tab[data-game="puzzle"]');
+  if (puzzleTab) {
+    puzzleTab.addEventListener("click", () => {
+      requestAnimationFrame(render);
+    });
+  }
 })();
 
 // ============================
