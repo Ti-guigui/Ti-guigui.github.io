@@ -41,7 +41,7 @@
 <section id="jeux-intro" class="games-intro">
   <span class="eyebrow">En attendant votre tour</span>
   <h1>Salle de jeux</h1>
-  <p>Huit petits jeux gratuits, plusieurs niveaux de difficulté, et un classement des meilleurs scores sur cet appareil. Choisissez-en un ci-dessous !</p>
+  <p>Sept petits jeux gratuits, plusieurs niveaux de difficulté, et un classement des meilleurs scores sur cet appareil. Choisissez-en un ci-dessous !</p>
 </section>
 
 <section id="jeux" class="games">
@@ -52,7 +52,6 @@
     <button class="game-tab" data-game="simon">🎵 Suite de rythme</button>
     <button class="game-tab" data-game="tictactoe">⭕ Morpion</button>
     <button class="game-tab" data-game="puzzle">🧩 Puzzle glissant</button>
-    <button class="game-tab" data-game="diff">🔍 Trouve les différences</button>
     <button class="game-tab" data-game="haircut">💇 Trouve la bonne coupe</button>
   </div>
 
@@ -221,41 +220,6 @@
       <div class="leaderboard">
         <h4>🏆 Meilleurs scores (cet appareil)</h4>
         <div id="puzzle-leaderboard"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- JEU 7 : JEU DES DIFFÉRENCES -->
-  <div id="game-diff" class="game-panel">
-    <div class="diff-game">
-      <div id="diff-level-select" class="level-selector">
-        <button class="level-btn" data-level="facile">Facile</button>
-        <button class="level-btn active" data-level="moyen">Moyen</button>
-        <button class="level-btn" data-level="difficile">Difficile</button>
-      </div>
-      <p class="diff-stats">
-        Différences trouvées : <strong id="diff-found">0</strong> / <span id="diff-total">6</span>
-        &nbsp;·&nbsp;<span id="diff-timer" class="timer-display"></span>
-      </p>
-      <div class="diff-boards">
-        <div>
-          <p class="diff-label">Étagère A (référence)</p>
-          <div id="diff-grid-a" class="diff-grid"></div>
-        </div>
-        <div>
-          <p class="diff-label">Étagère B — cliquez sur ce qui a changé</p>
-          <div id="diff-grid-b" class="diff-grid"></div>
-        </div>
-      </div>
-      <p id="diff-win-message" class="diff-win-message" style="display:none;"></p>
-      <button id="diff-restart-btn" class="btn">Nouvelle partie</button>
-      <div id="diff-score-submit" class="score-submit" style="display:none;">
-        <input type="text" id="diff-name-input" maxlength="16" placeholder="Votre pseudo">
-        <button id="diff-save-score-btn" class="btn">Enregistrer le score</button>
-      </div>
-      <div class="leaderboard">
-        <h4>🏆 Temps les plus rapides (cet appareil)</h4>
-        <div id="diff-leaderboard"></div>
       </div>
     </div>
   </div>
