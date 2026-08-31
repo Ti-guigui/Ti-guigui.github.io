@@ -943,10 +943,13 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
   const leaderboardEl = document.getElementById("diff-leaderboard");
 
   const ICON_POOL = ["🪮", "✂️", "🪞", "⏰", "🪴", "🧴", "🧻", "🪒", "🎀", "🖌️", "💡", "🪑", "🧢", "🧦", "🕯️", "🧼"];
+
+  // "missing"/"swap" = différence évidente (case vide ou objet totalement différent)
+  // "flip"/"recolor"/"resize"/"rotate" = même objet mais visuellement modifié : plus subtil, demande une vraie comparaison
   const LEVELS = {
-    facile: { slots: 9, diffs: 4, gridClass: "diff-grid-3", label: "Facile" },
-    moyen: { slots: 12, diffs: 6, gridClass: "", label: "Moyen" },
-    difficile: { slots: 16, diffs: 8, gridClass: "diff-grid-4x4", label: "Difficile" }
+    facile: { slots: 9, diffs: 4, gridClass: "diff-grid-3", label: "Facile", diffTypes: ["missing", "missing", "swap"] },
+    moyen: { slots: 12, diffs: 6, gridClass: "", label: "Moyen", diffTypes: ["missing", "swap", "flip", "resize"] },
+    difficile: { slots: 16, diffs: 8, gridClass: "diff-grid-4x4", label: "Difficile", diffTypes: ["flip", "recolor", "resize", "rotate"] }
   };
 
   let currentLevel = "moyen";
@@ -964,6 +967,16 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
       pool.splice(idx, 1);
     }
     return picked;
+  }
+
+  function styleForType(type) {
+    switch (type) {
+      case "flip": return "transform: scaleX(-1);";
+      case "recolor": return "filter: hue-rotate(150deg) saturate(3.5);";
+      case "resize": return `transform: scale(${Math.random() < 0.5 ? 0.65 : 1.4});`;
+      case "rotate": return `transform: rotate(${Math.random() < 0.5 ? 25 : -25}deg);`;
+      default: return "";
+    }
   }
 
   function startTimer() {
@@ -993,38 +1006,40 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
     gridB.className = "diff-grid " + cfg.gridClass;
 
     const iconsA = pickIcons(cfg.slots);
-    const iconsB = [...iconsA];
+    const iconsB = iconsA.map(icon => ({ icon, style: "" }));
 
     const allIndexes = shuffleArray([...Array(cfg.slots).keys()]);
     diffIndexes = allIndexes.slice(0, cfg.diffs);
 
     const usedIcons = new Set(iconsA);
     diffIndexes.forEach(i => {
-      const isMissing = Math.random() < 0.4;
-      if (isMissing) {
-        iconsB[i] = null;
-      } else {
+      const type = cfg.diffTypes[Math.floor(Math.random() * cfg.diffTypes.length)];
+      if (type === "missing") {
+        iconsB[i] = { icon: null, style: "" };
+      } else if (type === "swap") {
         let replacement, attempts = 0;
         do {
           replacement = ICON_POOL[Math.floor(Math.random() * ICON_POOL.length)];
           attempts++;
         } while ((usedIcons.has(replacement) || replacement === iconsA[i]) && attempts < 30);
-        iconsB[i] = replacement;
         usedIcons.add(replacement);
+        iconsB[i] = { icon: replacement, style: "" };
+      } else {
+        iconsB[i] = { icon: iconsA[i], style: styleForType(type) };
       }
     });
 
     iconsA.forEach(icon => {
       const slot = document.createElement("div");
       slot.className = "diff-slot";
-      slot.textContent = icon || "";
+      slot.innerHTML = `<span class="diff-icon">${icon || ""}</span>`;
       gridA.appendChild(slot);
     });
 
-    iconsB.forEach((icon, i) => {
+    iconsB.forEach((data, i) => {
       const slot = document.createElement("div");
       slot.className = "diff-slot clickable";
-      slot.textContent = icon || "";
+      slot.innerHTML = `<span class="diff-icon" style="${data.style}">${data.icon || ""}</span>`;
       slot.addEventListener("click", () => handleClick(slot, i));
       gridB.appendChild(slot);
     });
