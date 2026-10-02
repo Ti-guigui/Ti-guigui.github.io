@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600">
+  <defs>
+    <linearGradient id="mur" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#17171b"/>
+      <stop offset="1" stop-color="#0e0e10"/>
+    </linearGradient>
+    <linearGradient id="miroirG" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1d1d22"/>
+      <stop offset="0.5" stop-color="#2a2a31"/>
+      <stop offset="1" stop-color="#16161a"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="600" height="600" fill="url(#mur)"/>
+
+  <!-- carrelage sol -->
+  <rect x="0" y="470" width="600" height="130" fill="#101013"/>
+  <g stroke="#d4af37" stroke-width="2" opacity="0.35">
+    <path d="M0 470h600M0 512h600M0 556h600"/>
+    <path d="M60 470v130M160 470v130M260 470v130M360 470v130M460 470v130M560 470v130"/>
+  </g>
+
+  <!-- miroir -->
+  <rect x="180" y="60" width="240" height="300" rx="120" fill="none" stroke="#d4af37" stroke-width="10"/>
+  <rect x="192" y="72" width="216" height="276" rx="108" fill="url(#miroirG)"/>
+  <path d="M240 140q60-50 120 0" stroke="#d4af37" stroke-width="4" fill="none" opacity="0.5"/>
+  <path d="M250 300l40-90 40 90" stroke="#d4af37" stroke-width="4" fill="none" opacity="0.4"/>
+  <circle cx="300" cy="110" r="10" fill="#d4af37" opacity="0.6"/>
+
+  <!-- étagère & produits -->
+  <rect x="80" y="380" width="440" height="14" rx="6" fill="#1b1b1e" stroke="#d4af37" stroke-width="3"/>
+  <g stroke="#d4af37" stroke-width="4" fill="#141416">
+    <rect x="110" y="320" width="44" height="60" rx="12"/>
+    <rect x="172" y="336" width="36" height="44" rx="10"/>
+    <rect x="404" y="330" width="40" height="50" rx="12"/>
+    <rect x="456" y="344" width="32" height="36" rx="9"/>
+  </g>
+  <g fill="#d4af37">
+    <rect x="124" y="306" width="16" height="16" rx="4"/>
+    <rect x="416" y="316" width="16" height="16" rx="4"/>
+    <circle cx="190" cy="326" r="9"/>
+    <circle cx="472" cy="334" r="8"/>
+  </g>
+
+  <!-- guirlande d'ampoules -->
+  <path d="M40 40q260 70 520 0" stroke="#d4af37" stroke-width="3" fill="none" opacity="0.7"/>
+  <g fill="#e8c860">
+    <circle cx="100" cy="60" r="8"/><circle cx="180" cy="78" r="8"/><circle cx="260" cy="86" r="8"/>
+    <circle cx="340" cy="86" r="8"/><circle cx="420" cy="78" r="8"/><circle cx="500" cy="60" r="8"/>
+  </g>
+
+  <!-- fauteuil -->
+  <g transform="translate(210 400)" stroke="#d4af37" stroke-width="6" fill="#141416" stroke-linecap="round">
+    <path d="M30 40V-10a40 40 0 0 1 80 0v50" fill="#141416"/>
+    <rect x="14" y="40" width="112" height="34" rx="14"/>
+    <path d="M70 74v46M34 130h72" fill="none"/>
+    <path d="M34 130q36 16 72 0" fill="none"/>
+    <path d="M-6 62h20M120 62h20" fill="none"/>
+    <circle cx="70" cy="-24" r="7" fill="#d4af37" stroke="none"/>
+  </g>
+
+  <!-- poteau mural -->
+  <g transform="translate(40 300)">
+    <rect x="0" y="0" width="34" height="150" rx="17" fill="#efe7d6" stroke="#d4af37" stroke-width="4"/>
+    <path d="M-8 30l50-34M-8 70l50-34M-8 110l50-34M-8 150l50-34" stroke="#8f1d1d" stroke-width="14"/>
+    <circle cx="17" cy="-8" r="16" fill="#d4af37"/>
+    <circle cx="17" cy="158" r="16" fill="#d4af37"/>
+  </g>
+
+  <!-- mouches / détails murs -->
+  <g fill="#d4af37" opacity="0.7">
+    <path d="M520 150l5 12 12 5-12 5-5 12-5-12-12-5 12-5z"/>
+    <circle cx="70" cy="140" r="6"/>
+    <circle cx="540" cy="240" r="6"/>
+  </g>
+</svg>

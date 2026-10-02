@@ -1,6 +1,6 @@
 /* =========================================================
    PAGE JEUX — styles dédiés (thème noir & or)
-   Composants partagés + 10 mini-jeux
+   Composants partagés + 12 mini-jeux
    ========================================================= */
 
 /* --- Jetons de design (secours) ---
@@ -1621,5 +1621,291 @@
 
   .achv-chip {
     padding: 7px 9px;
+  }
+}
+
+/* =========================================================
+   RETOUR / FERMETURE, FILTRES SOLO-MULTI & JEUX À PLUSIEURS
+   ========================================================= */
+
+/* --- Retour au salon (intro) --- */
+.games-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+  padding: 9px 20px;
+  border: 1px solid var(--gold-45);
+  border-radius: 50px;
+  background: var(--gold-12);
+  color: var(--gold);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.games-back:hover {
+  background: var(--gold);
+  color: #100d02;
+  transform: translateX(-4px);
+}
+
+/* --- Bouton « Fermer les jeux » de la barre d'outils --- */
+.bar-btn {
+  text-decoration: none;
+}
+
+.bar-close {
+  border-color: var(--gold-45);
+  color: var(--gold);
+}
+
+.bar-close:hover {
+  background: var(--gold);
+  color: #100d02;
+  border-color: var(--gold);
+}
+
+/* --- Filtres solo / à plusieurs --- */
+.mode-filter {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.mode-btn {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  border-radius: 50px;
+  padding: 8px 18px;
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.mode-btn i {
+  margin-right: 6px;
+}
+
+.mode-btn:hover {
+  color: var(--gold);
+  border-color: var(--gold-45);
+}
+
+.mode-btn.active {
+  background: var(--gold-12);
+  border-color: var(--gold);
+  color: var(--gold);
+  font-weight: 600;
+}
+
+/* --- Mime Express : plateau des équipes --- */
+.mime-teams {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.mime-team-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--card-2);
+  border: 1px solid var(--line);
+  border-radius: 50px;
+  padding: 8px 16px;
+  transition: all 0.25s ease;
+}
+
+.mime-team-card.active {
+  border-color: var(--gold);
+  background: var(--gold-12);
+  box-shadow: 0 6px 18px rgba(212, 175, 55, 0.2);
+}
+
+.mime-team-name {
+  color: var(--text);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.mime-team-card.active .mime-team-name {
+  color: var(--gold);
+}
+
+.mime-team-score {
+  color: var(--gold);
+  font-size: 1.05rem;
+  font-weight: 700;
+  min-width: 22px;
+  text-align: center;
+}
+
+.mime-card {
+  width: 100%;
+  max-width: 520px;
+  min-height: 170px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  text-align: center;
+  padding: 26px 22px;
+  background: linear-gradient(160deg, var(--card-2), #121214);
+  border: 1px solid var(--gold-25);
+  border-radius: var(--radius);
+}
+
+.mime-category {
+  color: var(--gold);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  background: var(--gold-12);
+  border: 1px solid var(--gold-25);
+  border-radius: 50px;
+  padding: 5px 14px;
+}
+
+.mime-word {
+  margin: 0;
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.25rem, 4vw, 1.9rem);
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.35;
+}
+
+.mime-word.is-hidden {
+  color: var(--muted);
+  letter-spacing: 7px;
+}
+
+/* --- Blagues & Anecdotes : carte de jeu --- */
+.joke-card {
+  width: 100%;
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  text-align: center;
+  padding: 26px 24px;
+  background: linear-gradient(160deg, var(--card-2), #121214);
+  border: 1px solid var(--gold-25);
+  border-radius: var(--radius);
+}
+
+.joke-tag {
+  color: #100d02;
+  background: linear-gradient(135deg, var(--gold), #b8912b);
+  border-radius: 50px;
+  padding: 4px 14px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.joke-setup {
+  margin: 0;
+  color: var(--text);
+  font-size: 1.02rem;
+  line-height: 1.65;
+}
+
+.joke-punchline {
+  margin: 0;
+  width: 100%;
+  padding: 14px 16px;
+  background: var(--gold-12);
+  border: 1px dashed var(--gold-45);
+  border-radius: 12px;
+  color: var(--gold-bright);
+  font-size: 0.98rem;
+  line-height: 1.6;
+  animation: joke-in 0.35s ease;
+}
+
+@keyframes joke-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.joke-rating {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  width: 100%;
+}
+
+.joke-rating-label {
+  width: 100%;
+  color: var(--muted);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.joke-rate {
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--gold-25);
+  border-radius: 50px;
+  padding: 9px 16px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.joke-rate strong {
+  color: var(--gold);
+  margin-left: 5px;
+}
+
+.joke-rate:hover {
+  background: var(--gold-12);
+  border-color: var(--gold);
+  transform: translateY(-2px);
+}
+
+/* --- Adaptations mobiles (retour, filtres, jeux à plusieurs) --- */
+@media (max-width: 600px) {
+  .games-back {
+    margin-bottom: 14px;
+    padding: 8px 16px;
+    font-size: 0.78rem;
+  }
+
+  .mode-btn {
+    padding: 7px 14px;
+    font-size: 0.75rem;
+  }
+
+  .mime-team-card {
+    padding: 7px 13px;
+  }
+
+  .mime-card,
+  .joke-card {
+    padding: 22px 16px;
+  }
+
+  .joke-rate {
+    font-size: 0.8rem;
+    padding: 8px 13px;
   }
 }

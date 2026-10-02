@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600">
+  <defs>
+    <linearGradient id="ciel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#15151b"/>
+      <stop offset="1" stop-color="#0b0b0d"/>
+    </linearGradient>
+    <radialGradient id="halo" cx="50%" cy="42%" r="65%">
+      <stop offset="0" stop-color="#d4af37" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#d4af37" stop-opacity="0"/>
+    </radialGradient>
+    <clipPath id="poteauClip"><rect x="454" y="270" width="26" height="180" rx="13"/></clipPath>
+  </defs>
+
+  <rect width="600" height="600" fill="url(#ciel)"/>
+  <rect width="600" height="600" fill="url(#halo)"/>
+
+  <!-- lune & étoiles -->
+  <circle cx="510" cy="72" r="30" fill="#e8c860" opacity="0.9"/>
+  <circle cx="497" cy="64" r="27" fill="#141419"/>
+  <g fill="#d4af37" opacity="0.85">
+    <path d="M90 70l4 10 10 4-10 4-4 10-4-10-10-4 10-4z"/>
+    <path d="M180 120l3 7 7 3-7 3-3 7-3-7-7-3 7-3z"/>
+    <circle cx="420" cy="96" r="3"/>
+    <circle cx="270" cy="60" r="2.5"/>
+    <circle cx="60" cy="150" r="2.5"/>
+    <circle cx="560" cy="170" r="2"/>
+    <circle cx="350" cy="130" r="2"/>
+  </g>
+
+  <!-- bâtiment -->
+  <rect x="64" y="196" width="472" height="352" fill="#17171a" stroke="#d4af37" stroke-width="3"/>
+  <rect x="64" y="196" width="472" height="14" fill="#d4af37" opacity="0.25"/>
+
+  <!-- enseigne -->
+  <rect x="94" y="136" width="412" height="72" rx="12" fill="#0e0e10" stroke="#d4af37" stroke-width="3"/>
+  <text x="300" y="182" text-anchor="middle" font-family="Georgia, serif" font-size="33" fill="#d4af37" letter-spacing="3">STAR BARBERSHOP</text>
+
+  <!-- store rayé -->
+  <g>
+    <path d="M94 226 h412 v22 q-12 16-24 0-12 16-24 0-12 16-24 0-12 16-24 0-12 16-24 0-12 16-24 0-12 16-24 0-12 16-24 0-12 16-24 0-12 16-24 0-12 16-24 0-12 16-24 0-12 16-24 0-12 16-24 0-12 16-24 0z" fill="#8f1d1d" stroke="#d4af37" stroke-width="2"/>
+    <path d="M118 226h22v38h-22zM162 226h22v38h-22zM206 226h22v38h-22zM250 226h22v38h-22zM294 226h22v38h-22zM338 226h22v38h-22zM382 226h22v38h-22zM426 226h22v38h-22zM470 226h22v38h-22z" fill="#efe7d6" opacity="0.85"/>
+  </g>
+
+  <!-- vitrine avec fauteuil -->
+  <rect x="96" y="286" width="216" height="230" fill="#101013" stroke="#d4af37" stroke-width="2.5"/>
+  <g stroke="#d4af37" stroke-width="4" fill="none" stroke-linecap="round">
+    <path d="M150 470v-60h60v60"/>
+    <path d="M144 410h72"/>
+    <path d="M156 410v-60a24 24 0 0 1 48 0v60"/>
+    <path d="M180 470v30M150 500h60"/>
+    <path d="M150 470h-16M210 470h16"/>
+  </g>
+  <g fill="#d4af37" opacity="0.7">
+    <circle cx="130" cy="320" r="4"/>
+    <circle cx="278" cy="320" r="4"/>
+    <path d="M204 316l4 9 9 4-9 4-4 9-4-9-9-4 9-4z"/>
+  </g>
+
+  <!-- porte -->
+  <rect x="342" y="286" width="150" height="262" rx="8" fill="#101013" stroke="#d4af37" stroke-width="2.5"/>
+  <rect x="358" y="304" width="118" height="90" fill="#1b1b1e" stroke="#d4af37" stroke-width="2"/>
+  <circle cx="474" cy="430" r="8" fill="#d4af37"/>
+  <text x="417" y="470" text-anchor="middle" font-family="Georgia, serif" font-size="17" fill="#d4af37">OUVERT</text>
+
+  <!-- poteau tournant -->
+  <rect x="500" y="256" width="34" height="210" rx="17" fill="#0e0e10" stroke="#d4af37" stroke-width="2.5"/>
+  <g clip-path="url(#poteauClip)">
+    <rect x="450" y="256" width="40" height="220" fill="#efe7d6"/>
+    <path d="M440 280l60-40M440 320l60-40M440 360l60-40M440 400l60-40M440 440l60-40M440 480l60-40" stroke="#8f1d1d" stroke-width="16"/>
+    <path d="M440 300l60-40M440 340l60-40M440 380l60-40M440 420l60-40M440 460l60-40" stroke="#2c6bd6" stroke-width="7"/>
+  </g>
+  <circle cx="517" cy="252" r="20" fill="#d4af37"/>
+  <circle cx="517" cy="470" r="20" fill="#d4af37"/>
+
+  <!-- trottoir -->
+  <rect x="0" y="548" width="600" height="52" fill="#101012"/>
+  <path d="M0 548h600" stroke="#d4af37" stroke-width="3" opacity="0.6"/>
+  <g stroke="#d4af37" stroke-width="1.5" opacity="0.3">
+    <path d="M80 548v52M180 548v52M280 548v52M380 548v52M480 548v52"/>
+  </g>
+</svg>

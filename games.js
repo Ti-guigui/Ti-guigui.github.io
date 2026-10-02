@@ -1,7 +1,7 @@
 /* =========================================================
    STAR BARBERSHOP — SALLE DE JEUX
-   Noyau commun (onglets, son, classements, utilitaires)
-   puis 10 mini-jeux (chacun isolé derrière une garde).
+   Noyau commun (onglets, filtres solo/multi, son, classements, utilitaires)
+   puis 12 mini-jeux (chacun isolé derrière une garde).
    ========================================================= */
 
 /* ---------------- Illustrations vectorielles partagées ----------------
@@ -115,7 +115,7 @@ const ART = (function () {
    dans localStorage, affichés dans le bandeau de la page jeux. */
 const ACHV = (function () {
   const KEY = "starbarbershop_achv";
-  const GAMES = ["catch", "g2048", "mine", "memory", "connect4", "simon", "hangman", "quiz", "puzzle", "haircut"];
+  const GAMES = ["catch", "g2048", "mine", "memory", "connect4", "simon", "hangman", "quiz", "puzzle", "haircut", "mime", "jokes"];
 
   function unlocked() {
     try { return JSON.parse(localStorage.getItem(KEY) || "[]"); } catch (e) { return []; }
@@ -154,6 +154,8 @@ const ACHV = (function () {
     { id: "minefast", icon: "clock", title: "Déminage express", desc: "Terminer un démineur en moins de 3 minutes", check: () => best("mine") != null && best("mine") <= 180 },
     { id: "memofast", icon: "medal", title: "Mémoire d'acier", desc: "Terminer un memory en 12 coups ou moins", check: () => minScore("memory") <= 12 },
     { id: "puzzle80", icon: "star", title: "Vue d'ensemble", desc: "Résoudre un puzzle en 80 coups ou moins", check: () => minScore("puzzle") <= 80 },
+    { id: "mime", icon: "medal", title: "Premier tour de mime", desc: "Terminer une partie de Mime Express", check: () => entries("mime").length >= 1 || (best("mime") || 0) > 0 },
+    { id: "laugh", icon: "bulb", title: "Fou rire garanti", desc: "Marquer 15 points de rire à Blagues & Anecdotes", check: () => maxScore("jokes") >= 15 || (best("jokes") || 0) >= 15 },
     { id: "expert", icon: "crown", title: "Niveau expert", desc: "Enregistrer un score en niveau Expert ou Difficile", check: () => GAMES.some(id => entries(id).some(e => /expert|difficile/i.test(e.level || ""))) }
   ];
 
@@ -234,6 +236,38 @@ gameTabs.forEach(tab => {
     activateTab(tab);
   });
 });
+
+/* ---------------- Filtres solo / à plusieurs ---------------- */
+(function () {
+  const filterBtns = document.querySelectorAll(".mode-btn");
+  if (!filterBtns.length) return;
+
+  function matches(tab, mode) {
+    if (mode === "all") return true;
+    const modes = (tab.dataset.mode || "solo").split(/\s+/);
+    return modes.indexOf(mode) !== -1;
+  }
+
+  function applyFilter(mode) {
+    const visible = [];
+    gameTabs.forEach(tab => {
+      const show = matches(tab, mode);
+      tab.style.display = show ? "" : "none";
+      if (show) visible.push(tab);
+    });
+    const active = document.querySelector(".game-tab.active");
+    if (visible.length && (!active || visible.indexOf(active) === -1)) activateTab(visible[0]);
+  }
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      filterBtns.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      SFX.click();
+      applyFilter(btn.dataset.mode || "all");
+    });
+  });
+})();
 
 // Année du pied de page (le script principal peut ne pas la gérer)
 (function () {
@@ -2331,14 +2365,14 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
   const leaderboardEl = document.getElementById("puzzle-leaderboard");
   const pickerEl = document.getElementById("puzzle-picker");
 
-  /* Photos du site utilisables comme puzzle (toutes hébergées sur starbarbershop.fr) */
+  /* Illustrations vectorielles originales (600×600) créées pour le jeu */
   const IMAGES = [
-    { src: "image/puzzle-star-barbershop.jpg", label: "La devanture Star" },
-    { src: "image/Salon1.JPEG", label: "Le salon - vue 1" },
-    { src: "image/Salon2.JPEG", label: "Le salon - vue 2" },
-    { src: "image/Salon3.JPEG", label: "Le salon - vue 3" },
-    { src: "image/barber1.jpg", label: "Moise au travail" },
-    { src: "image/hero.jpg", label: "Les fauteuils du salon" }
+    { src: "image/puzzle-devanture.svg", label: "La devanture la nuit" },
+    { src: "image/puzzle-outils.svg", label: "Les outils du barbier" },
+    { src: "image/puzzle-poteau.svg", label: "Le poteau tournant" },
+    { src: "image/puzzle-coupes.svg", label: "Les 6 coupes signature" },
+    { src: "image/puzzle-fauteuil.svg", label: "Le fauteuil & le miroir" },
+    { src: "image/puzzle-barbe.svg", label: "Le rituel barbe" }
   ];
 
   const LEVELS = {
@@ -2722,4 +2756,413 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
   renderLeaderboard();
   buildRounds();
   renderRound();
+})();
+
+/* ============================
+   JEU 11 — MIME EXPRESS (à plusieurs)
+   ============================ */
+(function () {
+  const teamsEl = document.getElementById("mime-teams");
+  if (!teamsEl) return;
+
+  const turnEl = document.getElementById("mime-turn");
+  const teamEl = document.getElementById("mime-team");
+  const timeEl = document.getElementById("mime-time");
+  const categoryEl = document.getElementById("mime-category");
+  const wordEl = document.getElementById("mime-word");
+  const revealBtn = document.getElementById("mime-reveal-btn");
+  const startBtn = document.getElementById("mime-start-btn");
+  const guessBtn = document.getElementById("mime-guess-btn");
+  const passBtn = document.getElementById("mime-pass-btn");
+  const nextBtn = document.getElementById("mime-next-btn");
+  const messageEl = document.getElementById("mime-message");
+  const resultEl = document.getElementById("mime-result");
+  const scoreTextEl = document.getElementById("mime-score-text");
+  const restartBtn = document.getElementById("mime-restart-btn");
+  const levelContainer = document.getElementById("mime-level-select");
+  const submitBlock = document.getElementById("mime-score-submit");
+  const leaderboardEl = document.getElementById("mime-leaderboard");
+
+  const TURN_SECONDS = 45;
+
+  const DECK = [
+    { c: "Au salon", w: "Un barbier qui rase son client" },
+    { c: "Au salon", w: "Le poteau tournant" },
+    { c: "Au salon", w: "Le fauteuil qui s'incline" },
+    { c: "Au salon", w: "Le blaireau qui mousse" },
+    { c: "Au salon", w: "Une coupe ratée sous la tondeuse" },
+    { c: "Au salon", w: "Le rasoir qui vibre" },
+    { c: "Au salon", w: "La serviette chaude sur le visage" },
+    { c: "Au salon", w: "Le client qui découvre sa coupe" },
+    { c: "Animaux", w: "Un chat qui fait ses ongles" },
+    { c: "Animaux", w: "Un singe qui mange une banane" },
+    { c: "Animaux", w: "Un canard qui nage" },
+    { c: "Animaux", w: "Un dinosaure qui marche" },
+    { c: "Animaux", w: "Un fantôme qui effraie" },
+    { c: "Métiers", w: "Un pompier qui éteint un feu" },
+    { c: "Métiers", w: "Un facteur qui sonne à la porte" },
+    { c: "Métiers", w: "Un chirurgien concentré" },
+    { c: "Métiers", w: "Un peintre en plein mur" },
+    { c: "Métiers", w: "Un policier qui fait stop" },
+    { c: "Sports", w: "Le tournoi de ping-pong" },
+    { c: "Sports", w: "Un gardien de but" },
+    { c: "Sports", w: "Le plongeon de haut vol" },
+    { c: "Sports", w: "Le vélo sans mains" },
+    { c: "Sports", w: "Le kara-té qui frappe" },
+    { c: "Sports", w: "L'arbitre qui siffle un penalty" },
+    { c: "Nourriture", w: "Manger des spaghettis" },
+    { c: "Nourriture", w: "Boire un café brûlant" },
+    { c: "Nourriture", w: "Ouvrir une bouteille pétillante" },
+    { c: "Nourriture", w: "Le gâteau d'anniversaire" },
+    { c: "Films & séries", w: "Un super-héros qui vole" },
+    { c: "Films & séries", w: "Le robot du futur" },
+    { c: "Films & séries", w: "Tom qui court après Jerry" },
+    { c: "Films & séries", w: "Le méchant qui ricane" },
+    { c: "Expressions", w: "Avoir la pêche" },
+    { c: "Expressions", w: "Couper la poisse" },
+    { c: "Expressions", w: "Se donner un coup de main" },
+    { c: "Expressions", w: "Être sur un nuage" }
+  ];
+
+  let teamsCount = 2;
+  let teams = [];
+  let teamIdx = 0;
+  let deck = [];
+  let card = null;
+  let playing = false;
+  let iv = null;
+  let timeLeft = TURN_SECONDS;
+
+  function buildTeams() {
+    teams = [];
+    for (let i = 0; i < teamsCount; i++) teams.push({ name: "Équipe " + (i + 1), points: 0 });
+    teamIdx = 0;
+  }
+
+  function buildDeck() { deck = shuffleArray(DECK); }
+
+  function maskWord() {
+    wordEl.textContent = "· · · · ·";
+    wordEl.classList.add("is-hidden");
+  }
+
+  function drawCard() {
+    if (!deck.length) buildDeck();
+    card = deck.pop();
+    categoryEl.textContent = card.c;
+    maskWord();
+  }
+
+  function revealWord() {
+    if (!card) return;
+    wordEl.textContent = card.w;
+    wordEl.classList.remove("is-hidden");
+    SFX.reveal();
+  }
+
+  function renderTeams() {
+    teamsEl.innerHTML = teams.map((t, i) =>
+      "<div class='mime-team-card" + (i === teamIdx ? " active" : "") + "'>" +
+      "<span class='mime-team-name'>" + t.name + "</span>" +
+      "<strong class='mime-team-score'>" + t.points + "</strong></div>").join("");
+    if (turnEl) turnEl.textContent = (teamIdx + 1) + "/" + teamsCount;
+    if (teamEl) teamEl.textContent = teams[teamIdx].name;
+  }
+
+  function stopTimer() { if (iv) clearInterval(iv); iv = null; }
+
+  function setMessage(text, kind) {
+    if (!messageEl) return;
+    messageEl.textContent = text || "";
+    messageEl.className = "quiz-feedback" + (kind ? " " + kind : "");
+  }
+
+  function idleTurn() {
+    playing = false;
+    stopTimer();
+    timeLeft = TURN_SECONDS;
+    if (timeEl) timeEl.textContent = timeLeft + "s";
+    maskWord();
+    if (startBtn) startBtn.style.display = "inline-flex";
+    if (revealBtn) revealBtn.style.display = "inline-flex";
+    if (guessBtn) guessBtn.style.display = "none";
+    if (passBtn) passBtn.style.display = "none";
+    if (nextBtn) nextBtn.style.display = "none";
+  }
+
+  function startTurn() {
+    playing = true;
+    timeLeft = TURN_SECONDS;
+    if (timeEl) timeEl.textContent = timeLeft + "s";
+    if (startBtn) startBtn.style.display = "none";
+    if (guessBtn) guessBtn.style.display = "inline-flex";
+    if (passBtn) passBtn.style.display = "inline-flex";
+    setMessage("À " + teams[teamIdx].name + " de mimer : affichez le mot, puis lancez le chrono !");
+    stopTimer();
+    iv = setInterval(() => {
+      timeLeft--;
+      if (timeEl) timeEl.textContent = Math.max(timeLeft, 0) + "s";
+      if (timeLeft > 0 && timeLeft <= 5) SFX.tick();
+      if (timeLeft <= 0) endTurn();
+    }, 1000);
+  }
+
+  function endTurn() {
+    if (!playing) return;
+    playing = false;
+    stopTimer();
+    if (guessBtn) guessBtn.style.display = "none";
+    if (passBtn) passBtn.style.display = "none";
+    if (revealBtn) revealBtn.style.display = "none";
+    if (nextBtn) nextBtn.style.display = "inline-flex";
+    setMessage("Temps écoulé pour " + teams[teamIdx].name + " — " + teams[teamIdx].points + " point(s) !", "quiz-feedback-incorrect");
+    SFX.bad();
+  }
+
+  function showResult() {
+    stopTimer();
+    playing = false;
+    const best = teams.reduce((m, t) => Math.max(m, t.points), -Infinity);
+    const winners = teams.filter(t => t.points === best).map(t => t.name);
+    scoreTextEl.textContent = winners.length > 1
+      ? "Égalité parfaite : " + winners.join(" & ") + " finissent à " + best + " points !"
+      : "🏆 " + winners[0] + " l'emporte avec " + best + " points !";
+    resultEl.style.display = "flex";
+    if (startBtn) startBtn.style.display = "none";
+    if (revealBtn) revealBtn.style.display = "none";
+    setMessage("Bravo pour ce tour de mime — la salle a ri !", "quiz-feedback-correct");
+    SFX.win();
+    ACHV.evaluate(true);
+    if (submitBlock) submitBlock.style.display = "flex";
+  }
+
+  function nextTurn() {
+    teamIdx++;
+    if (teamIdx >= teamsCount) { showResult(); return; }
+    renderTeams();
+    drawCard();
+    idleTurn();
+    setMessage("À vous, " + teams[teamIdx].name + " : lancez le chrono quand tout le monde est prêt !");
+    SFX.flip();
+  }
+
+  function restart() {
+    stopTimer();
+    buildTeams();
+    buildDeck();
+    drawCard();
+    renderTeams();
+    idleTurn();
+    if (resultEl) resultEl.style.display = "none";
+    if (submitBlock) submitBlock.style.display = "none";
+    setMessage("L'équipe 1 s'apprête à mimez — lancez le chrono quand vous êtes prêt !");
+  }
+
+  function renderLeaderboard() {
+    lbRender(leaderboardEl, lbGet("mime"), e => e.score + " pts");
+  }
+
+  if (guessBtn) {
+    guessBtn.addEventListener("click", () => {
+      if (!playing) return;
+      SFX.good();
+      teams[teamIdx].points++;
+      renderTeams();
+      drawCard();
+      setMessage("Bien vu ! +1 point pour " + teams[teamIdx].name + " — mot suivant !", "quiz-feedback-correct");
+    });
+  }
+
+  if (passBtn) {
+    passBtn.addEventListener("click", () => {
+      if (!playing) return;
+      SFX.click();
+      drawCard();
+      setMessage("Mot suivant, sans point !");
+    });
+  }
+
+  if (revealBtn) revealBtn.addEventListener("click", revealWord);
+  if (startBtn) startBtn.addEventListener("click", () => { SFX.click(); startTurn(); });
+  if (nextBtn) nextBtn.addEventListener("click", () => { SFX.click(); nextTurn(); });
+  if (restartBtn) restartBtn.addEventListener("click", () => { SFX.click(); restart(); });
+
+  attachScoreSubmit("mime-name-input", "mime-save-score-btn", name => {
+    const best = teams.reduce((m, t) => Math.max(m, t.points), 0);
+    const list = lbSave("mime", { name, score: best, level: teamsCount + " équipes" }, (a, b) => b.score - a.score);
+    lbRender(leaderboardEl, list, e => e.score + " pts");
+    if (submitBlock) submitBlock.style.display = "none";
+  });
+
+  if (levelContainer) {
+    setupLevelSelector(levelContainer, level => {
+      teamsCount = Math.max(2, Math.min(4, parseInt(level, 10) || 2));
+      restart();
+    });
+  }
+
+  onGameShown("mime", () => { if (resultEl.style.display !== "flex") renderTeams(); });
+  lbRenderers.push(renderLeaderboard);
+  renderLeaderboard();
+  restart();
+})();
+
+/* ============================
+   JEU 12 — BLAGUES & ANECDOTES (à plusieurs)
+   ============================ */
+(function () {
+  const setupEl = document.getElementById("joke-setup");
+  if (!setupEl) return;
+
+  const tagEl = document.getElementById("joke-tag");
+  const punchEl = document.getElementById("joke-punchline");
+  const revealBtn = document.getElementById("jokes-reveal-btn");
+  const ratingEl = document.getElementById("joke-rating");
+  const nextBtn = document.getElementById("jokes-next-btn");
+  const progressEl = document.getElementById("jokes-progress");
+  const scoreEl = document.getElementById("jokes-score");
+  const laughsEl = document.getElementById("jokes-laughs");
+  const resultEl = document.getElementById("jokes-result");
+  const scoreTextEl = document.getElementById("jokes-score-text");
+  const restartBtn = document.getElementById("jokes-restart-btn");
+  const levelContainer = document.getElementById("jokes-level-select");
+  const submitBlock = document.getElementById("jokes-score-submit");
+  const leaderboardEl = document.getElementById("jokes-leaderboard");
+
+  const CARDS = [
+    { type: "Blague", text: "Le client dit au barbier : « C'est la première fois que je viens chez vous ? »", punch: "« Non… c'est la première fois que je repars ! »" },
+    { type: "Blague", text: "Pourquoi le barbier fait-il toujours des blagues courtes ?", punch: "Parce qu'il a le sens du raccourci." },
+    { type: "Blague", text: "Le client : « Étonnez-moi avec ma coiffure ! »", punch: "« Très bien : je vous laisse la barbe pousser. »" },
+    { type: "Blague", text: "Qu'est-ce qu'un cheveu rebelle ?", punch: "Un cheveu qui refuse de suivre la raie." },
+    { type: "Blague", text: "Combien de barbiers faut-il pour changer une ampoule ?", punch: "Aucun : on leur demande seulement de monter le volume." },
+    { type: "Blague", text: "Le maître apprenti lui dit : « Tu as fini ce client ? »", punch: "« Oui, il est méconnaissable ! » — « C'est exactement le but. »" },
+    { type: "Blague", text: "Quel est le sport préféré d'un dégradé bien fondu ?", punch: "Le fondu enchaîné." },
+    { type: "Blague", text: "Le client arrive en retard : « Désolé, mes cheveux ont pris du temps. »", punch: "« Pas de souci, la tondeuse ne s'est pas pressée non plus. »" },
+    { type: "Blague", text: "Pourquoi la tondeuse n'a jamais de secret ?", punch: "Elle dit tout à voix haute." },
+    { type: "Blague", text: "Le client demande : « Faites-moi une coupe qui va avec ma personnalité. »", punch: "« Dans ce cas, on va plutôt retoucher la coupe… »" },
+    { type: "Blague", text: "Que dit un cheveu qui tombe au sol ?", punch: "« Je m'étais dit que c'était le moment de prendre mon envol. »" },
+    { type: "Blague", text: "Pourquoi les ciseaux sont-ils toujours calmes ?", punch: "Parce qu'ils savent couper la poisse." },
+    { type: "Blague", text: "Le client demande un dégradé « invisible ».", punch: "« Pas de souci : personne ne verra rien… sauf ma facture. »" },
+    { type: "Blague", text: "Qu'est-ce qu'un barbier fatigue après 40 clients ?", punch: "Ses mochetés… de rires ! Il passe la journée à faire rire tout le monde." },
+    { type: "Anecdote", text: "Le poteau tournant blanc, rouge et bleu vient du Moyen Âge.", punch: "Le rouge évoquait le sang, le bleu les veines, le blanc les pansements : les barbiers étaient aussi chirurgiens." },
+    { type: "Anecdote", text: "Le mot « barbier » vient du latin barba.", punch: "Il signifie tout simplement… barbe !" },
+    { type: "Anecdote", text: "Le blaireau doit son nom au pinceau.", punch: "Les poils les plus doux pour étaler la mousse venaient autrefois de la queue du blaireau." },
+    { type: "Anecdote", text: "En Égypte antique, se raser était un signe de pureté.", punch: "Les prêtres se rasaient entièrement le crâne et portaient des perruques." },
+    { type: "Anecdote", text: "Le mot « coiffeur » vient aussi d'un vieux mot latin.", punch: "« Coife » désignait un bonnet ou un casque : la coiffe qui protège les cheveux." },
+    { type: "Anecdote", text: "Le barbier-chirurgien a longtemps été le médecin du peuple.", punch: "Il extrayait les dents et soignait les plaies, avant d'être interdit de chirurgie au XIXe siècle." },
+    { type: "Anecdote", text: "Le fauteuil de barbier est un vrai bijou mécanique.", punch: "Il s'incline, s'élève et pivote grâce à un mécanisme hydraulique popularisé au XIXe siècle." },
+    { type: "Anecdote", text: "Le dégradé moderne doit tout à la tondeuse.", punch: "Les lames réglables ont rendu possibles les fondus progressifs qui font le style d'aujourd'hui." },
+    { type: "Anecdote", text: "Le mot « shampoing » vient du hindi.", punch: "« Chāmpo » signifiait masser la tête, bien avant l'invention des bouteilles de gel." },
+    { type: "Anecdote", text: "Le peigne est l'un des plus vieux outils de beauté.", punch: "On en taillait déjà de l'ivoire dans l'Antiquité, avant même l'invention des ciseaux modernes." },
+    { type: "Anecdote", text: "Au XIXe siècle, on offrait des cheveux à ses proches.", punch: "Des mèches tressées servaient de souvenir, un peu comme une photo avant l'instantanée." },
+    { type: "Anecdote", text: "Porter ou raser sa barbe a toujours été un message.", punch: "Selon les époques, la barbe signalait le rang, le métier ou les convictions de celui qui la portait." },
+    { type: "Anecdote", text: "Le salon de barbier est d'abord un lieu de discussion.", punch: "Sport, actualités, vie du quartier : ici aussi, on repart avec une coupe et deux ou trois histoires." },
+    { type: "Anecdote", text: "La barbe continue de vieillir avec vous.", punch: "Elle blanchit comme les cheveux : autant en profiter tant qu'elle est encore bien colorée !" }
+  ];
+
+  const MODES = {
+    facile: { label: "Blagues", filter: "Blague", count: 8 },
+    moyen: { label: "Anecdotes", filter: "Anecdote", count: 8 },
+    difficile: { label: "Mélange", filter: null, count: 12 }
+  };
+
+  let currentLevel = "facile";
+  let deck = [];
+  let index = 0;
+  let score = 0;
+  let laughs = 0;
+
+  function buildDeck() {
+    const cfg = MODES[currentLevel];
+    const pool = cfg.filter ? CARDS.filter(c => c.type === cfg.filter) : CARDS.slice();
+    deck = shuffleArray(pool).slice(0, Math.min(cfg.count, pool.length));
+    index = 0;
+    score = 0;
+    laughs = 0;
+    if (scoreEl) scoreEl.textContent = 0;
+    if (laughsEl) laughsEl.textContent = 0;
+  }
+
+  function renderCard() {
+    if (index >= deck.length) { showResult(); return; }
+    const card = deck[index];
+    if (tagEl) tagEl.textContent = card.type;
+    setupEl.textContent = card.text;
+    if (punchEl) { punchEl.textContent = card.punch; punchEl.style.display = "none"; }
+    if (revealBtn) revealBtn.style.display = "inline-flex";
+    if (ratingEl) ratingEl.style.display = "none";
+    if (nextBtn) nextBtn.style.display = "none";
+    if (resultEl) resultEl.style.display = "none";
+    if (progressEl) progressEl.textContent = (index + 1) + "/" + deck.length;
+  }
+
+  function reveal() {
+    if (punchEl) punchEl.style.display = "block";
+    if (revealBtn) revealBtn.style.display = "none";
+    if (ratingEl) ratingEl.style.display = "flex";
+    SFX.reveal();
+  }
+
+  function rate(points) {
+    score += points;
+    if (points >= 5) laughs++;
+    if (scoreEl) scoreEl.textContent = score;
+    if (laughsEl) laughsEl.textContent = laughs;
+    SFX.good();
+    if (ratingEl) ratingEl.style.display = "none";
+    if (nextBtn) nextBtn.style.display = "inline-flex";
+    nextBtn.textContent = index + 1 >= deck.length ? "Voir mon score" : "Carte suivante";
+  }
+
+  function showResult() {
+    const max = deck.length * 5;
+    const pct = max ? Math.round((score / max) * 100) : 0;
+    let verdict = "Un petit rire, mais un rire quand même !";
+    if (pct >= 70) verdict = "Fou rire garanti, la salle a explosé !";
+    else if (pct >= 40) verdict = "Bon rire, l'ambiance est lancée !";
+    if (scoreTextEl) scoreTextEl.textContent = "Points rire : " + score + "/" + max + " · " + verdict;
+    if (resultEl) resultEl.style.display = "flex";
+    if (nextBtn) nextBtn.style.display = "none";
+    if (pct >= 40) SFX.win(); else SFX.lose();
+    ACHV.evaluate(true);
+    if (submitBlock) submitBlock.style.display = "flex";
+  }
+
+  function restart() {
+    buildDeck();
+    renderCard();
+    if (submitBlock) submitBlock.style.display = "none";
+  }
+
+  function renderLeaderboard() {
+    lbRender(leaderboardEl, lbGet("jokes"), e => e.score + " pts");
+  }
+
+  if (revealBtn) revealBtn.addEventListener("click", reveal);
+  if (ratingEl) {
+    ratingEl.querySelectorAll(".joke-rate").forEach(btn => {
+      btn.addEventListener("click", () => { rate(Number(btn.dataset.points) || 1); });
+    });
+  }
+  if (nextBtn) {
+    nextBtn.addEventListener("click", () => {
+      SFX.click();
+      index++;
+      renderCard();
+    });
+  }
+  if (restartBtn) restartBtn.addEventListener("click", () => { SFX.click(); restart(); });
+
+  attachScoreSubmit("jokes-name-input", "jokes-save-score-btn", name => {
+    const list = lbSave("jokes", { name, score, level: MODES[currentLevel].label }, (a, b) => b.score - a.score);
+    lbRender(leaderboardEl, list, e => e.score + " pts");
+    if (submitBlock) submitBlock.style.display = "none";
+  });
+
+  setupLevelSelector(levelContainer, level => { currentLevel = level; restart(); });
+
+  onGameShown("jokes", () => { if (resultEl.style.display !== "flex") renderCard(); });
+  lbRenderers.push(renderLeaderboard);
+  renderLeaderboard();
+  restart();
 })();
