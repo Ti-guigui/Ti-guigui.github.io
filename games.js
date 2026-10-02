@@ -529,6 +529,79 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
   });
 }
 
+/* ---------------- Initialisation commune des jeux ----------------
+   initGame() regroupe les tâches répétitives de mise en place de chaque jeu :
+   · récupération des éléments DOM (avec garde d'existence),
+   · classement (rendu initial + abonnement à l'effacement global),
+   · enregistrement du score (bloc pseudo + sauvegarde localStorage),
+   · sélecteur de niveau,
+   · abonnements aux boutons (avec ou sans effet sonore),
+   · hook « jeu affiché ».
+   Le jeu garde sa propre logique et démarre via game.start(...), appelé
+   en fin d'initialisation pour conserver l'ordre d'exécution d'origine. */
+function initGame(config) {
+  const els = {};
+  Object.keys(config.els || {}).forEach(key => {
+    const spec = config.els[key];
+    if (typeof spec === "string") els[key] = document.getElementById(spec);
+    else if (spec && spec.all) els[key] = document.querySelectorAll(spec.q);
+    else if (spec && spec.q) els[key] = document.querySelector(spec.q);
+    else els[key] = null;
+  });
+
+  const required = config.required || Object.keys(config.els || {}).slice(0, 1);
+  for (let i = 0; i < required.length; i++) {
+    if (!els[required[i]]) return null;
+  }
+
+  const game = { els };
+
+  /* Classement : rendu initial + enregistrement pour l'effacement global */
+  if (config.leaderboard) {
+    const lbEl = els[config.leaderboard.el || "leaderboardEl"];
+    const format = config.leaderboard.format;
+    game.renderLeaderboard = () => lbRender(lbEl, lbGet(config.id), format);
+    lbRenderers.push(game.renderLeaderboard);
+    game.renderLeaderboard();
+  }
+
+  /* Enregistrement du score : nom saisi, sauvegarde, rendu, masquage du bloc */
+  if (config.score) {
+    const block = els[config.score.el || "submitBlock"];
+    const lbEl = els[config.leaderboard ? (config.leaderboard.el || "leaderboardEl") : null];
+    const format = config.leaderboard ? config.leaderboard.format : config.score.format;
+    attachScoreSubmit(config.score.input, config.score.button, name => {
+      const list = lbSave(config.id, config.score.entry(name), config.score.sort);
+      lbRender(lbEl, list, format);
+      if (block) block.style.display = "none";
+    });
+  }
+
+  /* Sélecteur de niveau */
+  if (config.levels) {
+    setupLevelSelector(els[config.levels.el || "levelContainer"], config.levels.onChange);
+  }
+
+  /* Abonnements aux boutons : « clicks » émet le clic sonore, « rawClicks » non */
+  [{ name: "clicks", son: true }, { name: "rawClicks", son: false }].forEach(kind => {
+    const map = config[kind.name];
+    if (!map) return;
+    Object.keys(map).forEach(key => {
+      const btn = els[key];
+      if (!btn) return;
+      if (kind.son) btn.addEventListener("click", e => { SFX.click(); map[key](e); });
+      else btn.addEventListener("click", map[key]);
+    });
+  });
+
+  /* Le jeu vient d'être affiché (showId si l'onglet diffère de la clé de classement) */
+  if (config.onShow) onGameShown(config.showId || config.id, config.onShow);
+
+  /* Démarrage : état initial, appelé en fin d'initialisation du jeu */
+  game.start = fn => { if (typeof fn === "function") fn(); return game; };
+  return game;
+}
+
 /* ---------------- Effacer tous les scores ---------------- */
 (function () {
   const resetBtn = document.getElementById("reset-scores-btn");
@@ -552,17 +625,31 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
    JEU 1 — ATTRAPE LA MÈCHE (réflexes)
    ============================ */
 (function () {
-  const catchArea = document.getElementById("catch-area");
-  if (!catchArea) return;
-
-  const scoreEl = document.getElementById("catch-score");
-  const livesEl = document.getElementById("catch-lives");
-  const comboEl = document.getElementById("catch-combo");
-  const startBtn = document.getElementById("catch-start-btn");
-  const overlay = document.getElementById("catch-overlay");
-  const levelContainer = document.getElementById("catch-level-select");
-  const submitBlock = document.getElementById("catch-score-submit");
-  const leaderboardEl = document.getElementById("catch-leaderboard");
+  const game = initGame({
+    id: "catch",
+    els: {
+      catchArea: "catch-area",
+      scoreEl: "catch-score",
+      livesEl: "catch-lives",
+      comboEl: "catch-combo",
+      startBtn: "catch-start-btn",
+      overlay: "catch-overlay",
+      levelContainer: "catch-level-select",
+      submitBlock: "catch-score-submit",
+      leaderboardEl: "catch-leaderboard"
+    },
+    required: ["catchArea"],
+    leaderboard: { format: e => `${e.score} pt${e.score > 1 ? "s" : ""}` },
+    score: {
+      input: "catch-name-input",
+      button: "catch-save-score-btn",
+      entry: name => ({ name, score, level: LEVELS[currentLevel].label }),
+      sort: (a, b) => b.score - a.score
+    },
+    levels: { onChange: level => { currentLevel = level; } }
+  });
+  if (!game) return;
+  const { catchArea, scoreEl, livesEl, comboEl, startBtn, overlay, submitBlock } = game.els;
 
   const NORMAL_ICONS = ["scissors", "bottle", "razor", "comb", "spray", "cap"];
   const LEVELS = {
@@ -743,18 +830,6 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
     if (score > 0 && submitBlock) submitBlock.style.display = "flex";
   }
 
-  function renderLeaderboard() {
-    lbRender(leaderboardEl, lbGet("catch"), e => `${e.score} pt${e.score > 1 ? "s" : ""}`);
-  }
-
-  attachScoreSubmit("catch-name-input", "catch-save-score-btn", name => {
-    const list = lbSave("catch", { name, score, level: LEVELS[currentLevel].label }, (a, b) => b.score - a.score);
-    lbRender(leaderboardEl, list, e => `${e.score} pt${e.score > 1 ? "s" : ""}`);
-    if (submitBlock) submitBlock.style.display = "none";
-  });
-
-  setupLevelSelector(levelContainer, level => { currentLevel = level; });
-
   startBtn.addEventListener("click", () => {
     if (state === "paused") {
       overlay.style.display = "none";
@@ -767,30 +842,62 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
     }
   });
 
-  lbRenderers.push(renderLeaderboard);
-  updateHud();
-  renderLeaderboard();
+  game.start(updateHud);
 })();
 
 /* ============================
    JEU 2 — 2048
    ============================ */
 (function () {
-  const board = document.getElementById("g2048-board");
-  if (!board) return;
-
-  const scoreEl = document.getElementById("g2048-score");
-  const bestEl = document.getElementById("g2048-best");
-  const overlay = document.getElementById("g2048-overlay");
-  const overlayTitle = document.getElementById("g2048-overlay-title");
-  const overlayText = document.getElementById("g2048-overlay-text");
-  const continueBtn = document.getElementById("g2048-continue-btn");
-  const replayBtn = document.getElementById("g2048-replay-btn");
-  const undoBtn = document.getElementById("g2048-undo");
-  const restartBtn = document.getElementById("g2048-restart");
-  const levelContainer = document.getElementById("g2048-level-select");
-  const submitBlock = document.getElementById("g2048-score-submit");
-  const leaderboardEl = document.getElementById("g2048-leaderboard");
+  const game = initGame({
+    id: "g2048",
+    els: {
+      board: "g2048-board",
+      scoreEl: "g2048-score",
+      bestEl: "g2048-best",
+      overlay: "g2048-overlay",
+      overlayTitle: "g2048-overlay-title",
+      overlayText: "g2048-overlay-text",
+      continueBtn: "g2048-continue-btn",
+      replayBtn: "g2048-replay-btn",
+      undoBtn: "g2048-undo",
+      restartBtn: "g2048-restart",
+      dpadBtns: { q: "#g2048-controls .dpad-btn", all: true },
+      levelContainer: "g2048-level-select",
+      submitBlock: "g2048-score-submit",
+      leaderboardEl: "g2048-leaderboard"
+    },
+    required: ["board"],
+    showId: "2048",
+    leaderboard: { format: e => `${e.score} pts` },
+    score: {
+      input: "g2048-name-input",
+      button: "g2048-save-score-btn",
+      entry: name => ({ name, score, level: LEVELS[currentLevel].label }),
+      sort: (a, b) => b.score - a.score
+    },
+    levels: { onChange: level => { currentLevel = level; newGame(); } },
+    clicks: {
+      restartBtn: () => newGame(),
+      replayBtn: () => newGame(),
+      continueBtn: () => { overlay.style.display = "none"; }
+    },
+    rawClicks: { undoBtn: undo },
+    onShow: () => {
+      if (!initialized || grid.every(row => row.every(v => !v))) {
+        initialized = true;
+        newGame();
+      } else {
+        buildBoard();
+      }
+    }
+  });
+  if (!game) return;
+  const {
+    board, scoreEl, bestEl, overlay, overlayTitle, overlayText,
+    continueBtn, replayBtn, undoBtn, restartBtn, dpadBtns, levelContainer,
+    submitBlock, leaderboardEl
+  } = game.els;
 
   const N = 4;
   const GAP = 10;
@@ -1033,18 +1140,6 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
     buildBoard();
   }
 
-  function renderLeaderboard() {
-    lbRender(leaderboardEl, lbGet("g2048"), e => `${e.score} pts`);
-  }
-
-  attachScoreSubmit("g2048-name-input", "g2048-save-score-btn", name => {
-    const list = lbSave("g2048", { name, score, level: LEVELS[currentLevel].label }, (a, b) => b.score - a.score);
-    lbRender(leaderboardEl, list, e => `${e.score} pts`);
-    if (submitBlock) submitBlock.style.display = "none";
-  });
-
-  setupLevelSelector(levelContainer, level => { currentLevel = level; newGame(); });
-
   document.addEventListener("keydown", e => {
     if (!isGameActive("2048") || overlay.style.display === "flex") return;
     const map = { ArrowLeft: "left", ArrowRight: "right", ArrowUp: "up", ArrowDown: "down" };
@@ -1054,7 +1149,7 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
     move(dir);
   });
 
-  document.querySelectorAll("#g2048-controls .dpad-btn").forEach(btn => {
+  dpadBtns.forEach(btn => {
     btn.addEventListener("click", () => {
       if (overlay.style.display === "flex") return;
       move(btn.dataset.dir);
@@ -1075,49 +1170,54 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
     move(Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? "right" : "left") : (dy > 0 ? "down" : "up"));
   }, { passive: true });
 
-  undoBtn.addEventListener("click", undo);
-  restartBtn.addEventListener("click", () => { SFX.click(); newGame(); });
-  replayBtn.addEventListener("click", () => { SFX.click(); newGame(); });
-  continueBtn.addEventListener("click", () => { SFX.click(); overlay.style.display = "none"; });
-
-  onGameShown("2048", () => {
-    if (!initialized || grid.every(row => row.every(v => !v))) {
-      initialized = true;
-      newGame();
-    } else {
-      buildBoard();
-    }
-  });
-
   let resizeT = null;
   window.addEventListener("resize", () => {
     clearTimeout(resizeT);
     resizeT = setTimeout(() => { if (initialized && isGameActive("2048")) buildBoard(); }, 150);
   });
 
-  lbRenderers.push(renderLeaderboard);
-  renderLeaderboard();
-  updateBest();
+  game.start(updateBest);
 })();
 
 /* ============================
    JEU 3 — DÉMINEUR
    ============================ */
 (function () {
-  const boardEl = document.getElementById("mine-board");
-  if (!boardEl) return;
-
-  const leftEl = document.getElementById("mine-left");
-  const timeEl = document.getElementById("mine-time");
-  const modeBtn = document.getElementById("mine-mode-btn");
-  const restartBtn = document.getElementById("mine-restart");
-  const replayBtn = document.getElementById("mine-replay-btn");
-  const overlay = document.getElementById("mine-overlay");
-  const overlayTitle = document.getElementById("mine-overlay-title");
-  const overlayText = document.getElementById("mine-overlay-text");
-  const levelContainer = document.getElementById("mine-level-select");
-  const submitBlock = document.getElementById("mine-score-submit");
-  const leaderboardEl = document.getElementById("mine-leaderboard");
+  const game = initGame({
+    id: "mine",
+    els: {
+      boardEl: "mine-board",
+      leftEl: "mine-left",
+      timeEl: "mine-time",
+      modeBtn: "mine-mode-btn",
+      restartBtn: "mine-restart",
+      replayBtn: "mine-replay-btn",
+      overlay: "mine-overlay",
+      overlayTitle: "mine-overlay-title",
+      overlayText: "mine-overlay-text",
+      levelContainer: "mine-level-select",
+      submitBlock: "mine-score-submit",
+      leaderboardEl: "mine-leaderboard"
+    },
+    required: ["boardEl"],
+    leaderboard: { format: e => fmtTime(e.score) },
+    score: {
+      input: "mine-name-input",
+      button: "mine-save-score-btn",
+      entry: name => ({ name, score: timer.seconds, level: cfg().label }),
+      sort: (a, b) => a.score - b.score
+    },
+    levels: { onChange: level => { currentLevel = level; newGame(); } },
+    clicks: {
+      restartBtn: () => newGame(),
+      replayBtn: () => newGame()
+    }
+  });
+  if (!game) return;
+  const {
+    boardEl, leftEl, timeEl, modeBtn, restartBtn, replayBtn, overlay,
+    overlayTitle, overlayText, levelContainer, submitBlock, leaderboardEl
+  } = game.els;
 
   const LEVELS = {
     facile: { rows: 9, cols: 9, mines: 10, cell: 34, label: "Débutant" },
@@ -1283,18 +1383,6 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
     updateLeft();
   }
 
-  function renderLeaderboard() {
-    lbRender(leaderboardEl, lbGet("mine"), e => fmtTime(e.score));
-  }
-
-  attachScoreSubmit("mine-name-input", "mine-save-score-btn", name => {
-    const list = lbSave("mine", { name, score: timer.seconds, level: cfg().label }, (a, b) => a.score - b.score);
-    lbRender(leaderboardEl, list, e => fmtTime(e.score));
-    if (submitBlock) submitBlock.style.display = "none";
-  });
-
-  setupLevelSelector(levelContainer, level => { currentLevel = level; newGame(); });
-
   modeBtn.addEventListener("click", () => {
     flagMode = !flagMode;
     modeBtn.innerHTML = `<i class="fa-solid fa-flag"></i> Mode drapeau : ${flagMode ? "oui" : "non"}`;
@@ -1303,29 +1391,42 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
     SFX.click();
   });
 
-  restartBtn.addEventListener("click", () => { SFX.click(); newGame(); });
-  replayBtn.addEventListener("click", () => { SFX.click(); newGame(); });
-
-  lbRenderers.push(renderLeaderboard);
-  renderLeaderboard();
-  newGame();
+  game.start(newGame);
 })();
 
 /* ============================
    JEU 4 — MEMORY
    ============================ */
 (function () {
-  const grid = document.getElementById("memory-grid");
-  if (!grid) return;
-
-  const movesEl = document.getElementById("memory-moves");
-  const timeEl = document.getElementById("memory-time");
-  const starsEl = document.getElementById("memory-stars");
-  const winMsgEl = document.getElementById("memory-win-message");
-  const restartBtn = document.getElementById("memory-restart-btn");
-  const levelContainer = document.getElementById("memory-level-select");
-  const submitBlock = document.getElementById("memory-score-submit");
-  const leaderboardEl = document.getElementById("memory-leaderboard");
+  const game = initGame({
+    id: "memory",
+    els: {
+      grid: "memory-grid",
+      movesEl: "memory-moves",
+      timeEl: "memory-time",
+      starsEl: "memory-stars",
+      winMsgEl: "memory-win-message",
+      restartBtn: "memory-restart-btn",
+      levelContainer: "memory-level-select",
+      submitBlock: "memory-score-submit",
+      leaderboardEl: "memory-leaderboard"
+    },
+    required: ["grid"],
+    leaderboard: { format: e => `${e.score} coups` },
+    score: {
+      input: "memory-name-input",
+      button: "memory-save-score-btn",
+      entry: name => ({ name, score: moves, level: LEVELS[currentLevel].label }),
+      sort: (a, b) => a.score - b.score
+    },
+    levels: { onChange: level => { currentLevel = level; render(); } },
+    clicks: { restartBtn: () => render() }
+  });
+  if (!game) return;
+  const {
+    grid, movesEl, timeEl, starsEl, winMsgEl, restartBtn,
+    levelContainer, submitBlock, leaderboardEl
+  } = game.els;
 
   const ICON_POOL = ["scissors", "razor", "comb", "brush", "clipper", "bottle", "spray", "cap"];
   const LEVELS = {
@@ -1436,42 +1537,48 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
     lock = false;
   }
 
-  function renderLeaderboard() {
-    lbRender(leaderboardEl, lbGet("memory"), e => `${e.score} coups`);
-  }
-
-  attachScoreSubmit("memory-name-input", "memory-save-score-btn", name => {
-    const list = lbSave("memory", { name, score: moves, level: LEVELS[currentLevel].label }, (a, b) => a.score - b.score);
-    lbRender(leaderboardEl, list, e => `${e.score} coups`);
-    if (submitBlock) submitBlock.style.display = "none";
-  });
-
-  setupLevelSelector(levelContainer, level => { currentLevel = level; render(); });
-
-  restartBtn.addEventListener("click", () => { SFX.click(); render(); });
-  lbRenderers.push(renderLeaderboard);
-  renderLeaderboard();
-  render();
+  game.start(render);
 })();
 
 /* ============================
    JEU 5 — PUISSANCE 4
    ============================ */
 (function () {
-  const boardEl = document.getElementById("c4-board");
-  if (!boardEl) return;
-
-  const statusEl = document.getElementById("c4-status");
-  const winsEl = document.getElementById("c4-wins");
-  const modeContainer = document.getElementById("c4-mode-select");
-  const levelContainer = document.getElementById("c4-level-select");
-  const overlay = document.getElementById("c4-overlay");
-  const overlayTitle = document.getElementById("c4-overlay-title");
-  const overlayText = document.getElementById("c4-overlay-text");
-  const replayBtn = document.getElementById("c4-replay-btn");
-  const restartBtn = document.getElementById("c4-restart");
-  const submitBlock = document.getElementById("c4-score-submit");
-  const leaderboardEl = document.getElementById("c4-leaderboard");
+  const game = initGame({
+    id: "connect4",
+    els: {
+      boardEl: "c4-board",
+      statusEl: "c4-status",
+      winsEl: "c4-wins",
+      modeContainer: "c4-mode-select",
+      levelContainer: "c4-level-select",
+      overlay: "c4-overlay",
+      overlayTitle: "c4-overlay-title",
+      overlayText: "c4-overlay-text",
+      replayBtn: "c4-replay-btn",
+      restartBtn: "c4-restart",
+      submitBlock: "c4-score-submit",
+      leaderboardEl: "c4-leaderboard"
+    },
+    required: ["boardEl"],
+    leaderboard: { format: e => `${e.score} victoire${e.score > 1 ? "s" : ""}` },
+    score: {
+      input: "c4-name-input",
+      button: "c4-save-score-btn",
+      entry: name => ({ name, score: wins, level: LEVELS[aiLevel] }),
+      sort: (a, b) => b.score - a.score
+    },
+    levels: { onChange: lvl => { aiLevel = lvl; newGame(); } },
+    clicks: {
+      restartBtn: () => newGame(),
+      replayBtn: () => newGame()
+    }
+  });
+  if (!game) return;
+  const {
+    boardEl, statusEl, winsEl, modeContainer, levelContainer, overlay,
+    overlayTitle, overlayText, replayBtn, restartBtn, submitBlock, leaderboardEl
+  } = game.els;
 
   const COLS = 7;
   const ROWS = 6;
@@ -1708,16 +1815,6 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
     updateWins();
   }
 
-  function renderLeaderboard() {
-    lbRender(leaderboardEl, lbGet("connect4"), e => `${e.score} victoire${e.score > 1 ? "s" : ""}`);
-  }
-
-  attachScoreSubmit("c4-name-input", "c4-save-score-btn", name => {
-    const list = lbSave("connect4", { name, score: wins, level: LEVELS[aiLevel] }, (a, b) => b.score - a.score);
-    lbRender(leaderboardEl, list, e => `${e.score} victoire${e.score > 1 ? "s" : ""}`);
-    if (submitBlock) submitBlock.style.display = "none";
-  });
-
   if (modeContainer) {
     modeContainer.querySelectorAll(".level-btn").forEach(btn => {
       btn.addEventListener("click", () => {
@@ -1732,31 +1829,43 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
     });
   }
 
-  setupLevelSelector(levelContainer, lvl => { aiLevel = lvl; newGame(); });
-
-  restartBtn.addEventListener("click", () => { SFX.click(); newGame(); });
-  replayBtn.addEventListener("click", () => { SFX.click(); newGame(); });
-
-  lbRenderers.push(renderLeaderboard);
-  renderLeaderboard();
-  newGame();
+  game.start(newGame);
 })();
 
 /* ============================
    JEU 6 — SUITE DE RYTHME (SIMON)
    ============================ */
 (function () {
-  const board = document.querySelector(".simon-board");
-  if (!board) return;
-
-  const pads = document.querySelectorAll(".simon-pad");
-  const levelEl = document.getElementById("simon-level");
-  const bestEl = document.getElementById("simon-best");
-  const msgEl = document.getElementById("simon-message");
-  const startBtn = document.getElementById("simon-start-btn");
-  const levelContainer = document.getElementById("simon-level-select");
-  const submitBlock = document.getElementById("simon-score-submit");
-  const leaderboardEl = document.getElementById("simon-leaderboard");
+  const game = initGame({
+    id: "simon",
+    els: {
+      board: { q: ".simon-board" },
+      pads: { q: ".simon-pad", all: true },
+      levelEl: "simon-level",
+      bestEl: "simon-best",
+      msgEl: "simon-message",
+      startBtn: "simon-start-btn",
+      levelContainer: "simon-level-select",
+      submitBlock: "simon-score-submit",
+      leaderboardEl: "simon-leaderboard"
+    },
+    required: ["board"],
+    leaderboard: { format: e => `Niveau ${e.score}` },
+    score: {
+      input: "simon-name-input",
+      button: "simon-save-score-btn",
+      entry: name => ({ name, score: level, level: LEVELS[currentLevel].label }),
+      sort: (a, b) => b.score - a.score
+    },
+    levels: { onChange: lvl => { currentLevel = lvl; } },
+    // Si l'on revient au jeu pendant la diffusion de la suite, on la rejoue.
+    onShow: () => { if (playing && !accepting) playSequence(); }
+  });
+  if (!game) return;
+  const {
+    board, pads, levelEl, bestEl, msgEl, startBtn,
+    levelContainer, submitBlock, leaderboardEl
+  } = game.els;
 
   const LEVELS = {
     facile: { flashDuration: 650, pause: 250, label: "Facile" },
@@ -1842,18 +1951,6 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
     }
   }
 
-  function renderLeaderboard() {
-    lbRender(leaderboardEl, lbGet("simon"), e => `Niveau ${e.score}`);
-  }
-
-  attachScoreSubmit("simon-name-input", "simon-save-score-btn", name => {
-    const list = lbSave("simon", { name, score: level, level: LEVELS[currentLevel].label }, (a, b) => b.score - a.score);
-    lbRender(leaderboardEl, list, e => `Niveau ${e.score}`);
-    if (submitBlock) submitBlock.style.display = "none";
-  });
-
-  setupLevelSelector(levelContainer, lvl => { currentLevel = lvl; });
-
   pads.forEach((pad, i) => pad.addEventListener("click", () => handlePadClick(i)));
 
   startBtn.addEventListener("click", () => {
@@ -1867,37 +1964,56 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
     nextRound();
   });
 
-  // Si l'on revient au jeu pendant la diffusion de la suite, on la rejoue.
-  onGameShown("simon", () => {
-    if (playing && !accepting) playSequence();
-  });
-
-  lbRenderers.push(renderLeaderboard);
-  renderLeaderboard();
-  refreshBest();
+  game.start(refreshBest);
 })();
 
 /* ============================
    JEU 7 — PENDU BARBIER
    ============================ */
 (function () {
-  const figureEl = document.getElementById("hangman-figure");
-  if (!figureEl) return;
-
-  const wordEl = document.getElementById("hangman-word");
-  const hintEl = document.getElementById("hangman-hint");
-  const wrongEl = document.getElementById("hangman-wrong");
-  const keysEl = document.getElementById("hangman-keys");
-  const feedbackEl = document.getElementById("hangman-feedback");
-  const nextBtn = document.getElementById("hangman-next-btn");
-  const resultEl = document.getElementById("hangman-result");
-  const scoreTextEl = document.getElementById("hangman-score-text");
-  const restartBtn = document.getElementById("hangman-restart-btn");
-  const progressEl = document.getElementById("hangman-progress");
-  const errorsEl = document.getElementById("hangman-errors");
-  const levelContainer = document.getElementById("hangman-level-select");
-  const submitBlock = document.getElementById("hangman-score-submit");
-  const leaderboardEl = document.getElementById("hangman-leaderboard");
+  const game = initGame({
+    id: "hangman",
+    els: {
+      figureEl: "hangman-figure",
+      wordEl: "hangman-word",
+      hintEl: "hangman-hint",
+      wrongEl: "hangman-wrong",
+      keysEl: "hangman-keys",
+      feedbackEl: "hangman-feedback",
+      nextBtn: "hangman-next-btn",
+      resultEl: "hangman-result",
+      scoreTextEl: "hangman-score-text",
+      restartBtn: "hangman-restart-btn",
+      progressEl: "hangman-progress",
+      errorsEl: "hangman-errors",
+      levelContainer: "hangman-level-select",
+      submitBlock: "hangman-score-submit",
+      leaderboardEl: "hangman-leaderboard"
+    },
+    required: ["figureEl"],
+    leaderboard: { format: e => `${e.score}%` },
+    score: {
+      input: "hangman-name-input",
+      button: "hangman-save-score-btn",
+      entry: name => ({ name, score: lastPct, level: LEVELS[currentLevel].label }),
+      sort: (a, b) => b.score - a.score
+    },
+    levels: { onChange: level => { currentLevel = level; SFX.click(); newSeries(); } },
+    clicks: {
+      nextBtn: () => {
+        index++;
+        if (index >= rounds.length) lastPct = showResult();
+        else startRound();
+      },
+      restartBtn: () => newSeries()
+    }
+  });
+  if (!game) return;
+  const {
+    figureEl, wordEl, hintEl, wrongEl, keysEl, feedbackEl, nextBtn,
+    resultEl, scoreTextEl, restartBtn, progressEl, errorsEl,
+    levelContainer, submitBlock, leaderboardEl
+  } = game.els;
 
   const WORDS = [
     { w: "mèche", hint: "Ce que le barbier coupe pour donner forme à la coiffure." },
@@ -2088,27 +2204,6 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
     startRound();
   }
 
-  function renderLeaderboard() {
-    lbRender(leaderboardEl, lbGet("hangman"), e => `${e.score}%`);
-  }
-
-  attachScoreSubmit("hangman-name-input", "hangman-save-score-btn", name => {
-    const list = lbSave("hangman", { name, score: lastPct, level: LEVELS[currentLevel].label }, (a, b) => b.score - a.score);
-    lbRender(leaderboardEl, list, e => `${e.score}%`);
-    if (submitBlock) submitBlock.style.display = "none";
-  });
-
-  setupLevelSelector(levelContainer, level => { currentLevel = level; SFX.click(); newSeries(); });
-
-  nextBtn.addEventListener("click", () => {
-    SFX.click();
-    index++;
-    if (index >= rounds.length) lastPct = showResult();
-    else startRound();
-  });
-
-  restartBtn.addEventListener("click", () => { SFX.click(); newSeries(); });
-
   document.addEventListener("keydown", e => {
     if (!isGameActive("hangman") || index >= rounds.length) return;
     if (e.target && (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA")) return;
@@ -2117,34 +2212,57 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
   });
 
   buildFigure();
-  lbRenderers.push(renderLeaderboard);
-  renderLeaderboard();
-  newSeries();
+  game.start(newSeries);
 })();
 
 /* ============================
    JEU 8 — QUIZ CULTURE COIFFURE
    ============================ */
 (function () {
-  const questionEl = document.getElementById("quiz-question");
-  if (!questionEl) return;
-
-  const progressEl = document.getElementById("quiz-progress");
-  const barEl = document.getElementById("quiz-bar");
-  const optionsEl = document.getElementById("quiz-options");
-  const feedbackEl = document.getElementById("quiz-feedback");
-  const nextBtn = document.getElementById("quiz-next-btn");
-  const questionBlock = document.getElementById("quiz-question-block");
-  const resultEl = document.getElementById("quiz-result");
-  const scoreTextEl = document.getElementById("quiz-score-text");
-  const restartBtn = document.getElementById("quiz-restart-btn");
-  const levelContainer = document.getElementById("quiz-level-select");
-  const timerEl = document.getElementById("quiz-timer");
-  const scoreChip = document.getElementById("quiz-score");
-  const streakChip = document.getElementById("quiz-streak");
-  const submitBlock = document.getElementById("quiz-score-submit");
-  const leaderboardEl = document.getElementById("quiz-leaderboard");
-  const artEl = document.getElementById("quiz-art");
+  const game = initGame({
+    id: "quiz",
+    els: {
+      questionEl: "quiz-question",
+      progressEl: "quiz-progress",
+      barEl: "quiz-bar",
+      optionsEl: "quiz-options",
+      feedbackEl: "quiz-feedback",
+      nextBtn: "quiz-next-btn",
+      questionBlock: "quiz-question-block",
+      resultEl: "quiz-result",
+      scoreTextEl: "quiz-score-text",
+      restartBtn: "quiz-restart-btn",
+      levelContainer: "quiz-level-select",
+      timerEl: "quiz-timer",
+      scoreChip: "quiz-score",
+      streakChip: "quiz-streak",
+      submitBlock: "quiz-score-submit",
+      leaderboardEl: "quiz-leaderboard",
+      artEl: "quiz-art"
+    },
+    required: ["questionEl"],
+    leaderboard: { format: e => `${e.score}%` },
+    score: {
+      input: "quiz-name-input",
+      button: "quiz-save-score-btn",
+      entry: name => {
+        const pct = Math.round((score / QUESTIONS.length) * 100);
+        return { name, score: pct, level: LEVELS[currentLevel].label };
+      },
+      sort: (a, b) => b.score - a.score
+    },
+    levels: { onChange: level => { currentLevel = level; initQuiz(); } },
+    clicks: {
+      nextBtn: () => nextQuestion(),
+      restartBtn: () => initQuiz()
+    }
+  });
+  if (!game) return;
+  const {
+    questionEl, progressEl, barEl, optionsEl, feedbackEl, nextBtn,
+    questionBlock, resultEl, scoreTextEl, restartBtn, levelContainer,
+    timerEl, scoreChip, streakChip, submitBlock, leaderboardEl, artEl
+  } = game.els;
 
   /* Liens contextuels affichés sous l'illustration de chaque question */
   const TOPIC_LINKS = {
@@ -2314,17 +2432,6 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
     if (submitBlock) submitBlock.style.display = "flex";
   }
 
-  function renderLeaderboard() {
-    lbRender(leaderboardEl, lbGet("quiz"), e => `${e.score}%`);
-  }
-
-  attachScoreSubmit("quiz-name-input", "quiz-save-score-btn", name => {
-    const pct = Math.round((score / QUESTIONS.length) * 100);
-    const list = lbSave("quiz", { name, score: pct, level: LEVELS[currentLevel].label }, (a, b) => b.score - a.score);
-    lbRender(leaderboardEl, list, e => `${e.score}%`);
-    if (submitBlock) submitBlock.style.display = "none";
-  });
-
   function initQuiz() {
     const cfg = LEVELS[currentLevel];
     QUESTIONS = shuffleArray(QUESTIONS_SOURCE).slice(0, cfg.count).map(buildRound);
@@ -2340,30 +2447,45 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
     renderQuestion();
   }
 
-  setupLevelSelector(levelContainer, level => { currentLevel = level; initQuiz(); });
-
-  nextBtn.addEventListener("click", () => { SFX.click(); nextQuestion(); });
-  restartBtn.addEventListener("click", () => { SFX.click(); initQuiz(); });
-  lbRenderers.push(renderLeaderboard);
-  renderLeaderboard();
-  initQuiz();
+  game.start(initQuiz);
 })();
 
 /* ============================
    JEU 9 — PUZZLE GLISSANT
    ============================ */
 (function () {
-  const boardEl = document.getElementById("puzzle-board");
-  if (!boardEl) return;
-
-  const movesEl = document.getElementById("puzzle-moves");
-  const timeEl = document.getElementById("puzzle-time");
-  const winMsgEl = document.getElementById("puzzle-win-message");
-  const restartBtn = document.getElementById("puzzle-restart-btn");
-  const levelContainer = document.getElementById("puzzle-level-select");
-  const submitBlock = document.getElementById("puzzle-score-submit");
-  const leaderboardEl = document.getElementById("puzzle-leaderboard");
-  const pickerEl = document.getElementById("puzzle-picker");
+  const game = initGame({
+    id: "puzzle",
+    els: {
+      boardEl: "puzzle-board",
+      movesEl: "puzzle-moves",
+      timeEl: "puzzle-time",
+      winMsgEl: "puzzle-win-message",
+      restartBtn: "puzzle-restart-btn",
+      levelContainer: "puzzle-level-select",
+      submitBlock: "puzzle-score-submit",
+      leaderboardEl: "puzzle-leaderboard",
+      pickerEl: "puzzle-picker"
+    },
+    required: ["boardEl"],
+    leaderboard: { format: e => `${e.score} coups` },
+    score: {
+      input: "puzzle-name-input",
+      button: "puzzle-save-score-btn",
+      entry: name => ({ name, score: moves, level: LEVELS[currentLevel].label }),
+      sort: (a, b) => a.score - b.score
+    },
+    levels: { onChange: level => { currentLevel = level; shuffle(); } },
+    clicks: { restartBtn: () => shuffle() },
+    // Le panneau est masqué au chargement (largeur mesurée = 0) : on redessine
+    // dès qu'il devient visible, et au redimensionnement de la fenêtre.
+    onShow: () => render()
+  });
+  if (!game) return;
+  const {
+    boardEl, movesEl, timeEl, winMsgEl, restartBtn,
+    levelContainer, submitBlock, leaderboardEl, pickerEl
+  } = game.els;
 
   /* Illustrations vectorielles originales (600×600) créées pour le jeu */
   const IMAGES = [
@@ -2541,57 +2663,62 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
     render();
   }
 
-  function renderLeaderboard() {
-    lbRender(leaderboardEl, lbGet("puzzle"), e => `${e.score} coups`);
-  }
-
-  attachScoreSubmit("puzzle-name-input", "puzzle-save-score-btn", name => {
-    const list = lbSave("puzzle", { name, score: moves, level: LEVELS[currentLevel].label }, (a, b) => a.score - b.score);
-    lbRender(leaderboardEl, list, e => `${e.score} coups`);
-    if (submitBlock) submitBlock.style.display = "none";
-  });
-
-  setupLevelSelector(levelContainer, level => { currentLevel = level; shuffle(); });
-
-  restartBtn.addEventListener("click", () => { SFX.click(); shuffle(); });
-
-  // Le panneau est masqué au chargement (largeur mesurée = 0) : on redessine
-  // dès qu'il devient visible, et au redimensionnement de la fenêtre.
-  onGameShown("puzzle", () => render());
   let resizeT = null;
   window.addEventListener("resize", () => {
     clearTimeout(resizeT);
     resizeT = setTimeout(render, 150);
   });
 
-  lbRenderers.push(renderLeaderboard);
-  renderLeaderboard();
-  renderPicker();
-  shuffle();
+  game.start(() => { renderPicker(); shuffle(); });
 })();
 
 /* ============================
    JEU 10 — TROUVE LA BONNE COUPE
    ============================ */
 (function () {
-  const requestEl = document.getElementById("haircut-request");
-  if (!requestEl) return;
-
-  const progressEl = document.getElementById("haircut-progress");
-  const barEl = document.getElementById("haircut-bar");
-  const optionsEl = document.getElementById("haircut-options");
-  const feedbackEl = document.getElementById("haircut-feedback");
-  const nextBtn = document.getElementById("haircut-next-btn");
-  const blockEl = document.getElementById("haircut-block");
-  const resultEl = document.getElementById("haircut-result");
-  const scoreTextEl = document.getElementById("haircut-score-text");
-  const restartBtn = document.getElementById("haircut-restart-btn");
-  const levelContainer = document.getElementById("haircut-level-select");
-  const timerEl = document.getElementById("haircut-timer");
-  const scoreChip = document.getElementById("haircut-score");
-  const submitBlock = document.getElementById("haircut-score-submit");
-  const leaderboardEl = document.getElementById("haircut-leaderboard");
-  const avatarEl = document.getElementById("haircut-avatar");
+  const game = initGame({
+    id: "haircut",
+    els: {
+      requestEl: "haircut-request",
+      progressEl: "haircut-progress",
+      barEl: "haircut-bar",
+      optionsEl: "haircut-options",
+      feedbackEl: "haircut-feedback",
+      nextBtn: "haircut-next-btn",
+      blockEl: "haircut-block",
+      resultEl: "haircut-result",
+      scoreTextEl: "haircut-score-text",
+      restartBtn: "haircut-restart-btn",
+      levelContainer: "haircut-level-select",
+      timerEl: "haircut-timer",
+      scoreChip: "haircut-score",
+      submitBlock: "haircut-score-submit",
+      leaderboardEl: "haircut-leaderboard",
+      avatarEl: "haircut-avatar"
+    },
+    required: ["requestEl"],
+    leaderboard: { format: e => `${e.score}%` },
+    score: {
+      input: "haircut-name-input",
+      button: "haircut-save-score-btn",
+      entry: name => {
+        const pct = Math.round((score / rounds.length) * 100);
+        return { name, score: pct, level: LEVELS[currentLevel].label };
+      },
+      sort: (a, b) => b.score - a.score
+    },
+    levels: { onChange: level => { currentLevel = level; restart(); } },
+    clicks: {
+      nextBtn: () => next(),
+      restartBtn: () => restart()
+    }
+  });
+  if (!game) return;
+  const {
+    requestEl, progressEl, barEl, optionsEl, feedbackEl, nextBtn,
+    blockEl, resultEl, scoreTextEl, restartBtn, levelContainer,
+    timerEl, scoreChip, submitBlock, leaderboardEl, avatarEl
+  } = game.els;
 
   const STYLE_POOL = ["Undercut", "Buzz cut", "Slick back", "Dégradé (fade)", "Crew cut", "Pompadour", "Taper fade", "Coupe + barbe", "Quiff (mèche)", "Afro", "Crâne rasé", "Crâne + barbe"];
 
@@ -2726,17 +2853,6 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
     if (submitBlock) submitBlock.style.display = "flex";
   }
 
-  function renderLeaderboard() {
-    lbRender(leaderboardEl, lbGet("haircut"), e => `${e.score}%`);
-  }
-
-  attachScoreSubmit("haircut-name-input", "haircut-save-score-btn", name => {
-    const pct = Math.round((score / rounds.length) * 100);
-    const list = lbSave("haircut", { name, score: pct, level: LEVELS[currentLevel].label }, (a, b) => b.score - a.score);
-    lbRender(leaderboardEl, list, e => `${e.score}%`);
-    if (submitBlock) submitBlock.style.display = "none";
-  });
-
   function restart() {
     index = 0;
     score = 0;
@@ -2748,40 +2864,67 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
     renderRound();
   }
 
-  setupLevelSelector(levelContainer, level => { currentLevel = level; restart(); });
-
-  nextBtn.addEventListener("click", () => { SFX.click(); next(); });
-  restartBtn.addEventListener("click", () => { SFX.click(); restart(); });
-  lbRenderers.push(renderLeaderboard);
-  renderLeaderboard();
-  buildRounds();
-  renderRound();
+  game.start(() => { buildRounds(); renderRound(); });
 })();
 
 /* ============================
    JEU 11 — MIME EXPRESS (à plusieurs)
    ============================ */
 (function () {
-  const teamsEl = document.getElementById("mime-teams");
-  if (!teamsEl) return;
-
-  const turnEl = document.getElementById("mime-turn");
-  const teamEl = document.getElementById("mime-team");
-  const timeEl = document.getElementById("mime-time");
-  const categoryEl = document.getElementById("mime-category");
-  const wordEl = document.getElementById("mime-word");
-  const revealBtn = document.getElementById("mime-reveal-btn");
-  const startBtn = document.getElementById("mime-start-btn");
-  const guessBtn = document.getElementById("mime-guess-btn");
-  const passBtn = document.getElementById("mime-pass-btn");
-  const nextBtn = document.getElementById("mime-next-btn");
-  const messageEl = document.getElementById("mime-message");
-  const resultEl = document.getElementById("mime-result");
-  const scoreTextEl = document.getElementById("mime-score-text");
-  const restartBtn = document.getElementById("mime-restart-btn");
-  const levelContainer = document.getElementById("mime-level-select");
-  const submitBlock = document.getElementById("mime-score-submit");
-  const leaderboardEl = document.getElementById("mime-leaderboard");
+  const game = initGame({
+    id: "mime",
+    els: {
+      teamsEl: "mime-teams",
+      turnEl: "mime-turn",
+      teamEl: "mime-team",
+      timeEl: "mime-time",
+      categoryEl: "mime-category",
+      wordEl: "mime-word",
+      revealBtn: "mime-reveal-btn",
+      startBtn: "mime-start-btn",
+      guessBtn: "mime-guess-btn",
+      passBtn: "mime-pass-btn",
+      nextBtn: "mime-next-btn",
+      messageEl: "mime-message",
+      resultEl: "mime-result",
+      scoreTextEl: "mime-score-text",
+      restartBtn: "mime-restart-btn",
+      levelContainer: "mime-level-select",
+      submitBlock: "mime-score-submit",
+      leaderboardEl: "mime-leaderboard"
+    },
+    required: ["teamsEl"],
+    leaderboard: { format: e => e.score + " pts" },
+    score: {
+      input: "mime-name-input",
+      button: "mime-save-score-btn",
+      entry: name => ({
+        name,
+        score: teams.reduce((m, t) => Math.max(m, t.points), 0),
+        level: teamsCount + " équipes"
+      }),
+      sort: (a, b) => b.score - a.score
+    },
+    levels: {
+      onChange: level => {
+        teamsCount = Math.max(2, Math.min(4, parseInt(level, 10) || 2));
+        restart();
+      }
+    },
+    clicks: {
+      startBtn: () => startTurn(),
+      nextBtn: () => nextTurn(),
+      restartBtn: () => restart()
+    },
+    rawClicks: { revealBtn: revealWord },
+    onShow: () => { if (resultEl.style.display !== "flex") renderTeams(); }
+  });
+  if (!game) return;
+  const {
+    teamsEl, turnEl, teamEl, timeEl, categoryEl, wordEl, revealBtn,
+    startBtn, guessBtn, passBtn, nextBtn, messageEl, resultEl,
+    scoreTextEl, restartBtn, levelContainer, submitBlock, leaderboardEl
+  } = game.els;
 
   const TURN_SECONDS = 45;
 
@@ -2958,10 +3101,6 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
     setMessage("L'équipe 1 s'apprête à mimez — lancez le chrono quand vous êtes prêt !");
   }
 
-  function renderLeaderboard() {
-    lbRender(leaderboardEl, lbGet("mime"), e => e.score + " pts");
-  }
-
   if (guessBtn) {
     guessBtn.addEventListener("click", () => {
       if (!playing) return;
@@ -2982,52 +3121,54 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
     });
   }
 
-  if (revealBtn) revealBtn.addEventListener("click", revealWord);
-  if (startBtn) startBtn.addEventListener("click", () => { SFX.click(); startTurn(); });
-  if (nextBtn) nextBtn.addEventListener("click", () => { SFX.click(); nextTurn(); });
-  if (restartBtn) restartBtn.addEventListener("click", () => { SFX.click(); restart(); });
-
-  attachScoreSubmit("mime-name-input", "mime-save-score-btn", name => {
-    const best = teams.reduce((m, t) => Math.max(m, t.points), 0);
-    const list = lbSave("mime", { name, score: best, level: teamsCount + " équipes" }, (a, b) => b.score - a.score);
-    lbRender(leaderboardEl, list, e => e.score + " pts");
-    if (submitBlock) submitBlock.style.display = "none";
-  });
-
-  if (levelContainer) {
-    setupLevelSelector(levelContainer, level => {
-      teamsCount = Math.max(2, Math.min(4, parseInt(level, 10) || 2));
-      restart();
-    });
-  }
-
-  onGameShown("mime", () => { if (resultEl.style.display !== "flex") renderTeams(); });
-  lbRenderers.push(renderLeaderboard);
-  renderLeaderboard();
-  restart();
+  game.start(restart);
 })();
 
 /* ============================
    JEU 12 — BLAGUES & ANECDOTES (à plusieurs)
    ============================ */
 (function () {
-  const setupEl = document.getElementById("joke-setup");
-  if (!setupEl) return;
-
-  const tagEl = document.getElementById("joke-tag");
-  const punchEl = document.getElementById("joke-punchline");
-  const revealBtn = document.getElementById("jokes-reveal-btn");
-  const ratingEl = document.getElementById("joke-rating");
-  const nextBtn = document.getElementById("jokes-next-btn");
-  const progressEl = document.getElementById("jokes-progress");
-  const scoreEl = document.getElementById("jokes-score");
-  const laughsEl = document.getElementById("jokes-laughs");
-  const resultEl = document.getElementById("jokes-result");
-  const scoreTextEl = document.getElementById("jokes-score-text");
-  const restartBtn = document.getElementById("jokes-restart-btn");
-  const levelContainer = document.getElementById("jokes-level-select");
-  const submitBlock = document.getElementById("jokes-score-submit");
-  const leaderboardEl = document.getElementById("jokes-leaderboard");
+  const game = initGame({
+    id: "jokes",
+    els: {
+      setupEl: "joke-setup",
+      tagEl: "joke-tag",
+      punchEl: "joke-punchline",
+      revealBtn: "jokes-reveal-btn",
+      ratingEl: "joke-rating",
+      nextBtn: "jokes-next-btn",
+      progressEl: "jokes-progress",
+      scoreEl: "jokes-score",
+      laughsEl: "jokes-laughs",
+      resultEl: "jokes-result",
+      scoreTextEl: "jokes-score-text",
+      restartBtn: "jokes-restart-btn",
+      levelContainer: "jokes-level-select",
+      submitBlock: "jokes-score-submit",
+      leaderboardEl: "jokes-leaderboard"
+    },
+    required: ["setupEl"],
+    leaderboard: { format: e => e.score + " pts" },
+    score: {
+      input: "jokes-name-input",
+      button: "jokes-save-score-btn",
+      entry: name => ({ name, score, level: MODES[currentLevel].label }),
+      sort: (a, b) => b.score - a.score
+    },
+    levels: { onChange: level => { currentLevel = level; restart(); } },
+    clicks: {
+      nextBtn: () => { index++; renderCard(); },
+      restartBtn: () => restart()
+    },
+    rawClicks: { revealBtn: reveal },
+    onShow: () => { if (resultEl.style.display !== "flex") renderCard(); }
+  });
+  if (!game) return;
+  const {
+    setupEl, tagEl, punchEl, revealBtn, ratingEl, nextBtn, progressEl,
+    scoreEl, laughsEl, resultEl, scoreTextEl, restartBtn,
+    levelContainer, submitBlock, leaderboardEl
+  } = game.els;
 
   const CARDS = [
     { type: "Blague", text: "Le client dit au barbier : « C'est la première fois que je viens chez vous ? »", punch: "« Non… c'est la première fois que je repars ! »" },
@@ -3134,35 +3275,11 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
     if (submitBlock) submitBlock.style.display = "none";
   }
 
-  function renderLeaderboard() {
-    lbRender(leaderboardEl, lbGet("jokes"), e => e.score + " pts");
-  }
-
-  if (revealBtn) revealBtn.addEventListener("click", reveal);
   if (ratingEl) {
     ratingEl.querySelectorAll(".joke-rate").forEach(btn => {
       btn.addEventListener("click", () => { rate(Number(btn.dataset.points) || 1); });
     });
   }
-  if (nextBtn) {
-    nextBtn.addEventListener("click", () => {
-      SFX.click();
-      index++;
-      renderCard();
-    });
-  }
-  if (restartBtn) restartBtn.addEventListener("click", () => { SFX.click(); restart(); });
 
-  attachScoreSubmit("jokes-name-input", "jokes-save-score-btn", name => {
-    const list = lbSave("jokes", { name, score, level: MODES[currentLevel].label }, (a, b) => b.score - a.score);
-    lbRender(leaderboardEl, list, e => e.score + " pts");
-    if (submitBlock) submitBlock.style.display = "none";
-  });
-
-  setupLevelSelector(levelContainer, level => { currentLevel = level; restart(); });
-
-  onGameShown("jokes", () => { if (resultEl.style.display !== "flex") renderCard(); });
-  lbRenderers.push(renderLeaderboard);
-  renderLeaderboard();
-  restart();
+  game.start(restart);
 })();
