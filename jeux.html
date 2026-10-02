@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jeux — Star Barbershop</title>
-  <meta name="description" content="Patientez en jouant : plusieurs mini-jeux gratuits avec niveaux de difficulté et classement, sur le site de Star Barbershop à Mourmelon-le-Grand.">
+  <meta name="description" content="Patientez en jouant : dix mini-jeux gratuits (2048, démineur, puissance 4, memory, quiz…) avec niveaux de difficulté, classement et effets sonores, sur le site de Star Barbershop à Mourmelon-le-Grand.">
   <link rel="canonical" href="https://www.starbarbershop.fr/jeux.html">
 
   <link rel="icon" type="image/svg+xml" href="favicon.svg?v=2">
@@ -13,7 +13,9 @@
   <link rel="icon" href="favicon.ico?v=2" sizes="any">
   <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
 
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="games.css" />
@@ -41,36 +43,58 @@
 <section id="jeux-intro" class="games-intro">
   <span class="eyebrow">En attendant votre tour</span>
   <h1>Salle de jeux</h1>
-  <p>Sept petits jeux gratuits, plusieurs niveaux de difficulté, et un classement des meilleurs scores sur cet appareil. Choisissez-en un ci-dessous !</p>
+  <p>Dix jeux gratuits — réflexes, logique, mémoire, culture générale — avec plusieurs niveaux de difficulté, des effets sonores et un classement des meilleurs scores enregistré sur cet appareil. Choisissez-en un ci-dessous&nbsp;!</p>
 </section>
 
 <section id="jeux" class="games">
+
+  <div class="games-bar">
+    <button id="sound-toggle" class="bar-btn" type="button" aria-pressed="false">
+      <i class="fa-solid fa-volume-high"></i><span>Son activé</span>
+    </button>
+    <button id="reset-scores-btn" class="bar-btn" type="button">
+      <i class="fa-solid fa-rotate-left"></i><span>Effacer les scores</span>
+    </button>
+  </div>
+
   <div class="game-selector">
     <button class="game-tab active" data-game="catch">✂️ Attrape la mèche</button>
+    <button class="game-tab" data-game="2048">🔢 2048</button>
+    <button class="game-tab" data-game="mine">💣 Démineur</button>
     <button class="game-tab" data-game="memory">🃏 Memory</button>
-    <button class="game-tab" data-game="quiz">❓ Quiz Coiffure</button>
+    <button class="game-tab" data-game="connect4">🔴 Puissance 4</button>
     <button class="game-tab" data-game="simon">🎵 Suite de rythme</button>
-    <button class="game-tab" data-game="tictactoe">⭕ Morpion</button>
-    <button class="game-tab" data-game="puzzle">🧩 Puzzle glissant</button>
+    <button class="game-tab" data-game="hangman">🪢 Pendu barbier</button>
+    <button class="game-tab" data-game="quiz">❓ Quiz coiffure</button>
+    <button class="game-tab" data-game="puzzle">🧩 Puzzle photo</button>
     <button class="game-tab" data-game="haircut">💇 Trouve la bonne coupe</button>
   </div>
 
   <!-- JEU 1 : ATTRAPE LA MÈCHE -->
   <div id="game-catch" class="game-panel active">
-    <div class="catch-game">
-      <div id="catch-level-select" class="level-selector">
-        <button class="level-btn" data-level="facile">Facile</button>
-        <button class="level-btn active" data-level="moyen">Moyen</button>
-        <button class="level-btn" data-level="difficile">Difficile</button>
+    <div class="game-shell">
+      <div class="game-top">
+        <div id="catch-level-select" class="level-selector">
+          <button class="level-btn" data-level="facile">Facile</button>
+          <button class="level-btn active" data-level="moyen">Moyen</button>
+          <button class="level-btn" data-level="difficile">Difficile</button>
+        </div>
+        <div class="stat-chips">
+          <span class="chip"><span class="chip-label">Score</span><strong id="catch-score">0</strong></span>
+          <span class="chip"><span class="chip-label">Série</span><strong id="catch-combo">×1</strong></span>
+          <span class="chip"><span class="chip-label">Vies</span><strong id="catch-lives">❤️❤️❤️</strong></span>
+        </div>
       </div>
-      <div class="catch-stats">
-        <span>Score : <strong id="catch-score">0</strong></span>
-        <span id="catch-lives">❤️❤️❤️</span>
+      <p class="game-help">Cliquez sur les objets avant qu'ils ne touchent le sol. Ramassez les étoiles ⭐ pour marquer des points bonus, attrapez les cœurs ❤️ pour gagner une vie — et évitez les bombes 💣&nbsp;!</p>
+      <div class="game-stage">
+        <div id="catch-area" class="catch-area">
+          <div id="catch-overlay" class="game-overlay">
+            <h3>Attrape la mèche</h3>
+            <p>Combien d'objets pouvez-vous rattraper avant d'épuiser vos vies&nbsp;?</p>
+            <button id="catch-start-btn" class="btn">Jouer</button>
+          </div>
+        </div>
       </div>
-      <div id="catch-area" class="catch-area">
-        <p class="catch-message">Cliquez sur les objets avant qu'ils touchent le sol !</p>
-      </div>
-      <button id="catch-start-btn" class="btn">Démarrer</button>
       <div id="catch-score-submit" class="score-submit" style="display:none;">
         <input type="text" id="catch-name-input" maxlength="16" placeholder="Votre pseudo">
         <button id="catch-save-score-btn" class="btn">Enregistrer le score</button>
@@ -82,18 +106,119 @@
     </div>
   </div>
 
-  <!-- JEU 2 : MEMORY -->
-  <div id="game-memory" class="game-panel">
-    <div class="memory-game">
-      <div id="memory-level-select" class="level-selector">
-        <button class="level-btn" data-level="facile">Facile</button>
-        <button class="level-btn active" data-level="moyen">Moyen</button>
-        <button class="level-btn" data-level="difficile">Difficile</button>
+  <!-- JEU 2 : 2048 -->
+  <div id="game-2048" class="game-panel">
+    <div class="game-shell">
+      <div class="game-top">
+        <div id="g2048-level-select" class="level-selector">
+          <button class="level-btn" data-level="facile">Objectif 512</button>
+          <button class="level-btn active" data-level="moyen">Objectif 1024</button>
+          <button class="level-btn" data-level="difficile">Objectif 2048</button>
+        </div>
+        <div class="stat-chips">
+          <span class="chip"><span class="chip-label">Points</span><strong id="g2048-score">0</strong></span>
+          <span class="chip"><span class="chip-label">Record</span><strong id="g2048-best">0</strong></span>
+        </div>
       </div>
-      <div class="memory-stats">Coups : <strong id="memory-moves">0</strong></div>
-      <div id="memory-grid" class="memory-grid"></div>
-      <p id="memory-win-message" class="memory-win-message" style="display:none;"></p>
-      <button id="memory-restart-btn" class="btn">Recommencer</button>
+      <p class="game-help">Flèches du clavier, boutons ci-dessous ou glissement sur la grille : fusionnez les tuiles identiques jusqu'à atteindre l'objectif.</p>
+      <div class="game-stage">
+        <div id="g2048-board" class="g2048-board">
+          <div id="g2048-overlay" class="game-overlay" style="display:none;">
+            <h3 id="g2048-overlay-title">Partie terminée</h3>
+            <p id="g2048-overlay-text"></p>
+            <div class="overlay-actions">
+              <button id="g2048-continue-btn" class="btn btn-ghost" style="display:none;">Continuer</button>
+              <button id="g2048-replay-btn" class="btn">Rejouer</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="g2048-controls" class="dpad">
+        <button class="dpad-btn" data-dir="up" aria-label="Haut"><i class="fa-solid fa-chevron-up"></i></button>
+        <button class="dpad-btn" data-dir="left" aria-label="Gauche"><i class="fa-solid fa-chevron-left"></i></button>
+        <button class="dpad-btn" data-dir="down" aria-label="Bas"><i class="fa-solid fa-chevron-down"></i></button>
+        <button class="dpad-btn" data-dir="right" aria-label="Droite"><i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+      <div class="game-actions">
+        <button id="g2048-undo" class="btn btn-ghost"><i class="fa-solid fa-rotate-left"></i> Annuler</button>
+        <button id="g2048-restart" class="btn">Nouvelle partie</button>
+      </div>
+      <div id="g2048-score-submit" class="score-submit" style="display:none;">
+        <input type="text" id="g2048-name-input" maxlength="16" placeholder="Votre pseudo">
+        <button id="g2048-save-score-btn" class="btn">Enregistrer le score</button>
+      </div>
+      <div class="leaderboard">
+        <h4>🏆 Meilleurs scores (cet appareil)</h4>
+        <div id="g2048-leaderboard"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JEU 3 : DÉMINEUR -->
+  <div id="game-mine" class="game-panel">
+    <div class="game-shell">
+      <div class="game-top">
+        <div id="mine-level-select" class="level-selector">
+          <button class="level-btn active" data-level="facile">Débutant 9×9</button>
+          <button class="level-btn" data-level="moyen">Intermédiaire 16×16</button>
+          <button class="level-btn" data-level="difficile">Expert 16×30</button>
+        </div>
+        <div class="stat-chips">
+          <span class="chip"><span class="chip-label">Mines</span><strong id="mine-left">10</strong></span>
+          <span class="chip"><span class="chip-label">Temps</span><strong id="mine-time">0:00</strong></span>
+        </div>
+      </div>
+      <p class="game-help">Cliquez une case pour la révéler, clic droit (ou mode 🚩 drapeau) pour marquer une mine. Le premier clic est toujours sans danger.</p>
+      <div class="game-stage">
+        <div class="mine-scroll">
+          <div id="mine-board" class="mine-board"></div>
+          <div id="mine-overlay" class="game-overlay" style="display:none;">
+            <h3 id="mine-overlay-title">Boom&nbsp;!</h3>
+            <p id="mine-overlay-text"></p>
+            <button id="mine-replay-btn" class="btn">Rejouer</button>
+          </div>
+        </div>
+      </div>
+      <div class="game-actions">
+        <button id="mine-mode-btn" class="btn btn-ghost"><i class="fa-solid fa-flag"></i> Mode drapeau : non</button>
+        <button id="mine-restart" class="btn">Nouvelle grille</button>
+      </div>
+      <div id="mine-score-submit" class="score-submit" style="display:none;">
+        <input type="text" id="mine-name-input" maxlength="16" placeholder="Votre pseudo">
+        <button id="mine-save-score-btn" class="btn">Enregistrer le temps</button>
+      </div>
+      <div class="leaderboard">
+        <h4>🏆 Meilleurs temps (cet appareil)</h4>
+        <div id="mine-leaderboard"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JEU 4 : MEMORY -->
+  <div id="game-memory" class="game-panel">
+    <div class="game-shell">
+      <div class="game-top">
+        <div id="memory-level-select" class="level-selector">
+          <button class="level-btn" data-level="facile">Facile (4 paires)</button>
+          <button class="level-btn active" data-level="moyen">Moyen (6 paires)</button>
+          <button class="level-btn" data-level="difficile">Difficile (8 paires)</button>
+        </div>
+        <div class="stat-chips">
+          <span class="chip"><span class="chip-label">Coups</span><strong id="memory-moves">0</strong></span>
+          <span class="chip"><span class="chip-label">Temps</span><strong id="memory-time">0:00</strong></span>
+        </div>
+      </div>
+      <p class="game-help">Retournez deux cartes à la fois et retrouvez toutes les paires : moins vous de coups, mieux c'est.</p>
+      <div class="game-stage">
+        <div id="memory-grid" class="memory-grid"></div>
+      </div>
+      <div class="memory-result">
+        <div id="memory-stars" class="stars"></div>
+        <p id="memory-win-message" class="memory-win-message" style="display:none;"></p>
+      </div>
+      <div class="game-actions">
+        <button id="memory-restart-btn" class="btn">Recommencer</button>
+      </div>
       <div id="memory-score-submit" class="score-submit" style="display:none;">
         <input type="text" id="memory-name-input" maxlength="16" placeholder="Votre pseudo">
         <button id="memory-save-score-btn" class="btn">Enregistrer le score</button>
@@ -105,17 +230,149 @@
     </div>
   </div>
 
-  <!-- JEU 3 : QUIZ -->
-  <div id="game-quiz" class="game-panel">
-    <div class="quiz-game">
-      <div id="quiz-level-select" class="level-selector">
-        <button class="level-btn" data-level="facile">Facile</button>
-        <button class="level-btn active" data-level="moyen">Moyen</button>
-        <button class="level-btn" data-level="difficile">Difficile</button>
+  <!-- JEU 5 : PUISSANCE 4 -->
+  <div id="game-connect4" class="game-panel">
+    <div class="game-shell">
+      <div class="game-top">
+        <div id="c4-mode-select" class="level-selector">
+          <button class="level-btn active" data-mode="ia">Contre l'ordinateur</button>
+          <button class="level-btn" data-mode="2joueurs">2 joueurs</button>
+        </div>
+        <div id="c4-level-select" class="level-selector">
+          <button class="level-btn" data-level="facile">Facile</button>
+          <button class="level-btn active" data-level="moyen">Moyen</button>
+          <button class="level-btn" data-level="difficile">Difficile</button>
+        </div>
       </div>
+      <div class="stat-chips stat-chips-center">
+        <span class="chip"><span class="chip-label">Manche</span><strong id="c4-status">À vous&nbsp;!</strong></span>
+        <span class="chip"><span class="chip-label">Victoires IA</span><strong id="c4-wins">0</strong></span>
+      </div>
+      <p class="game-help">Alignez 4 disques de votre couleur — horizontalement, verticalement ou en diagonale. Cliquez sur une colonne pour lâcher votre disque.</p>
+      <div class="game-stage">
+        <div id="c4-board" class="c4-board"></div>
+        <div id="c4-overlay" class="game-overlay" style="display:none;">
+          <h3 id="c4-overlay-title">Manche terminée</h3>
+          <p id="c4-overlay-text"></p>
+          <button id="c4-replay-btn" class="btn">Nouvelle manche</button>
+        </div>
+      </div>
+      <div class="game-actions">
+        <button id="c4-restart" class="btn">Nouvelle manche</button>
+      </div>
+      <div id="c4-score-submit" class="score-submit" style="display:none;">
+        <input type="text" id="c4-name-input" maxlength="16" placeholder="Votre pseudo">
+        <button id="c4-save-score-btn" class="btn">Enregistrer</button>
+      </div>
+      <div class="leaderboard">
+        <h4>🏆 Victoires contre l'IA (cet appareil)</h4>
+        <div id="c4-leaderboard"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JEU 6 : SUITE DE RYTHME (SIMON) -->
+  <div id="game-simon" class="game-panel">
+    <div class="game-shell">
+      <div class="game-top">
+        <div id="simon-level-select" class="level-selector">
+          <button class="level-btn" data-level="facile">Facile</button>
+          <button class="level-btn active" data-level="moyen">Moyen</button>
+          <button class="level-btn" data-level="difficile">Difficile</button>
+        </div>
+        <div class="stat-chips">
+          <span class="chip"><span class="chip-label">Niveau</span><strong id="simon-level">0</strong></span>
+          <span class="chip"><span class="chip-label">Record</span><strong id="simon-best">0</strong></span>
+        </div>
+      </div>
+      <p class="game-help">Regardez et retenez la suite allumée, puis reproduisez-la exactement — un pas de plus à chaque niveau.</p>
+      <div class="game-stage">
+        <div class="simon-board">
+          <button class="simon-pad" data-pad="0" style="--pad-color:#d4af37;" disabled></button>
+          <button class="simon-pad" data-pad="1" style="--pad-color:#4285F4;" disabled></button>
+          <button class="simon-pad" data-pad="2" style="--pad-color:#3ca05a;" disabled></button>
+          <button class="simon-pad" data-pad="3" style="--pad-color:#c84646;" disabled></button>
+        </div>
+      </div>
+      <p id="simon-message" class="simon-message">Cliquez sur Démarrer pour jouer</p>
+      <div class="game-actions">
+        <button id="simon-start-btn" class="btn">Démarrer</button>
+      </div>
+      <div id="simon-score-submit" class="score-submit" style="display:none;">
+        <input type="text" id="simon-name-input" maxlength="16" placeholder="Votre pseudo">
+        <button id="simon-save-score-btn" class="btn">Enregistrer le niveau</button>
+      </div>
+      <div class="leaderboard">
+        <h4>🏆 Meilleurs niveaux (cet appareil)</h4>
+        <div id="simon-leaderboard"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JEU 7 : PENDU BARBIER -->
+  <div id="game-hangman" class="game-panel">
+    <div class="game-shell">
+      <div class="game-top">
+        <div id="hangman-level-select" class="level-selector">
+          <button class="level-btn active" data-level="facile">Mots courts</button>
+          <button class="level-btn" data-level="moyen">Mots moyens</button>
+          <button class="level-btn" data-level="difficile">Mots longs</button>
+        </div>
+        <div class="stat-chips">
+          <span class="chip"><span class="chip-label">Mot</span><strong id="hangman-progress">1/5</strong></span>
+          <span class="chip"><span class="chip-label">Erreurs</span><strong id="hangman-errors">0/6</strong></span>
+        </div>
+      </div>
+      <p class="game-help">Devinez le mot du salon de barbier lettre par lettre. Vous avez le droit à 6 erreurs par mot&nbsp;!</p>
+      <div class="game-stage hangman-stage">
+        <div class="hangman-figure" id="hangman-figure"></div>
+        <div>
+          <p id="hangman-hint" class="hangman-hint"></p>
+          <p id="hangman-word" class="hangman-word"></p>
+          <div id="hangman-wrong" class="hangman-wrong"></div>
+        </div>
+      </div>
+      <div id="hangman-keys" class="hangman-keys"></div>
+      <p id="hangman-feedback" class="quiz-feedback"></p>
+      <div class="game-actions">
+        <button id="hangman-next-btn" class="btn" style="display:none;">Mot suivant</button>
+      </div>
+      <div id="hangman-result" class="quiz-result" style="display:none;">
+        <p id="hangman-score-text"></p>
+        <button id="hangman-restart-btn" class="btn">Recommencer</button>
+      </div>
+      <div id="hangman-score-submit" class="score-submit" style="display:none;">
+        <input type="text" id="hangman-name-input" maxlength="16" placeholder="Votre pseudo">
+        <button id="hangman-save-score-btn" class="btn">Enregistrer le score</button>
+      </div>
+      <div class="leaderboard">
+        <h4>🏆 Meilleurs scores (cet appareil)</h4>
+        <div id="hangman-leaderboard"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JEU 8 : QUIZ CULTURE COIFFURE -->
+  <div id="game-quiz" class="game-panel">
+    <div class="game-shell">
+      <div class="game-top">
+        <div id="quiz-level-select" class="level-selector">
+          <button class="level-btn" data-level="facile">5 questions</button>
+          <button class="level-btn active" data-level="moyen">8 questions</button>
+          <button class="level-btn" data-level="difficile">10 questions · 15 s</button>
+        </div>
+        <div class="stat-chips">
+          <span class="chip"><span class="chip-label">Bonnes réponses</span><strong id="quiz-score">0</strong></span>
+          <span class="chip"><span class="chip-label">Série</span><strong id="quiz-streak">0</strong></span>
+        </div>
+      </div>
+      <p class="game-help">Testez votre culture de barbier : à chaque question, une petite explication s'affiche après votre réponse.</p>
       <div id="quiz-question-block" class="quiz-question-block">
-        <p id="quiz-progress" class="quiz-progress">Question 1</p>
-        <span id="quiz-timer" class="timer-display"></span>
+        <div class="quiz-meta">
+          <span id="quiz-progress" class="quiz-progress">Question 1/8</span>
+          <span id="quiz-timer" class="timer-display"></span>
+        </div>
+        <div class="progress-track"><div id="quiz-bar" class="progress-fill"></div></div>
         <h3 id="quiz-question" class="quiz-question"></h3>
         <div id="quiz-options" class="quiz-options"></div>
         <p id="quiz-feedback" class="quiz-feedback"></p>
@@ -136,83 +393,28 @@
     </div>
   </div>
 
-  <!-- JEU 4 : SIMON / SUITE DE RYTHME -->
-  <div id="game-simon" class="game-panel">
-    <div class="simon-game">
-      <div id="simon-level-select" class="level-selector">
-        <button class="level-btn" data-level="facile">Facile</button>
-        <button class="level-btn active" data-level="moyen">Moyen</button>
-        <button class="level-btn" data-level="difficile">Difficile</button>
-      </div>
-      <p class="simon-stats">Niveau : <strong id="simon-level">0</strong></p>
-      <div class="simon-board">
-        <button class="simon-pad" data-pad="0" style="--pad-color:#d4af37;" disabled></button>
-        <button class="simon-pad" data-pad="1" style="--pad-color:#4285F4;" disabled></button>
-        <button class="simon-pad" data-pad="2" style="--pad-color:#3ca05a;" disabled></button>
-        <button class="simon-pad" data-pad="3" style="--pad-color:#c84646;" disabled></button>
-      </div>
-      <p id="simon-message" class="simon-message">Cliquez sur Démarrer pour jouer</p>
-      <button id="simon-start-btn" class="btn">Démarrer</button>
-      <div id="simon-score-submit" class="score-submit" style="display:none;">
-        <input type="text" id="simon-name-input" maxlength="16" placeholder="Votre pseudo">
-        <button id="simon-save-score-btn" class="btn">Enregistrer le score</button>
-      </div>
-      <div class="leaderboard">
-        <h4>🏆 Meilleurs niveaux (cet appareil)</h4>
-        <div id="simon-leaderboard"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- JEU 5 : MORPION -->
-  <div id="game-tictactoe" class="game-panel">
-    <div class="ttt-game">
-      <div id="ttt-mode-select" class="level-selector ttt-mode-selector">
-        <button class="level-btn active" data-mode="2joueurs">2 joueurs</button>
-        <button class="level-btn" data-mode="ia">Contre l'ordinateur</button>
-      </div>
-      <div id="ttt-level-select" class="level-selector" style="display:none;">
-        <button class="level-btn" data-level="facile">Facile</button>
-        <button class="level-btn active" data-level="moyen">Moyen</button>
-        <button class="level-btn" data-level="difficile">Difficile</button>
-      </div>
-      <p id="ttt-status" class="ttt-status">Au tour de X</p>
-      <p id="ttt-stats" class="ttt-stats"></p>
-      <div id="ttt-board" class="ttt-board">
-        <button class="ttt-cell" data-i="0"></button>
-        <button class="ttt-cell" data-i="1"></button>
-        <button class="ttt-cell" data-i="2"></button>
-        <button class="ttt-cell" data-i="3"></button>
-        <button class="ttt-cell" data-i="4"></button>
-        <button class="ttt-cell" data-i="5"></button>
-        <button class="ttt-cell" data-i="6"></button>
-        <button class="ttt-cell" data-i="7"></button>
-        <button class="ttt-cell" data-i="8"></button>
-      </div>
-      <button id="ttt-restart-btn" class="btn">Recommencer</button>
-      <div id="ttt-score-submit" class="score-submit" style="display:none;">
-        <input type="text" id="ttt-name-input" maxlength="16" placeholder="Votre pseudo">
-        <button id="ttt-save-score-btn" class="btn">Enregistrer le score</button>
-      </div>
-      <div class="leaderboard">
-        <h4>🏆 Victoires contre l'IA (cet appareil)</h4>
-        <div id="ttt-leaderboard"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- JEU 6 : PUZZLE GLISSANT -->
+  <!-- JEU 9 : PUZZLE GLISSANT -->
   <div id="game-puzzle" class="game-panel">
-    <div class="puzzle-game">
-      <div id="puzzle-level-select" class="level-selector">
-        <button class="level-btn active" data-level="facile">Facile</button>
-        <button class="level-btn" data-level="moyen">Moyen</button>
-        <button class="level-btn" data-level="difficile">Difficile</button>
+    <div class="game-shell">
+      <div class="game-top">
+        <div id="puzzle-level-select" class="level-selector">
+          <button class="level-btn active" data-level="facile">3×3</button>
+          <button class="level-btn" data-level="moyen">4×4</button>
+          <button class="level-btn" data-level="difficile">5×5</button>
+        </div>
+        <div class="stat-chips">
+          <span class="chip"><span class="chip-label">Coups</span><strong id="puzzle-moves">0</strong></span>
+          <span class="chip"><span class="chip-label">Temps</span><strong id="puzzle-time">0:00</strong></span>
+        </div>
       </div>
-      <p class="puzzle-stats">Coups : <strong id="puzzle-moves">0</strong></p>
-      <div id="puzzle-board" class="puzzle-board"></div>
+      <p class="game-help">Remettez la photo du salon dans le bon ordre : cliquez sur une pièce adjacente à la case vide pour la faire glisser.</p>
+      <div class="game-stage">
+        <div id="puzzle-board" class="puzzle-board"></div>
+      </div>
       <p id="puzzle-win-message" class="puzzle-win-message" style="display:none;"></p>
-      <button id="puzzle-restart-btn" class="btn">Mélanger</button>
+      <div class="game-actions">
+        <button id="puzzle-restart-btn" class="btn">Mélanger</button>
+      </div>
       <div id="puzzle-score-submit" class="score-submit" style="display:none;">
         <input type="text" id="puzzle-name-input" maxlength="16" placeholder="Votre pseudo">
         <button id="puzzle-save-score-btn" class="btn">Enregistrer le score</button>
@@ -224,17 +426,26 @@
     </div>
   </div>
 
-  <!-- JEU 8 : TROUVE LA BONNE COUPE -->
+  <!-- JEU 10 : TROUVE LA BONNE COUPE -->
   <div id="game-haircut" class="game-panel">
-    <div class="haircut-game">
-      <div id="haircut-level-select" class="level-selector">
-        <button class="level-btn" data-level="facile">Facile</button>
-        <button class="level-btn active" data-level="moyen">Moyen</button>
-        <button class="level-btn" data-level="difficile">Difficile</button>
+    <div class="game-shell">
+      <div class="game-top">
+        <div id="haircut-level-select" class="level-selector">
+          <button class="level-btn" data-level="facile">3 propositions</button>
+          <button class="level-btn active" data-level="moyen">4 propositions</button>
+          <button class="level-btn" data-level="difficile">5 propositions · 10 s</button>
+        </div>
+        <div class="stat-chips">
+          <span class="chip"><span class="chip-label">Clients satisfaits</span><strong id="haircut-score">0</strong></span>
+        </div>
       </div>
+      <p class="game-help">Un client s'exprise : comprenez sa demande et choisissez la coupe qu'il attend.</p>
       <div id="haircut-block" class="haircut-block">
-        <p id="haircut-progress" class="quiz-progress">Client 1</p>
-        <span id="haircut-timer" class="timer-display"></span>
+        <div class="quiz-meta">
+          <span id="haircut-progress" class="quiz-progress">Client 1/8</span>
+          <span id="haircut-timer" class="timer-display"></span>
+        </div>
+        <div class="progress-track"><div id="haircut-bar" class="progress-fill"></div></div>
         <p id="haircut-request" class="haircut-request"></p>
         <div id="haircut-options" class="quiz-options"></div>
         <p id="haircut-feedback" class="quiz-feedback"></p>
@@ -264,7 +475,7 @@
       <a href="politique-de-confidentialite.html">Politique de confidentialité</a>
     </div>
   </div>
-  <p>© 2025 Star Barbershop - Tous droits réservés.</p>
+  <p>© <span id="year">2025</span> Star Barbershop — Tous droits réservés.</p>
 </footer>
 
 <script src="script.js"></script>
