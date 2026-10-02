@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600" role="img" aria-label="Rituel de barbe au salon">
+  <rect width="600" height="600" fill="#141416"/>
+  <!-- carreaux du sol -->
+  <g opacity="0.35">
+    <rect x="0" y="470" width="600" height="130" fill="#1b1b1e"/>
+    <path d="M0 505 H600 M0 545 H600 M60 470 V600 M180 470 V600 M300 470 V600 M420 470 V600 M540 470 V600" stroke="#26262b" stroke-width="3"/>
+  </g>
+
+  <!-- serviette chaude roulée sur le plateau -->
+  <g>
+    <rect x="90" y="420" width="420" height="26" rx="13" fill="#e9e2d2"/>
+    <rect x="90" y="420" width="420" height="26" rx="13" fill="none" stroke="#c9bfa8" stroke-width="3"/>
+    <path d="M150 420 v26 M240 420 v26 M330 420 v26 M420 420 v26" stroke="#d6cdb6" stroke-width="3"/>
+    <ellipse cx="300" cy="452" rx="240" ry="16" fill="#0d0d0f" opacity="0.6"/>
+  </g>
+
+  <!-- blaireau -->
+  <g transform="translate(160 300)">
+    <path d="M-34 118 h68 a10 10 0 0 0 10 -10 v-58 a44 44 0 0 0 -88 0 v58 a10 10 0 0 0 10 10 z" fill="#d4af37"/>
+    <rect x="-44" y="34" width="88" height="18" rx="9" fill="#b8942e"/>
+    <path d="M-30 30 q30 -26 60 0 q-6 -30 -30 -34 q-24 4 -30 34 z" fill="#f4f1e9"/>
+    <circle cx="-14" cy="6" r="8" fill="#f4f1e9"/>
+    <circle cx="6" cy="-2" r="10" fill="#f4f1e9"/>
+    <circle cx="24" cy="8" r="7" fill="#f4f1e9"/>
+    <rect x="-24" y="70" width="48" height="30" rx="6" fill="#0c0c0d" opacity="0.25"/>
+  </g>
+
+  <!-- coupe-chou ouvert -->
+  <g transform="translate(410 330) rotate(-14)">
+    <rect x="-62" y="26" width="124" height="54" rx="12" fill="#c9ccd2"/>
+    <rect x="-62" y="26" width="124" height="54" rx="12" fill="none" stroke="#8f939b" stroke-width="4"/>
+    <rect x="-52" y="36" width="104" height="14" rx="7" fill="#eef0f3"/>
+    <path d="M-56 26 q56 -54 112 0" fill="none" stroke="#d4af37" stroke-width="10" stroke-linecap="round"/>
+    <rect x="-20" y="80" width="40" height="14" rx="7" fill="#6d7178"/>
+  </g>
+
+  <!-- flacon de lotion -->
+  <g transform="translate(490 350)">
+    <rect x="-26" y="0" width="52" height="86" rx="14" fill="#2b2b31"/>
+    <rect x="-26" y="0" width="52" height="86" rx="14" fill="none" stroke="#d4af37" stroke-width="4"/>
+    <rect x="-12" y="-22" width="24" height="24" rx="5" fill="#d4af37"/>
+    <rect x="-18" y="30" width="36" height="30" rx="5" fill="#f4f1e9" opacity="0.9"/>
+    <path d="M-10 45 h20" stroke="#0c0c0d" stroke-width="4"/>
+  </g>
+
+  <!-- poignée de serviette chaude enroulée -->
+  <g transform="translate(300 360)">
+    <rect x="-70" y="-30" width="140" height="60" rx="30" fill="#e9e2d2"/>
+    <rect x="-70" y="-30" width="140" height="60" rx="30" fill="none" stroke="#c9bfa8" stroke-width="4"/>
+    <path d="M-40 -30 q40 30 0 60 M0 -30 q40 30 0 60" fill="none" stroke="#d6cdb6" stroke-width="4"/>
+    <circle cx="52" cy="0" r="14" fill="#c9bfa8"/>
+  </g>
+
+  <!-- lueur guirlande -->
+  <g opacity="0.8">
+    <path d="M40 90 Q300 150 560 90" fill="none" stroke="#3a3a40" stroke-width="4"/>
+    <circle cx="120" cy="118" r="9" fill="#ffd98a"/>
+    <circle cx="230" cy="136" r="9" fill="#ffd98a"/>
+    <circle cx="340" cy="136" r="9" fill="#ffd98a"/>
+    <circle cx="450" cy="118" r="9" fill="#ffd98a"/>
+  </g>
+
+  <!-- titre -->
+  <text x="300" y="235" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="44" font-weight="700" fill="#d4af37" letter-spacing="4">RITUEL BARBE</text>
+  <text x="300" y="275" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="20" fill="#8f8f96" letter-spacing="6">SERVIENTE CHAUDE &amp; BLAIREAU</text>
+  <rect x="180" y="292" width="240" height="3" fill="#d4af37" opacity="0.6"/>
+</svg>

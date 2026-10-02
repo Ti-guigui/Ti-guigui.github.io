@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jeux — Star Barbershop</title>
-  <meta name="description" content="Patientez en jouant : dix mini-jeux gratuits (2048, démineur, puissance 4, memory, quiz…) avec niveaux de difficulté, classement et effets sonores, sur le site de Star Barbershop à Mourmelon-le-Grand.">
+  <meta name="description" content="Patientez en jouant : douze mini-jeux gratuits (2048, démineur, puissance 4, memory, quiz, mime, blagues…) en solo ou à plusieurs, avec niveaux de difficulté, classement et effets sonores, sur le site de Star Barbershop à Mourmelon-le-Grand.">
   <link rel="canonical" href="https://www.starbarbershop.fr/jeux.html">
 
   <link rel="icon" type="image/svg+xml" href="favicon.svg?v=2">
@@ -41,14 +41,16 @@
 </header>
 
 <section id="jeux-intro" class="games-intro">
+  <a class="games-back" href="index.html"><i class="fa-solid fa-arrow-left"></i> Retour au salon</a>
   <span class="eyebrow">En attendant votre tour</span>
   <h1>Salle de jeux</h1>
-  <p>Dix jeux gratuits — réflexes, logique, mémoire, culture générale — avec plusieurs niveaux de difficulté, des effets sonores, des illustrations originales et un classement des meilleurs scores enregistré sur cet appareil. Cumulez aussi les <strong>succès</strong> à débloquer, affichés juste en dessous&nbsp;!</p>
+  <p>Douze jeux gratuits — réflexes, logique, mémoire, culture générale — dont <strong>trois à plusieurs</strong> (Puissance 4, Mime Express et Blagues &amp; Anecdotes) pour faire rire tout le monde pendant l'attente. Filtrez d'un clic entre jeux <strong>solo</strong> et jeux <strong>à plusieurs</strong>, choisissez votre niveau, profitez des effets sonores et des illustrations originales, et tenez le classement des meilleurs scores enregistré sur cet appareil. Cumulez aussi les <strong>succès</strong> à débloquer, affichés juste en dessous&nbsp;!</p>
 </section>
 
 <section id="jeux" class="games">
 
   <div class="games-bar">
+    <a href="index.html" class="bar-btn bar-close"><i class="fa-solid fa-xmark"></i><span>Fermer les jeux</span></a>
     <button id="sound-toggle" class="bar-btn" type="button" aria-pressed="false">
       <i class="fa-solid fa-volume-high"></i><span>Son activé</span>
     </button>
@@ -58,8 +60,14 @@
   </div>
 
   <div class="achv-block">
-    <span class="achv-title"><i class="fa-solid fa-medal"></i> Vos succès <strong id="achv-count">0/14</strong></span>
+    <span class="achv-title"><i class="fa-solid fa-medal"></i> Vos succès <strong id="achv-count">0/16</strong></span>
     <div id="achv-strip" class="achv-strip" aria-label="Succès à débloquer"></div>
+  </div>
+
+  <div class="mode-filter" role="group" aria-label="Filtrer les jeux">
+    <button class="mode-btn active" data-mode="all" type="button">Tous les jeux</button>
+    <button class="mode-btn" data-mode="solo" type="button"><i class="fa-solid fa-user"></i> Solo</button>
+    <button class="mode-btn" data-mode="multi" type="button"><i class="fa-solid fa-users"></i> À plusieurs</button>
   </div>
 
   <div class="game-selector">
@@ -67,12 +75,14 @@
     <button class="game-tab" data-game="2048"><i class="fa-solid fa-brain"></i> 2048</button>
     <button class="game-tab" data-game="mine"><i class="fa-solid fa-bomb"></i> Démineur</button>
     <button class="game-tab" data-game="memory"><i class="fa-solid fa-clone"></i> Memory</button>
-    <button class="game-tab" data-game="connect4"><i class="fa-solid fa-circle-down"></i> Puissance 4</button>
+    <button class="game-tab" data-game="connect4" data-mode="solo multi"><i class="fa-solid fa-circle-down"></i> Puissance 4</button>
     <button class="game-tab" data-game="simon"><i class="fa-solid fa-music"></i> Suite de rythme</button>
     <button class="game-tab" data-game="hangman"><i class="fa-solid fa-keyboard"></i> Pendu barbier</button>
     <button class="game-tab" data-game="quiz"><i class="fa-solid fa-circle-question"></i> Quiz coiffure</button>
-    <button class="game-tab" data-game="puzzle"><i class="fa-solid fa-puzzle-piece"></i> Puzzle photo</button>
+    <button class="game-tab" data-game="puzzle"><i class="fa-solid fa-puzzle-piece"></i> Puzzle</button>
     <button class="game-tab" data-game="haircut"><i class="fa-solid fa-user-tie"></i> Trouve la bonne coupe</button>
+    <button class="game-tab" data-game="mime" data-mode="multi"><i class="fa-solid fa-masks-theater"></i> Mime Express</button>
+    <button class="game-tab" data-game="jokes" data-mode="multi"><i class="fa-solid fa-face-laugh-squint"></i> Blagues &amp; Anecdotes</button>
   </div>
 
   <!-- JEU 1 : ATTRAPE LA MÈCHE -->
@@ -415,8 +425,8 @@
           <span class="chip"><span class="chip-label">Temps</span><strong id="puzzle-time">0:00</strong></span>
         </div>
       </div>
-      <p class="game-help">Choisissez une photo du salon ci-dessous, puis remettez-la dans le bon ordre : cliquez sur une pièce adjacente à la case vide pour la faire glisser — jusqu'au défi 6×6 Expert&nbsp;!</p>
-      <div id="puzzle-picker" class="puzzle-picker" aria-label="Choisir la photo du puzzle"></div>
+      <p class="game-help">Choisissez une illustration ci-dessous, puis remettez-la dans le bon ordre : cliquez sur une pièce adjacente à la case vide pour la faire glisser — jusqu'au défi 6×6 Expert&nbsp;!</p>
+      <div id="puzzle-picker" class="puzzle-picker" aria-label="Choisir l'illustration du puzzle"></div>
       <div class="game-stage">
         <div id="puzzle-board" class="puzzle-board"></div>
       </div>
@@ -475,6 +485,101 @@
       <div class="leaderboard">
         <h4><i class="fa-solid fa-trophy"></i> Meilleurs scores (cet appareil)</h4>
         <div id="haircut-leaderboard"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JEU 11 : MIME EXPRESS (À PLUSIEURS) -->
+  <div id="game-mime" class="game-panel">
+    <div class="game-shell">
+      <div class="game-top">
+        <div id="mime-level-select" class="level-selector">
+          <button class="level-btn active" data-level="2equipes">2 équipes</button>
+          <button class="level-btn" data-level="3equipes">3 équipes</button>
+          <button class="level-btn" data-level="4equipes">4 équipes</button>
+        </div>
+        <div class="stat-chips">
+          <span class="chip"><span class="chip-label">Tour</span><strong id="mime-turn">1/2</strong></span>
+          <span class="chip"><span class="chip-label">Équipe</span><strong id="mime-team">Équipe 1</strong></span>
+          <span class="chip"><span class="chip-label">Chrono</span><strong id="mime-time">45s</strong></span>
+        </div>
+      </div>
+      <p class="game-help">À plusieurs, ça rit plus fort ! Une équipe fait mimer le mot pendant 45&nbsp;s, l'autre devine : chaque devinette rapporte 1 point. Affichez le mot avec « Voir le mot » avant de lancer le chrono, puis alternez les équipes.</p>
+      <div id="mime-teams" class="mime-teams" aria-label="Scores des équipes"></div>
+      <div class="game-stage">
+        <div class="mime-card">
+          <span id="mime-category" class="mime-category"></span>
+          <p id="mime-word" class="mime-word is-hidden">· · · · ·</p>
+        </div>
+      </div>
+      <div class="game-actions">
+        <button id="mime-reveal-btn" class="btn btn-ghost"><i class="fa-solid fa-eye"></i> Voir le mot</button>
+        <button id="mime-start-btn" class="btn"><i class="fa-solid fa-stopwatch"></i> Lancer le chrono</button>
+        <button id="mime-guess-btn" class="btn" style="display:none;">Deviné&nbsp;! +1</button>
+        <button id="mime-pass-btn" class="btn btn-ghost" style="display:none;">Mot suivant</button>
+        <button id="mime-next-btn" class="btn" style="display:none;">Manche suivante</button>
+      </div>
+      <p id="mime-message" class="quiz-feedback"></p>
+      <div id="mime-result" class="quiz-result" style="display:none;">
+        <p id="mime-score-text"></p>
+        <button id="mime-restart-btn" class="btn">Rejouer</button>
+      </div>
+      <div id="mime-score-submit" class="score-submit" style="display:none;">
+        <input type="text" id="mime-name-input" maxlength="16" placeholder="Votre pseudo">
+        <button id="mime-save-score-btn" class="btn">Enregistrer le score</button>
+      </div>
+      <div class="leaderboard">
+        <h4><i class="fa-solid fa-trophy"></i> Meilleurs scores (cet appareil)</h4>
+        <div id="mime-leaderboard"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JEU 12 : BLAGUES & ANECDOTES (À PLUSIEURS) -->
+  <div id="game-jokes" class="game-panel">
+    <div class="game-shell">
+      <div class="game-top">
+        <div id="jokes-level-select" class="level-selector">
+          <button class="level-btn active" data-level="facile">Blagues</button>
+          <button class="level-btn" data-level="moyen">Anecdotes</button>
+          <button class="level-btn" data-level="difficile">Mélange</button>
+        </div>
+        <div class="stat-chips">
+          <span class="chip"><span class="chip-label">Carte</span><strong id="jokes-progress">1/8</strong></span>
+          <span class="chip"><span class="chip-label">Points rire</span><strong id="jokes-score">0</strong></span>
+          <span class="chip"><span class="chip-label">Fous rires</span><strong id="jokes-laughs">0</strong></span>
+        </div>
+      </div>
+      <p class="game-help">La dose de rires de la salle d'attente : lisez la chute à voix haute, notez le rire de l'assemblée (petit, bon ou fou rire) et emportez les meilleures blagues et anecdotes à raconter au prochain fauteuil.</p>
+      <div class="game-stage">
+        <div class="joke-card">
+          <span id="joke-tag" class="joke-tag">Blague</span>
+          <p id="joke-setup" class="joke-setup"></p>
+          <p id="joke-punchline" class="joke-punchline" style="display:none;"></p>
+          <button id="jokes-reveal-btn" class="btn btn-ghost"><i class="fa-solid fa-mask"></i> Révéler la chute</button>
+          <div id="joke-rating" class="joke-rating" style="display:none;">
+            <span class="joke-rating-label">Ce rire vaut :</span>
+            <button class="joke-rate" data-points="1" type="button">🙂 Petit rire <strong>+1</strong></button>
+            <button class="joke-rate" data-points="3" type="button">😄 Bon rire <strong>+3</strong></button>
+            <button class="joke-rate" data-points="5" type="button">🤣 Fou rire <strong>+5</strong></button>
+          </div>
+        </div>
+      </div>
+      <div class="game-actions">
+        <button id="jokes-next-btn" class="btn" style="display:none;">Carte suivante</button>
+      </div>
+      <div id="jokes-result" class="quiz-result" style="display:none;">
+        <p id="jokes-score-text"></p>
+        <button id="jokes-restart-btn" class="btn">Recommencer</button>
+        <a class="btn btn-ghost" href="index.html#avis">Laisser un avis au salon</a>
+      </div>
+      <div id="jokes-score-submit" class="score-submit" style="display:none;">
+        <input type="text" id="jokes-name-input" maxlength="16" placeholder="Votre pseudo">
+        <button id="jokes-save-score-btn" class="btn">Enregistrer le score</button>
+      </div>
+      <div class="leaderboard">
+        <h4><i class="fa-solid fa-trophy"></i> Meilleurs scores (cet appareil)</h4>
+        <div id="jokes-leaderboard"></div>
       </div>
     </div>
   </div>

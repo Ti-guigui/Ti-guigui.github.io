@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600">
+  <defs>
+    <linearGradient id="fond" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#151519"/>
+      <stop offset="1" stop-color="#0a0a0c"/>
+    </linearGradient>
+    <clipPath id="colonne"><rect x="250" y="90" width="100" height="400" rx="50"/></clipPath>
+    <radialGradient id="lueur" cx="50%" cy="45%" r="55%">
+      <stop offset="0" stop-color="#d4af37" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#d4af37" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="600" height="600" fill="url(#fond)"/>
+  <rect width="600" height="600" fill="url(#lueur)"/>
+
+  <!-- rayonnement -->
+  <g stroke="#d4af37" stroke-width="4" opacity="0.28" stroke-linecap="round">
+    <path d="M300 40v28M300 532v28M120 300h-30M510 300h30M160 120l-20-20M440 120l20-20M160 480l-20 20M440 480l20 20"/>
+    <path d="M230 60l-8-26M370 60l8-26M90 230l-26-8M510 230l26-8M90 370l-26 8M510 370l26 8M230 540l-8 26M370 540l8 26"/>
+  </g>
+
+  <!-- grande étoile décorative -->
+  <path d="M300 30l16 36 36 16-36 16-16 36-16-36-36-16 36-16z" fill="#d4af37" opacity="0.9"/>
+
+  <!-- colonne du poteau -->
+  <rect x="250" y="90" width="100" height="400" rx="50" fill="#efe7d6" stroke="#d4af37" stroke-width="6"/>
+  <g clip-path="url(#colonne)">
+    <path d="M210 130 L390 60 M210 190 L390 120 M210 250 L390 180 M210 310 L390 240 M210 370 L390 300 M210 430 L390 360 M210 490 L390 420 M210 550 L390 480" stroke="#8f1d1d" stroke-width="34"/>
+    <path d="M210 160 L390 90 M210 220 L390 150 M210 280 L390 210 M210 340 L390 270 M210 400 L390 330 M210 460 L390 390 M210 520 L390 450" stroke="#2c6bd6" stroke-width="12"/>
+  </g>
+
+  <!-- sphères -->
+  <circle cx="300" cy="82" r="42" fill="#d4af37" stroke="#0d0d0f" stroke-width="6"/>
+  <circle cx="300" cy="82" r="16" fill="#0d0d0f"/>
+  <circle cx="300" cy="498" r="42" fill="#d4af37" stroke="#0d0d0f" stroke-width="6"/>
+  <circle cx="300" cy="498" r="16" fill="#0d0d0f"/>
+
+  <!-- étoiles & bijoux -->
+  <g fill="#d4af37">
+    <path d="M120 180l6 14 14 6-14 6-6 14-6-14-14-6 14-6z"/>
+    <path d="M480 180l6 14 14 6-14 6-6 14-6-14-14-6 14-6z"/>
+    <path d="M120 400l6 14 14 6-14 6-6 14-6-14-14-6 14-6z"/>
+    <path d="M480 400l6 14 14 6-14 6-6 14-6-14-14-6 14-6z"/>
+    <circle cx="150" cy="300" r="8"/>
+    <circle cx="450" cy="300" r="8"/>
+  </g>
+
+  <!-- bandeau texte -->
+  <rect x="70" y="546" width="460" height="0" fill="none"/>
+</svg>
