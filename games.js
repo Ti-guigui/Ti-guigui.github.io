@@ -4,6 +4,204 @@
    puis 10 mini-jeux (chacun isolé derrière une garde).
    ========================================================= */
 
+/* ---------------- Illustrations vectorielles partagées ----------------
+   Petits SVG dorés générés à la volée (aucun fichier, aucune dépendance) :
+   illustrations du quiz, cartes de « Trouve la bonne coupe », memory,
+   Attrape la mèche et bandeau des succès. */
+const ART = (function () {
+  const G = "#d4af37"; // or
+  const D = "#141416"; // sombre (cheveux, objets)
+
+  function svg(inner, cls) {
+    return "<svg viewBox='0 0 64 64' xmlns='http://www.w3.org/2000/svg' aria-hidden='true' focusable='false'" +
+      (cls ? " class='" + cls + "'" : "") + ">" + inner + "</svg>";
+  }
+
+  /* --- Coupes de cheveux : cheveux & barbes posés sur une tête --- */
+  const HAIR = {
+    buzz: "<path d='M17.5 27c1-9 6.5-14 14.5-14s13.5 5 14.5 14c-3-5.5-8.5-8-14.5-8s-11.5 2.5-14.5 8z' fill='" + D + "' stroke='" + G + "' stroke-width='2'/>",
+    crew: "<path d='M18 26c1.5-8.5 7-13.5 14-13.5S44.5 17.5 46 26c-3.5-5-8.5-7.5-14-7.5S21.5 21 18 26z' fill='" + D + "' stroke='" + G + "' stroke-width='2'/>",
+    taper: "<path d='M19 28c1-7.5 6-12.5 13-12.5S44 20.5 45 28c-3-4.5-7.5-7-13-7s-10 2.5-13 7z' fill='" + D + "' stroke='" + G + "' stroke-width='2'/>",
+    fade: "<path d='M18 26c1-8.5 7-14 14-14s13 5.5 14 14c-3-5-8-7.5-14-7.5S21 21 18 26z' fill='" + D + "' stroke='" + G + "' stroke-width='2'/><path d='M18.6 28c-.8 4-.8 8 0 12M45.4 28c.8 4 .8 8 0 12' fill='none' stroke='" + G + "' stroke-width='2.4' stroke-linecap='round' opacity='.5'/>",
+    undercut: "<path d='M16.5 28c1-10 7.5-16 15.5-16s14.5 6 15.5 16c-2.5-6-8-9.5-15.5-9.5S19 22 16.5 28z' fill='" + D + "' stroke='" + G + "' stroke-width='2'/><path d='M19.5 30v9M44.5 30v9' fill='none' stroke='" + G + "' stroke-width='2.4' stroke-linecap='round' opacity='.5'/>",
+    slick: "<path d='M17 28c0-9.5 7-16 15-16 8.5 0 14.5 5.5 15.5 14-2.5-4.5-7-7-13.5-7.5-6-.5-13 1.5-17 9.5z' fill='" + D + "' stroke='" + G + "' stroke-width='2'/>",
+    pompadour: "<path d='M16.5 30c-1-12 6.5-20 15.5-20 8.5 0 14.5 5.5 15.5 14-2.5-3.5-6-5.5-9-6.5-1 3-3.5 5-7 6-4.5 1.5-10.5 2.5-15 6.5z' fill='" + D + "' stroke='" + G + "' stroke-width='2'/>",
+    quiff: "<path d='M17 29c0-9 6-15 14-15-2.5-6 3-11 9.5-9.5 6 1.5 9 7.5 7 14l-3 5c-1.5-5-6-8-12.5-8-5 0-10.5 1.5-15 13.5z' fill='" + D + "' stroke='" + G + "' stroke-width='2'/>",
+    afro: "<circle cx='32' cy='16.5' r='15' fill='" + D + "' stroke='" + G + "' stroke-width='2'/>",
+    sidepart: "<path d='M18 27c0-8.5 6.5-14.5 14-14.5s14 6 14 14.5c-3-5-8-7.5-14-7.5s-11 2.5-14 7.5z' fill='" + D + "' stroke='" + G + "' stroke-width='2'/><path d='M40 13.5 31.5 26' fill='none' stroke='" + G + "' stroke-width='2' stroke-linecap='round'/>",
+    bald: "<path d='M23 18.5q9-5 18 0' fill='none' stroke='" + G + "' stroke-width='1.6' stroke-linecap='round' opacity='.55'/>"
+  };
+  const BEARD = {
+    full: "<path d='M19.5 34c0 11 5.5 18 12.5 18s12.5-7 12.5-18c-2 6.5-6.5 9.5-12.5 9.5S21.5 40.5 19.5 34z' fill='" + D + "' stroke='" + G + "' stroke-width='2'/>",
+    stubble: "<path d='M21 37.5c1 8 5 12.5 11 12.5s10-4.5 11-12.5c-2 5-6 7-11 7s-9-2-11-7z' fill='" + D + "' stroke='" + G + "' stroke-width='1.8'/>",
+    goatee: "<path d='M25.5 41.5q6.5 3.5 13 0' fill='none' stroke='" + G + "' stroke-width='2.6' stroke-linecap='round'/><path d='M27.5 44.5h9v5q-4.5 3-9 0z' fill='" + D + "' stroke='" + G + "' stroke-width='1.8'/>",
+    moustache: "<path d='M25.5 41.5q6.5 3.5 13 0' fill='none' stroke='" + G + "' stroke-width='2.8' stroke-linecap='round'/>"
+  };
+  function head(hair, beard) {
+    return svg(
+      "<circle cx='15' cy='33' r='3.6' fill='" + D + "' stroke='" + G + "' stroke-width='1.6'/>" +
+      "<circle cx='49' cy='33' r='3.6' fill='" + D + "' stroke='" + G + "' stroke-width='1.6'/>" +
+      "<ellipse cx='32' cy='32' rx='15' ry='18' fill='" + D + "' stroke='" + G + "' stroke-width='2'/>" +
+      "<circle cx='26.5' cy='32' r='1.8' fill='" + G + "'/>" +
+      "<circle cx='37.5' cy='32' r='1.8' fill='" + G + "'/>" +
+      "<path d='M32 34.5v4.5' fill='none' stroke='" + G + "' stroke-width='1.5' stroke-linecap='round'/>" +
+      "<path d='M28 43q4 2.8 8 0' fill='none' stroke='" + G + "' stroke-width='1.5' stroke-linecap='round'/>" +
+      (BEARD[beard] || "") +
+      (HAIR[hair] || "")
+    );
+  }
+
+  /* --- Objets, outils & accessoires du salon --- */
+  const ICONS = {
+    scissors: svg("<g fill='none' stroke='" + G + "' stroke-width='3' stroke-linecap='round'><path d='M17 9 42 46'/><path d='M47 9 22 46'/></g><circle cx='19.5' cy='51.5' r='6' fill='none' stroke='" + G + "' stroke-width='3'/><circle cx='44.5' cy='51.5' r='6' fill='none' stroke='" + G + "' stroke-width='3'/><circle cx='32' cy='31' r='3.2' fill='" + G + "'/>"),
+    clipper: svg("<rect x='23' y='7' width='18' height='33' rx='6' fill='" + D + "' stroke='" + G + "' stroke-width='2'/><rect x='20' y='39' width='24' height='8' rx='3' fill='" + D + "' stroke='" + G + "' stroke-width='2'/><path d='M22.5 47v7M27.5 47v7M32.5 47v7M37.5 47v7M42.5 47v7' fill='none' stroke='" + G + "' stroke-width='2.4' stroke-linecap='round'/><circle cx='32' cy='15' r='3' fill='" + G + "'/><path d='M27 24h10' fill='none' stroke='" + G + "' stroke-width='1.6' opacity='.6'/>"),
+    razor: svg("<path d='M12 54 32 34' fill='none' stroke='" + G + "' stroke-width='5' stroke-linecap='round'/><path d='M30 36 47 14l6 5-17 22z' fill='" + D + "' stroke='" + G + "' stroke-width='2'/>"),
+    comb: svg("<rect x='9' y='20' width='46' height='8' rx='4' fill='" + D + "' stroke='" + G + "' stroke-width='2'/><path d='M14 28v18M21 28v13M28 28v18M35 28v13M42 28v18M49 28v13' fill='none' stroke='" + G + "' stroke-width='2.2' stroke-linecap='round'/>"),
+    brush: svg("<path d='M27 37h10v14a5 5 0 0 1-10 0z' fill='" + D + "' stroke='" + G + "' stroke-width='2'/><path d='M23.5 37c0-9 3.8-15 8.5-15s8.5 6 8.5 15z' fill='" + D + "' stroke='" + G + "' stroke-width='2'/>"),
+    bottle: svg("<rect x='21' y='19' width='22' height='35' rx='7' fill='" + D + "' stroke='" + G + "' stroke-width='2'/><rect x='27' y='8' width='10' height='11' rx='2.5' fill='" + D + "' stroke='" + G + "' stroke-width='2'/><path d='M27 31h10M27 38h10' fill='none' stroke='" + G + "' stroke-width='1.6' opacity='.65'/>"),
+    spray: svg("<path d='M24 23h14v29a4 4 0 0 1-4 4h-6a4 4 0 0 1-4-4z' fill='" + D + "' stroke='" + G + "' stroke-width='2'/><rect x='28' y='13' width='6' height='10' rx='2' fill='" + D + "' stroke='" + G + "' stroke-width='2'/><path d='M44 14h6M44 19h7M44 24h5' fill='none' stroke='" + G + "' stroke-width='2' stroke-linecap='round'/>"),
+    cap: svg("<path d='M13 39a19 15 0 0 1 38 0z' fill='" + D + "' stroke='" + G + "' stroke-width='2'/><path d='M45 38h10a5 5 0 0 1 1 9H45z' fill='" + D + "' stroke='" + G + "' stroke-width='2'/><circle cx='32' cy='20' r='2.6' fill='" + G + "'/>"),
+    star: svg("<path d='M32 6l7.2 15.4 16.8 2.2-12.2 11.6 3 16.6L32 43l-14.8 8.4 3-16.6L8 23.6l16.8-2.2z' fill='" + G + "' stroke='#8a6d1f' stroke-width='1.5' stroke-linejoin='round'/>"),
+    heart: svg("<path d='M32 54C18 44 10 36 10 26.5 10 19.6 15.4 14 22 14c4.4 0 8.4 2.2 10 5.8C33.6 16.2 37.6 14 42 14c6.6 0 12 5.6 12 12.5C54 36 46 44 32 54z' fill='#c84646' stroke='#e08a8a' stroke-width='1.6'/>"),
+    bomb: svg("<circle cx='30' cy='38' r='16' fill='#1a1a1d' stroke='" + G + "' stroke-width='2'/><path d='M40 25l6-6' fill='none' stroke='" + G + "' stroke-width='3' stroke-linecap='round'/><path d='M46 16l3-7M49 19l8-3' fill='none' stroke='#e8c860' stroke-width='2' stroke-linecap='round'/><path d='M23 33a9 9 0 0 1 5-5' fill='none' stroke='#ffffff' stroke-width='1.6' opacity='.35'/>"),
+    pole: svg("<rect x='22' y='8' width='20' height='48' rx='10' fill='" + D + "' stroke='" + G + "' stroke-width='2'/><path d='M24 18 40 10M24 30 40 22M24 42 40 34M24 54 40 46' fill='none' stroke='" + G + "' stroke-width='3' stroke-linecap='round'/><circle cx='32' cy='7' r='3.4' fill='" + G + "'/><circle cx='32' cy='57' r='3.4' fill='" + G + "'/>"),
+    chair: svg("<rect x='19' y='7' width='21' height='27' rx='8' fill='" + D + "' stroke='" + G + "' stroke-width='2'/><rect x='14' y='33' width='34' height='8' rx='4' fill='" + D + "' stroke='" + G + "' stroke-width='2'/><path d='M31 41v11M21 56h20M21 56q10 5 20 0' fill='none' stroke='" + G + "' stroke-width='2.6' stroke-linecap='round'/>"),
+    towel: svg("<rect x='13' y='33' width='38' height='19' rx='5' fill='" + D + "' stroke='" + G + "' stroke-width='2'/><path d='M13 41h38' fill='none' stroke='" + G + "' stroke-width='1.6' opacity='.6'/><path d='M24 26q-3-5 0-10M32 27q-3-6 0-12M40 26q-3-5 0-10' fill='none' stroke='" + G + "' stroke-width='2' stroke-linecap='round'/>"),
+    wax: svg("<ellipse cx='32' cy='23' rx='17' ry='7' fill='" + D + "' stroke='" + G + "' stroke-width='2'/><path d='M15 23v13c0 3.9 7.6 7 17 7s17-3.1 17-7V23' fill='" + D + "' stroke='" + G + "' stroke-width='2'/><ellipse cx='32' cy='23' rx='8' ry='3.2' fill='" + G + "' opacity='.85'/>"),
+    pin: svg("<path d='M15 21h27a5 5 0 0 1 0 10H15z' fill='" + D + "' stroke='" + G + "' stroke-width='2'/><path d='M15 35h27a5 5 0 0 1 0 10H15z' fill='" + D + "' stroke='" + G + "' stroke-width='2'/><path d='M15 26H8M15 40H8' fill='none' stroke='" + G + "' stroke-width='4' stroke-linecap='round'/>"),
+    drop: svg("<path d='M32 7s14 15.5 14 25.5A14 14 0 0 1 18 32.5C18 22.5 32 7 32 7z' fill='" + D + "' stroke='" + G + "' stroke-width='2'/><path d='M25 36a7 7 0 0 0 5 7' fill='none' stroke='" + G + "' stroke-width='1.6' opacity='.7'/>"),
+    calendar: svg("<rect x='10' y='14' width='44' height='40' rx='6' fill='" + D + "' stroke='" + G + "' stroke-width='2'/><path d='M10 26h44' fill='none' stroke='" + G + "' stroke-width='2'/><path d='M21 8v10M43 8v10' fill='none' stroke='" + G + "' stroke-width='3' stroke-linecap='round'/><g fill='" + G + "'><circle cx='21' cy='36' r='2.6'/><circle cx='32' cy='36' r='2.6'/><circle cx='43' cy='36' r='2.6'/><circle cx='21' cy='46' r='2.6'/><circle cx='43' cy='46' r='2.6'/></g><circle cx='32' cy='46' r='4' fill='none' stroke='#e8c860' stroke-width='2'/>"),
+    trophy: svg("<path d='M21 9h22v13a11 11 0 0 1-22 0z' fill='" + D + "' stroke='" + G + "' stroke-width='2'/><path d='M21 12h-7a8.5 8.5 0 0 0 7.5 9.5M43 12h7a8.5 8.5 0 0 1-7.5 9.5' fill='none' stroke='" + G + "' stroke-width='2'/><path d='M32 33v9' fill='none' stroke='" + G + "' stroke-width='2.6'/><path d='M24 56h16l-2.5-8h-11z' fill='" + D + "' stroke='" + G + "' stroke-width='2'/>"),
+    medal: svg("<path d='M22 6l8 20M42 6l-8 20' fill='none' stroke='" + G + "' stroke-width='4' stroke-linecap='round'/><circle cx='32' cy='42' r='14' fill='" + D + "' stroke='" + G + "' stroke-width='2'/><path d='M32 34l2.3 4.8 5.2.7-3.8 3.6.9 5.2-4.6-2.5-4.6 2.5.9-5.2-3.8-3.6 5.2-.7z' fill='" + G + "'/>"),
+    crown: svg("<path d='M11 45 7 19l13 10L32 11l12 18 13-10-4 26z' fill='" + D + "' stroke='" + G + "' stroke-width='2' stroke-linejoin='round'/><path d='M13 51h38' fill='none' stroke='" + G + "' stroke-width='3' stroke-linecap='round'/>"),
+    bulb: svg("<path d='M32 7a16 16 0 0 1 9 29.3V43H23v-6.7A16 16 0 0 1 32 7z' fill='" + D + "' stroke='" + G + "' stroke-width='2'/><path d='M26 48h12M28 54h8' fill='none' stroke='" + G + "' stroke-width='2.6' stroke-linecap='round'/>"),
+    clock: svg("<circle cx='32' cy='33' r='21' fill='" + D + "' stroke='" + G + "' stroke-width='2'/><path d='M32 20v13l9 6' fill='none' stroke='" + G + "' stroke-width='2.6' stroke-linecap='round'/><circle cx='32' cy='33' r='2.6' fill='" + G + "'/>")
+  };
+
+  /* Coupes nommées (« Trouve la bonne coupe ») */
+  const STYLES = {
+    "Undercut": head("undercut"),
+    "Buzz cut": head("buzz"),
+    "Slick back": head("slick"),
+    "Dégradé (fade)": head("fade"),
+    "Crew cut": head("crew"),
+    "Pompadour": head("pompadour"),
+    "Taper fade": head("taper"),
+    "Coupe + barbe": head("crew", "full"),
+    "Quiff (mèche)": head("quiff"),
+    "Afro": head("afro"),
+    "Crâne rasé": head("bald"),
+    "Crâne + barbe": head("bald", "full")
+  };
+  const CLIENT_HAIRS = ["buzz", "fade", "crew", "quiff", "afro", "slick", "undercut", "taper", "sidepart", "pompadour"];
+  const CLIENT_BEARDS = ["stubble", "moustache", "", "goatee", "full"];
+
+  return {
+    get(key) {
+      if (ICONS[key]) return ICONS[key];
+      if (key.indexOf("style:") === 0) return STYLES[key.slice(6)] || head("crew");
+      if (key.indexOf("head:") === 0) { const p = key.slice(5).split(","); return head(p[0], p[1]); }
+      return "";
+    },
+    head,
+    style(name) { return STYLES[name] || head("crew"); },
+    client(i) { return head(CLIENT_HAIRS[i % CLIENT_HAIRS.length], CLIENT_BEARDS[i % CLIENT_BEARDS.length]); },
+    hearts(n) { const s = ICONS.heart; let out = ""; for (let i = 0; i < n; i++) out += s; return out; }
+  };
+})();
+
+/* ---------------- Succès (badges de rejouabilité) ----------------
+   Évalués après chaque fin de partie / enregistrement de score, stockés
+   dans localStorage, affichés dans le bandeau de la page jeux. */
+const ACHV = (function () {
+  const KEY = "starbarbershop_achv";
+  const GAMES = ["catch", "g2048", "mine", "memory", "connect4", "simon", "hangman", "quiz", "puzzle", "haircut"];
+
+  function unlocked() {
+    try { return JSON.parse(localStorage.getItem(KEY) || "[]"); } catch (e) { return []; }
+  }
+  function save(list) {
+    try { localStorage.setItem(KEY, JSON.stringify(list)); } catch (e) { /* ignore */ }
+  }
+  function entries(id) { return lbGet(id); }
+  function maxScore(id) {
+    return entries(id).reduce((m, e) => Math.max(m, Number(e.score) || 0), -Infinity);
+  }
+  function minScore(id) {
+    const list = entries(id);
+    if (!list.length) return Infinity;
+    return list.reduce((m, e) => Math.min(m, Number(e.score)), Infinity);
+  }
+  function playedGames() {
+    return GAMES.filter(id => entries(id).length > 0).length;
+  }
+  function totalEntries() {
+    return GAMES.reduce((n, id) => n + entries(id).length, 0);
+  }
+  function best(key) { return bestGet(key, null); }
+
+  const defs = [
+    { id: "first", icon: "scissors", title: "Premier coup de ciseaux", desc: "Enregistrer votre premier score", check: () => totalEntries() >= 1 || ["catch", "g2048", "simon", "mine"].some(k => (best(k) || 0) > 0) },
+    { id: "triple", icon: "medal", title: "Triple service", desc: "Enregistrer un score dans 3 jeux différents", check: () => playedGames() >= 3 },
+    { id: "collector", icon: "crown", title: "Polyvalent", desc: "Enregistrer un score dans 7 jeux différents", check: () => playedGames() >= 7 },
+    { id: "habitue", icon: "trophy", title: "Habitué du salon", desc: "Cumuler 10 scores enregistrés", check: () => totalEntries() >= 10 },
+    { id: "quiz100", icon: "bulb", title: "Sans faute", desc: "Terminer un quiz à 100 %", check: () => entries("quiz").some(e => Number(e.score) >= 100) },
+    { id: "quiz80", icon: "bulb", title: "Culture coiffure", desc: "Atteindre 80 % au quiz", check: () => maxScore("quiz") >= 80 },
+    { id: "cut80", icon: "scissors", title: "Le client repart souriant", desc: "Satisfaire 80 % des clients minimum", check: () => maxScore("haircut") >= 80 },
+    { id: "catch75", icon: "star", title: "Réflexes d'or", desc: "Marquer 75 points à Attrape la mèche", check: () => (best("catch") || 0) >= 75 || maxScore("catch") >= 75 },
+    { id: "simon12", icon: "clock", title: "Oreille absolue", desc: "Atteindre le niveau 12 en Suite de rythme", check: () => (best("simon") || 0) >= 12 || maxScore("simon") >= 12 },
+    { id: "g2048_1024", icon: "medal", title: "Tuiles millénaires", desc: "Créer une tuile 1024 dans le 2048", check: () => (best("g2048") || 0) >= 1024 || maxScore("g2048") >= 1024 },
+    { id: "minefast", icon: "clock", title: "Déminage express", desc: "Terminer un démineur en moins de 3 minutes", check: () => best("mine") != null && best("mine") <= 180 },
+    { id: "memofast", icon: "medal", title: "Mémoire d'acier", desc: "Terminer un memory en 12 coups ou moins", check: () => minScore("memory") <= 12 },
+    { id: "puzzle80", icon: "star", title: "Vue d'ensemble", desc: "Résoudre un puzzle en 80 coups ou moins", check: () => minScore("puzzle") <= 80 },
+    { id: "expert", icon: "crown", title: "Niveau expert", desc: "Enregistrer un score en niveau Expert ou Difficile", check: () => GAMES.some(id => entries(id).some(e => /expert|difficile/i.test(e.level || ""))) }
+  ];
+
+  function render() {
+    const strip = document.getElementById("achv-strip");
+    const count = document.getElementById("achv-count");
+    if (!strip) return;
+    const have = unlocked();
+    strip.innerHTML = defs.map(d => {
+      const on = have.indexOf(d.id) !== -1;
+      return "<span class='achv-chip" + (on ? "" : " locked") + "' title='" + d.title + " — " + d.desc + "'>" +
+        ART.get(d.icon) + "<span class='achv-name'>" + d.title + "</span></span>";
+    }).join("");
+    if (count) count.textContent = have.length + "/" + defs.length;
+  }
+
+  function toast(d) {
+    let root = document.getElementById("toast-root");
+    if (!root) {
+      root = document.createElement("div");
+      root.id = "toast-root";
+      root.className = "toast-root";
+      document.body.appendChild(root);
+    }
+    const t = document.createElement("div");
+    t.className = "toast";
+    t.innerHTML = ART.get(d.icon) + "<span><strong>Succès débloqué</strong>" + d.title + "</span>";
+    root.appendChild(t);
+    try { SFX.win(); } catch (e) { /* son indisponible */ }
+    setTimeout(() => t.classList.add("show"), 30);
+    setTimeout(() => { t.classList.remove("show"); setTimeout(() => t.remove(), 400); }, 3600);
+  }
+
+  function evaluate(announce) {
+    const have = unlocked();
+    const fresh = defs.filter(d => have.indexOf(d.id) === -1 && d.check());
+    if (fresh.length) {
+      save(have.concat(fresh.map(d => d.id)));
+      if (announce) fresh.forEach((d, i) => setTimeout(() => toast(d), i * 850));
+    }
+    render();
+  }
+
+  render();
+  evaluate(false);
+  return { evaluate, render, defs };
+})();
+
 /* ---------------- Onglets & hooks d'affichage ---------------- */
 const gameTabs = document.querySelectorAll(".game-tab");
 const gamePanels = document.querySelectorAll(".game-panel");
@@ -27,6 +225,7 @@ function activateTab(tab) {
   if (panel) panel.classList.add("active");
   try { localStorage.setItem("starbarbershop_lastgame", id); } catch (e) { /* stockage indisponible */ }
   if (gameShowHooks[id]) gameShowHooks[id]();
+  ACHV.evaluate(true);
 }
 
 gameTabs.forEach(tab => {
@@ -225,10 +424,11 @@ function bestGet(key, def) {
 function bestSet(key, val, higherBetter) {
   const cur = bestGet(key, null);
   if (cur == null || (higherBetter ? val > cur : val < cur)) {
-    try { localStorage.setItem("starbarbershop_best_" + key, String(val)); } catch (e) { /* ignore */ }
-    return val;
-  }
-  return cur;
+      try { localStorage.setItem("starbarbershop_best_" + key, String(val)); } catch (e) { /* ignore */ }
+      ACHV.evaluate(true);
+      return val;
+    }
+    return cur;
 }
 
 /* ---------------- Classements (localStorage) ---------------- */
@@ -256,6 +456,7 @@ function lbSave(gameId, entry, sortFn) {
   try {
     localStorage.setItem(lbKey(gameId), JSON.stringify(trimmed));
   } catch (e) { /* stockage indisponible : on ignore silencieusement */ }
+  ACHV.evaluate(true);
   return trimmed;
 }
 
@@ -302,12 +503,13 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
     if (!window.confirm("Effacer tous les scores et records enregistrés sur cet appareil ?")) return;
     try {
       Object.keys(localStorage).forEach(k => {
-        if (k.indexOf("starbarbershop_leaderboard_") === 0 || k.indexOf("starbarbershop_best_") === 0) {
+        if (k.indexOf("starbarbershop_leaderboard_") === 0 || k.indexOf("starbarbershop_best_") === 0 || k === "starbarbershop_achv") {
           localStorage.removeItem(k);
         }
       });
     } catch (e) { /* ignore */ }
     lbRenderers.forEach(fn => fn());
+    ACHV.render();
     SFX.bad();
   });
 })();
@@ -328,7 +530,7 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
   const submitBlock = document.getElementById("catch-score-submit");
   const leaderboardEl = document.getElementById("catch-leaderboard");
 
-  const NORMAL_ICONS = ["✂️", "🧴", "💇", "🪒", "💈", "🧢"];
+  const NORMAL_ICONS = ["scissors", "bottle", "razor", "comb", "spray", "cap"];
   const LEVELS = {
     facile: { spawnInterval: 1150, baseSpeed: 1.1, growth: 0.035, lives: 4, label: "Facile" },
     moyen: { spawnInterval: 900, baseSpeed: 1.5, growth: 0.05, lives: 3, label: "Moyen" },
@@ -353,7 +555,7 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
 
   function updateHud() {
     scoreEl.textContent = score;
-    livesEl.textContent = "❤️".repeat(Math.max(lives, 0));
+    livesEl.innerHTML = ART.hearts(Math.max(lives, 0));
     comboEl.textContent = "×" + multiplier();
   }
 
@@ -368,17 +570,18 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
 
   function pickItem() {
     const r = Math.random();
-    if (r < 0.13) return { type: "bomb", icon: "💣" };
-    if (r < 0.20) return { type: "heart", icon: "❤️" };
-    if (r < 0.33) return { type: "star", icon: "⭐" };
-    return { type: "normal", icon: NORMAL_ICONS[Math.floor(Math.random() * NORMAL_ICONS.length)] };
+    if (r < 0.13) return { type: "bomb", icon: ART.get("bomb") };
+    if (r < 0.20) return { type: "heart", icon: ART.get("heart") };
+    if (r < 0.33) return { type: "star", icon: ART.get("star") };
+    return { type: "normal", icon: ART.get(NORMAL_ICONS[Math.floor(Math.random() * NORMAL_ICONS.length)]) };
   }
 
   function spawnObject() {
     if (state !== "running" || !isGameActive("catch")) return;
     const cfg = LEVELS[currentLevel];
     const item = pickItem();
-    const node = el("span", "falling-object", item.icon);
+    const node = el("span", "falling-object");
+    node.innerHTML = item.icon;
     const x = Math.random() * Math.max(catchArea.clientWidth - 44, 0);
     node.style.left = x + "px";
     node.style.top = "-44px";
@@ -399,11 +602,11 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
         lives--;
         combo = 0;
         SFX.bad();
-        pop(px, py, "-1 ❤️", "#e08a8a");
+        pop(px, py, "-1 ♥", "#e08a8a");
       } else if (obj.type === "heart") {
         lives = Math.min(lives + 1, 5);
         SFX.good();
-        pop(px, py, "+1 ❤️", "#6fcf8f");
+        pop(px, py, "+1 ♥", "#6fcf8f");
       } else {
         combo++;
         lastCatchAt = Date.now();
@@ -740,7 +943,8 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
   }
 
   function updateBest() {
-    const record = bestSet("g2048", score, true);
+    // n'écrit un record que si une partie a réellement été jouée
+    const record = score > 0 ? bestSet("g2048", score, true) : bestGet("g2048", 0);
     bestEl.textContent = record;
   }
 
@@ -963,7 +1167,7 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
         const node = nodes[r][col];
         if (cells[r][col].mine && !cells[r][col].flag) {
           node.classList.add("is-open", "is-mine");
-          node.textContent = "💣";
+          node.innerHTML = ART.get("bomb");
         }
         if (boomR === r && boomC === col) node.classList.add("is-boom");
       }
@@ -1089,7 +1293,7 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
   const submitBlock = document.getElementById("memory-score-submit");
   const leaderboardEl = document.getElementById("memory-leaderboard");
 
-  const ICON_POOL = ["✂️", "🪒", "💈", "👑", "🧴", "💇", "🪮", "🧢"];
+  const ICON_POOL = ["scissors", "razor", "comb", "brush", "clipper", "bottle", "spray", "cap"];
   const LEVELS = {
     facile: { pairs: 4, label: "Facile" },
     moyen: { pairs: 6, label: "Moyen" },
@@ -1134,7 +1338,7 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
       card.innerHTML = `
         <div class="memory-card-inner">
           <div class="memory-card-back">★</div>
-          <div class="memory-card-front">${icon}</div>
+          <div class="memory-card-front">${ART.get(icon)}</div>
         </div>`;
       card.addEventListener("click", () => flipCard(card));
       grid.appendChild(card);
@@ -1188,6 +1392,7 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
     winMsgEl.textContent = `Paires retrouvées en ${moves} coups et ${fmtTime(timer.seconds)} !`;
     winMsgEl.style.display = "block";
     SFX.win();
+    ACHV.evaluate(true);
     if (submitBlock) submitBlock.style.display = "flex";
   }
 
@@ -1404,6 +1609,7 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
       overlayTitle.textContent = `${winResult.player === 1 ? "Or" : "Rouge"} remporte la manche !`;
       overlayText.textContent = "Quelle belle partie.";
     }
+    ACHV.evaluate(true);
     overlay.style.display = "flex";
   }
 
@@ -1826,6 +2032,7 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
     resultEl.style.display = "flex";
     scoreTextEl.textContent = `${found}/${total} mots trouvés · ${pct}%`;
     if (pct >= 60) SFX.win(); else SFX.lose();
+    ACHV.evaluate(true);
     if (submitBlock) submitBlock.style.display = "flex";
     return pct;
   }
@@ -1903,29 +2110,60 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
   const streakChip = document.getElementById("quiz-streak");
   const submitBlock = document.getElementById("quiz-score-submit");
   const leaderboardEl = document.getElementById("quiz-leaderboard");
+  const artEl = document.getElementById("quiz-art");
+
+  /* Liens contextuels affichés sous l'illustration de chaque question */
+  const TOPIC_LINKS = {
+    coupe: { href: "index.html#galerie", label: "Voir nos réalisations en galerie" },
+    barbe: { href: "index.html#galerie", label: "Voir les tailles de barbe en galerie" },
+    outils: { href: "index.html#why", label: "Notre approche pro, en détail" },
+    produits: { href: "index.html#infos", label: "Voir les soins & tarifs" },
+    histoire: { href: "index.html", label: "Découvrir Star Barbershop" },
+    salon: { href: "index.html#reservation", label: "Réserver un créneau au salon" }
+  };
+  function linkFor(topic) { return TOPIC_LINKS[topic] || TOPIC_LINKS.histoire; }
 
   const QUESTIONS_SOURCE = [
-    { question: "Quel outil traditionnel utilise-t-on pour un rasage à l'ancienne ?", options: ["Le rasoir électrique", "Le rasoir coupe-chou", "Les ciseaux à effiler", "La tondeuse"], correct: 1, fact: "Le rasoir coupe-chou (ou rasoir droit) est l'outil emblématique du rasage traditionnel en salon de barbier." },
-    { question: 'Que désigne une coupe "dégradé" (fade) ?', options: ["Une coupe où la longueur diminue progressivement vers les côtés", "Une coupe totalement rasée", "Une coupe avec une seule longueur uniforme", "Une technique de coloration"], correct: 0, fact: "Le dégradé fait diminuer progressivement la longueur des cheveux, généralement du haut vers les tempes et la nuque." },
-    { question: "D'où vient historiquement le poteau rayé rouge, blanc et bleu des barbershops ?", options: ["Il symbolisait à l'origine les bandages et la pratique de la saignée", "Il représentait les couleurs nationales françaises", "C'était un simple choix décoratif sans signification", "Il indiquait les horaires d'ouverture"], correct: 0, fact: "Au Moyen Âge, les barbiers pratiquaient aussi de petits actes chirurgicaux : le rouge symbolise le sang, le blanc les bandages." },
-    { question: "Quel est le rôle principal d'une taille de barbe chez le barbier ?", options: ["Uniquement raccourcir la longueur", "Structurer, définir les contours et entretenir la pilosité", "Colorer la barbe", "Faire pousser la barbe plus vite"], correct: 1, fact: "Une bonne taille structure la forme du visage en dessinant des contours nets, bien au-delà du simple raccourcissement." },
-    { question: 'Qu\'est-ce qu\'un "buzz cut" ?', options: ["Une coupe très courte et uniforme, réalisée à la tondeuse", "Une coiffure avec beaucoup de volume", "Une technique de tressage", "Une coupe réservée aux enfants uniquement"], correct: 0, fact: "Le buzz cut est une coupe uniforme très courte, rapide à réaliser et facile à entretenir." },
-    { question: "Pourquoi applique-t-on une serviette chaude avant un rasage ?", options: ["Pour le confort uniquement", "Pour ouvrir les pores et assouplir les poils, pour un rasage plus net", "Pour désinfecter la peau", "Pour accélérer la pousse des cheveux"], correct: 1, fact: "La chaleur dilate les pores et ramollit les poils, ce qui permet un rasage plus doux et plus précis." },
-    { question: "À quoi servent les sabots (guides de coupe) sur une tondeuse ?", options: ["Garantir une longueur uniforme sur toute la zone coupée", "Couper uniquement la barbe", "Colorer les cheveux", "Laver les cheveux"], correct: 0, fact: "Les sabots se clipsent sur la tondeuse et garantissent une longueur constante, du numéro 0 à des tailles plus longues." },
-    { question: 'Que signifie l\'expression "coupe entretenue" ?', options: ["Une coupe qu'il faut refaire tous les jours", "Une coupe pensée pour garder une bonne allure plusieurs semaines entre deux rendez-vous", "Une coupe très courte uniquement", "Une coupe réalisée uniquement au rasoir"], correct: 1, fact: "Une coupe bien entretenue garde une silhouette nette même quand les cheveux repoussent." },
-    { question: "À quoi sert le peigne lors d'une coupe aux ciseaux ?", options: ["À soulever et guider la mèche pour une coupe régulière", "Uniquement à démêler avant le shampoing", "À appliquer la cire coiffante", "À masser le cuir chevelu"], correct: 0, fact: "Le peigne guide la mèche à la bonne tension et au bon angle, ce qui permet une coupe régulière." },
-    { question: "Quel type de produit coiffant donne souvent un fini mat et une tenue forte ?", options: ["La cire (ou pâte) coiffante", "L'après-shampoing", "L'huile essentielle", "Le shampoing sec uniquement"], correct: 0, fact: "La cire ou la pâte coiffante offre une tenue forte avec un fini mat, très utilisée pour structurer coupes courtes et dégradés." },
-    { question: "Quel sabot raccourcit les cheveux au plus court ?", options: ["Le numéro 0", "Le numéro 3", "Le numéro 6", "Le numéro 9"], correct: 0, fact: "Le numéro 0 coupe à quelques millimètres : c'est la base des dégradés très courts et des buzz cuts." },
-    { question: "Qu'appelle-t-on le « contour » d'une coupe ?", options: ["Le tracé net des limites : tempes, nuque, alentours de la barbe", "La couleur des pointes", "Le volume sur le dessus", "Le shampoing utilisé"], correct: 0, fact: "Le contour (ou détail) est ce tracé précis, souvent finalisé au coupe-chou, qui donne un rendu net et soigné." },
-    { question: "Quel accessoire chauffe-t-on pour lisser ou onduler les cheveux ?", options: ["Le peigne en corne", "La pince (lisseuse ou boucleuse)", "Le coupe-chou", "Le blaireau"], correct: 1, fact: "La pince utilise la chaleur pour lisser, onduler ou refriser — toujours avec une protection thermique." },
-    { question: "À quoi sert un après-shampoing ?", options: ["À nourrir et détangler après le lavage", "À laver les cheveux", "À remplacer le shampoing", "À colorer les cheveux"], correct: 0, fact: "L'après-shampoing referme la fibre, facilite le démêlage et apporte brillance et souplesse." },
-    { question: "Quel accessoire applique la mousse de rasage ?", options: ["Le blaireau", "Le peigne", "Les ciseaux", "Le miroir"], correct: 0, fact: "Le blaireau, en mousse dense et chaude, soulève les poils et prépare parfaitement la peau au rasoir." }
+    { question: "Quel outil traditionnel utilise-t-on pour un rasage à l'ancienne ?", options: ["Le rasoir électrique", "Le rasoir coupe-chou", "Les ciseaux à effiler", "La tondeuse"], correct: 1, fact: "Le rasoir coupe-chou (ou rasoir droit) est l'outil emblématique du rasage traditionnel en salon de barbier.", art: "razor", topic: "outils" },
+    { question: 'Que désigne une coupe "dégradé" (fade) ?', options: ["Une coupe où la longueur diminue progressivement vers les côtés", "Une coupe totalement rasée", "Une coupe avec une seule longueur uniforme", "Une technique de coloration"], correct: 0, fact: "Le dégradé fait diminuer progressivement la longueur des cheveux, généralement du haut vers les tempes et la nuque.", art: "head:fade", topic: "coupe" },
+    { question: "D'où vient historiquement le poteau rayé rouge, blanc et bleu des barbershops ?", options: ["Il symbolisait à l'origine les bandages et la pratique de la saignée", "Il représentait les couleurs nationales françaises", "C'était un simple choix décoratif sans signification", "Il indiquait les horaires d'ouverture"], correct: 0, fact: "Au Moyen Âge, les barbiers pratiquaient aussi de petits actes chirurgicaux : le rouge symbolise le sang, le blanc les bandages.", art: "pole", topic: "histoire" },
+    { question: "Quel est le rôle principal d'une taille de barbe chez le barbier ?", options: ["Uniquement raccourcir la longueur", "Structurer, définir les contours et entretenir la pilosité", "Colorer la barbe", "Faire pousser la barbe plus vite"], correct: 1, fact: "Une bonne taille structure la forme du visage en dessinant des contours nets, bien au-delà du simple raccourcissement.", art: "head:crew,full", topic: "barbe" },
+    { question: 'Qu\'est-ce qu\'un "buzz cut" ?', options: ["Une coupe très courte et uniforme, réalisée à la tondeuse", "Une coiffure avec beaucoup de volume", "Une technique de tressage", "Une coupe réservée aux enfants uniquement"], correct: 0, fact: "Le buzz cut est une coupe uniforme très courte, rapide à réaliser et facile à entretenir.", art: "head:buzz", topic: "coupe" },
+    { question: "Pourquoi applique-t-on une serviette chaude avant un rasage ?", options: ["Pour le confort uniquement", "Pour ouvrir les pores et assouplir les poils, pour un rasage plus net", "Pour désinfecter la peau", "Pour accélérer la pousse des cheveux"], correct: 1, fact: "La chaleur dilate les pores et ramollit les poils, ce qui permet un rasage plus doux et plus précis.", art: "towel", topic: "outils" },
+    { question: "À quoi servent les sabots (guides de coupe) sur une tondeuse ?", options: ["Garantir une longueur uniforme sur toute la zone coupée", "Couper uniquement la barbe", "Colorer les cheveux", "Laver les cheveux"], correct: 0, fact: "Les sabots se clipsent sur la tondeuse et garantissent une longueur constante, du numéro 0 à des tailles plus longues.", art: "clipper", topic: "outils" },
+    { question: 'Que signifie l\'expression "coupe entretenue" ?', options: ["Une coupe qu'il faut refaire tous les jours", "Une coupe pensée pour garder une bonne allure plusieurs semaines entre deux rendez-vous", "Une coupe très courte uniquement", "Une coupe réalisée uniquement au rasoir"], correct: 1, fact: "Une coupe bien entretenue garde une silhouette nette même quand les cheveux repoussent.", art: "calendar", topic: "coupe" },
+    { question: "À quoi sert le peigne lors d'une coupe aux ciseaux ?", options: ["À soulever et guider la mèche pour une coupe régulière", "Uniquement à démêler avant le shampoing", "À appliquer la cire coiffante", "À masser le cuir chevelu"], correct: 0, fact: "Le peigne guide la mèche à la bonne tension et au bon angle, ce qui permet une coupe régulière.", art: "comb", topic: "outils" },
+    { question: "Quel type de produit coiffant donne souvent un fini mat et une tenue forte ?", options: ["La cire (ou pâte) coiffante", "L'après-shampoing", "L'huile essentielle", "Le shampoing sec uniquement"], correct: 0, fact: "La cire ou la pâte coiffante offre une tenue forte avec un fini mat, très utilisée pour structurer coupes courtes et dégradés.", art: "wax", topic: "produits" },
+    { question: "Quel sabot raccourcit les cheveux au plus court ?", options: ["Le numéro 0", "Le numéro 3", "Le numéro 6", "Le numéro 9"], correct: 0, fact: "Le numéro 0 coupe à quelques millimètres : c'est la base des dégradés très courts et des buzz cuts.", art: "clipper", topic: "outils" },
+    { question: "Qu'appelle-t-on le « contour » d'une coupe ?", options: ["Le tracé net des limites : tempes, nuque, alentours de la barbe", "La couleur des pointes", "Le volume sur le dessus", "Le shampoing utilisé"], correct: 0, fact: "Le contour (ou détail) est ce tracé précis, souvent finalisé au coupe-chou, qui donne un rendu net et soigné.", art: "razor", topic: "outils" },
+    { question: "Quel accessoire chauffe-t-on pour lisser ou onduler les cheveux ?", options: ["Le peigne en corne", "La pince (lisseuse ou boucleuse)", "Le coupe-chou", "Le blaireau"], correct: 1, fact: "La pince utilise la chaleur pour lisser, onduler ou refriser — toujours avec une protection thermique.", art: "pin", topic: "produits" },
+    { question: "À quoi sert un après-shampoing ?", options: ["À nourrir et détangler après le lavage", "À laver les cheveux", "À remplacer le shampoing", "À colorer les cheveux"], correct: 0, fact: "L'après-shampoing referme la fibre, facilite le démêlage et apporte brillance et souplesse.", art: "drop", topic: "produits" },
+    { question: "Quel accessoire applique la mousse de rasage ?", options: ["Le blaireau", "Le peigne", "Les ciseaux", "Le miroir"], correct: 0, fact: "Le blaireau, en mousse dense et chaude, soulève les poils et prépare parfaitement la peau au rasoir.", art: "brush", topic: "outils" },
+    { question: "Que signifie « skin fade » ?", options: ["Un dégradé qui descend jusqu'à la peau, sans longueur visible", "Une coupe avec une mèche colorée", "Un rasage complet de la tête", "Une coupe dégradée uniquement sur la nuque"], correct: 0, fact: "Le skin fade (dégradé américain) part du numéro 0 à la peau et progresse sans transition visible vers le dessus.", art: "head:fade", topic: "coupe" },
+    { question: "À quelle fréquence entretient-on généralement un dégradé court ?", options: ["Tous les 2 à 3 semaines", "Tous les 6 mois", "Une fois par an", "Jamais, il tient toute la vie"], correct: 0, fact: "Un dégradé court perd sa netteté en 2 à 3 semaines : un passage régulier au salon garde le trait net.", art: "clock", topic: "coupe" },
+    { question: "Quel produit applique-t-on avant d'utiliser une pince chaude ?", options: ["Une cire forte", "Un protecteur thermique", "Un shampoing sec", "Du gel-fixage"], correct: 1, fact: "Le protecteur thermique forme un bouclier autour de la fibre et évite la déshydratation causée par la chaleur.", art: "pin", topic: "produits" },
+    { question: "Qu'est-ce qu'une « raie » ?", options: ["Une séparation des cheveux sur le côté ou au milieu", "Une mèche décolorée", "Une coupe très courte sur les côtés", "Un accessoire de coiffage"], correct: 0, fact: "La raie structure toute une coiffure : elle se trace au peigne et guide le sens de la matière.", art: "head:sidepart", topic: "coupe" },
+    { question: "Comment règle-t-on la hauteur d'un fauteuil de barbier ?", options: ["Avec un bouton électronique", "Avec une pompe hydraulique ou un pied à pédale", "Il est fixe", "En soulevant le client"], correct: 1, fact: "Le fauteuil de barbier monte à la pompe hydraulique pour placer le client à la bonne hauteur de travail.", art: "chair", topic: "outils" },
+    { question: "Quel accessoire humidifie les cheveux pendant la coupe ?", options: ["Le vaporisateur (spray d'eau)", "Le peigne", "Le miroir", "Le coupe-chou"], correct: 0, fact: "Un léger voile d'eau souple les fibres : la coupe est plus précise et la mèche se guide parfaitement.", art: "spray", topic: "outils" },
+    { question: "Quelle est la différence entre un shampoing fort et un shampoing doux ?", options: ["Le premier nettoie en profondeur, le second convient à un usage fréquent", "Le premier est coloré, le second est blanc", "Il n'y a aucune différence", "Le doux sert uniquement à la barbe"], correct: 0, fact: "Le shampoing fort décape (produits, résidus), le shampoing doux respecte le cuir chevelu au quotidien.", art: "bottle", topic: "produits" },
+    { question: "Que désigne un « crew cut » ?", options: ["Une coupe courte et simple, inspirée des équipages militaires", "Une coupe longue attachée", "Un dégradé avec crête iroquoise", "Une coupe réservée aux enfants"], correct: 0, fact: "Le crew cut est pratique et net : court sur les côtés, légèrement plus long sur le dessus, idéal pour l'entretien.", art: "head:crew", topic: "coupe" },
+    { question: "Qu'est-ce qu'un « taper » ?", options: ["Un dégradé discret qui s'arrête avant les tempes", "Une coupe rasée de près", "Un accessoire pour la barbe", "Une coloration végétale"], correct: 0, fact: "Le taper est un dégradé subtil : les contours restent nets, la transition est douce, tout est très naturel.", art: "head:taper", topic: "coupe" },
+    { question: "Comment appelle-t-on le style où le dessus est long et les côtés rasés ?", options: ["L'undercut", "Le buzz cut", "Le crew cut", "Le taper"], correct: 0, fact: "L'undercut oppose un dessus généreux à des côtés très courts : le contraste fait toute la personnalité de la coupe.", art: "head:undercut", topic: "coupe" },
+    { question: "Quelle coupe a donné naissance aux coupes militaires courtes et nettes ?", options: ["Le buzz cut", "Le pompadour", "L'afro", "Le slick back"], correct: 0, fact: "Le buzz cut, né dans les armées, reste la coupe de l'entretien minimal : une seule longueur, zéro coiffage.", art: "cap", topic: "coupe" },
+    { question: "À quoi sert une huile à barbe ?", options: ["À nourrir, assouplir les poils et apporter du brillant", "À raccourcir la barbe", "À colorer les poils blancs", "À laver la barbe"], correct: 0, fact: "Quelques gouttes d'huile assouplissent le poil, apaisent la peau en dessous et facilitent le coiffage.", art: "drop", topic: "barbe" },
+    { question: "Combien de temps garde-t-on généralement une coupe pointue ?", options: ["4 à 6 semaines", "2 ans", "48 heures", "Jusqu'à la prochaine couleur"], correct: 0, fact: "Les pointes se scindent avec le temps : un passage toutes les 4 à 6 semaines garde la coupe saine.", art: "calendar", topic: "coupe" },
+    { question: "En quoi le barbier diffère-t-il du coiffeur moderne ?", options: ["Il est spécialisé homme, barbe et rasage traditionnel", "Il ne coupe que les enfants", "Il travaille uniquement avec des ciseaux", "Il n'existe plus aujourd'hui"], correct: 0, fact: "Le barbier est expert des coupes masculines, des barbes et du rasage à l'ancienne — un vrai métier de détail.", art: "crown", topic: "histoire" },
+    { question: "Où se trouve le salon Star Barbershop ?", options: ["12 rue du Maréchal Foch à Mourmelon-le-Grand", "Place du Marché à Reims", "Boulevard de la Libération à Paris", "Avenue des Champs à Épernay"], correct: 0, fact: "Le salon vous accueille au cœur de Mourmelon-le-Grand, au 12 rue du Maréchal Foch.", art: "pole", topic: "salon" },
+    { question: "Qui est le barbier du salon Star Barbershop ?", options: ["Moise, spécialiste des dégradés et des styles modernes", "Un robot coiffure", "Une équipe de 20 personnes", "Le propriétaire du bâtiment"], correct: 0, fact: "Moise, gérant et barbier du salon, est reconnu pour ses dégradés et ses styles modernes.", art: "head:crew,goatee", topic: "salon" },
+    { question: "Comment réserver un créneau chez Star Barbershop ?", options: ["En ligne depuis le site, ou par téléphone / e-mail", "Uniquement sur place", "Par courrier postal", "Impossible, c'est sans rendez-vous uniquement"], correct: 0, fact: "Le bouton Réservation du site vous emmène directement au planning : quelques secondes suffisent.", art: "calendar", topic: "salon" },
+    { question: "Qu'est-ce qu'un « quiff » ?", options: ["Une mèche avant relevée en volume sur le dessus", "Une coupe totalement rasée", "Une barbe très longue", "Un chignon pour cheveux longs"], correct: 0, fact: "Le quiff pousse la matière vers le haut et vers l'avant : un volume assumé, tenu par une cire souple.", art: "head:quiff", topic: "coupe" },
+    { question: "Quelle coupe est un grand classique des textures bouclées ?", options: ["L'afro", "Le slick back", "Le taper", "Le crew cut"], correct: 0, fact: "L'afro assume le volume naturel : on travaille la matière en boucle plutôt que de la contraindre.", art: "head:afro", topic: "coupe" }
   ];
 
   const LEVELS = {
-    facile: { count: 5, timer: 0, label: "Facile" },
-    moyen: { count: 8, timer: 0, label: "Moyen" },
-    difficile: { count: 10, timer: 15, label: "Difficile" }
+    facile: { count: 6, timer: 0, label: "Facile" },
+    moyen: { count: 10, timer: 0, label: "Moyen" },
+    difficile: { count: 12, timer: 15, label: "Difficile" }
   };
 
   let currentLevel = "moyen";
@@ -1939,7 +2177,7 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
   function buildRound(source) {
     const correctText = source.options[source.correct];
     const shuffledOptions = shuffleArray(source.options);
-    return { question: source.question, options: shuffledOptions, correct: shuffledOptions.indexOf(correctText), fact: source.fact };
+    return { question: source.question, options: shuffledOptions, correct: shuffledOptions.indexOf(correctText), fact: source.fact, art: source.art, topic: source.topic };
   }
 
   function setBar(pct) {
@@ -1976,6 +2214,11 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
     progressEl.textContent = `Question ${index + 1}/${QUESTIONS.length}`;
     setBar((index / QUESTIONS.length) * 100);
     questionEl.textContent = q.question;
+    if (artEl) {
+      const l = linkFor(q.topic);
+      artEl.innerHTML = (q.art ? ART.get(q.art) : "") +
+        "<figcaption><a class='quiz-art-link' href='" + l.href + "'>" + l.label + "</a></figcaption>";
+    }
     optionsEl.innerHTML = "";
     feedbackEl.textContent = "";
     feedbackEl.className = "quiz-feedback";
@@ -2033,6 +2276,7 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
     const pct = Math.round((score / QUESTIONS.length) * 100);
     scoreTextEl.textContent = `Score : ${score}/${QUESTIONS.length} · ${pct}% · meilleure série : ${bestStreak}`;
     if (pct >= 60) SFX.win(); else SFX.lose();
+    ACHV.evaluate(true);
     if (submitBlock) submitBlock.style.display = "flex";
   }
 
@@ -2085,14 +2329,29 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
   const levelContainer = document.getElementById("puzzle-level-select");
   const submitBlock = document.getElementById("puzzle-score-submit");
   const leaderboardEl = document.getElementById("puzzle-leaderboard");
+  const pickerEl = document.getElementById("puzzle-picker");
+
+  /* Photos du site utilisables comme puzzle (toutes hébergées sur starbarbershop.fr) */
+  const IMAGES = [
+    { src: "image/puzzle-star-barbershop.jpg", label: "La devanture Star" },
+    { src: "image/Salon1.JPEG", label: "Le salon - vue 1" },
+    { src: "image/Salon2.JPEG", label: "Le salon - vue 2" },
+    { src: "image/Salon3.JPEG", label: "Le salon - vue 3" },
+    { src: "image/barber1.jpg", label: "Moise au travail" },
+    { src: "image/hero.jpg", label: "Les fauteuils du salon" }
+  ];
 
   const LEVELS = {
     facile: { size: 3, label: "Facile (3×3)" },
     moyen: { size: 4, label: "Moyen (4×4)" },
-    difficile: { size: 5, label: "Difficile (5×5)" }
+    difficile: { size: 5, label: "Difficile (5×5)" },
+    expert: { size: 6, label: "Expert (6×6)" }
   };
 
   let currentLevel = "facile";
+  let currentImage = IMAGES[0];
+  const imgCache = {};
+  let bg = { w: 320, h: 320, ox: 0, oy: 0 };
   let SIZE = 3;
   let tiles = [];
   let moves = 0;
@@ -2112,9 +2371,56 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
     return tiles.every((v, i) => v === solved[i]);
   }
 
+  /* Préchargement de la photo choisie + cadrage « cover » (sans déformation) */
+  function requestImage() {
+    const src = currentImage.src;
+    if (imgCache[src]) return;
+    const rec = { ready: false, w: 0, h: 0 };
+    imgCache[src] = rec;
+    const im = new Image();
+    im.onload = () => { rec.ready = true; rec.w = im.naturalWidth; rec.h = im.naturalHeight; render(); };
+    im.onerror = () => { rec.ready = true; render(); };
+    im.src = src;
+  }
+
+  function computeBg(w) {
+    const rec = imgCache[currentImage.src];
+    if (!rec || !rec.ready || !rec.w || !rec.h) { bg = { w: w, h: w, ox: 0, oy: 0 }; return; }
+    const scale = Math.max(w / rec.w, w / rec.h);
+    const bw = rec.w * scale;
+    const bh = rec.h * scale;
+    bg = { w: bw, h: bh, ox: (bw - w) / 2, oy: (bh - w) / 2 };
+  }
+
+  function renderPicker() {
+    if (!pickerEl) return;
+    pickerEl.innerHTML = "";
+    IMAGES.forEach(img => {
+      const b = el("button", "puzzle-thumb" + (img.src === currentImage.src ? " active" : ""));
+      b.type = "button";
+      b.title = img.label;
+      b.setAttribute("aria-label", "Photo : " + img.label);
+      const im = document.createElement("img");
+      im.src = img.src;
+      im.alt = img.label;
+      im.loading = "lazy";
+      b.appendChild(im);
+      b.addEventListener("click", () => {
+        if (currentImage.src === img.src) return;
+        currentImage = img;
+        SFX.click();
+        renderPicker();
+        shuffle();
+      });
+      pickerEl.appendChild(b);
+    });
+  }
+
   function render() {
     const w = boardEl.clientWidth;
     if (!w) return;
+    requestImage();
+    computeBg(w);
     const TILE = w / SIZE;
     boardEl.innerHTML = "";
     tiles.forEach((value, pos) => {
@@ -2126,10 +2432,11 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
       tile.style.height = TILE + "px";
       tile.style.top = row * TILE + "px";
       tile.style.left = col * TILE + "px";
-      tile.style.backgroundSize = TILE * SIZE + "px " + TILE * SIZE + "px";
+      tile.style.backgroundImage = "url('" + currentImage.src + "')";
+      tile.style.backgroundSize = bg.w + "px " + bg.h + "px";
       const originalRow = Math.floor((value - 1) / SIZE);
       const originalCol = (value - 1) % SIZE;
-      tile.style.backgroundPosition = `-${originalCol * TILE}px -${originalRow * TILE}px`;
+      tile.style.backgroundPosition = `-${originalCol * TILE + bg.ox}px -${originalRow * TILE + bg.oy}px`;
       tile.addEventListener("click", () => tryMove(pos));
       boardEl.appendChild(tile);
     });
@@ -2161,6 +2468,7 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
     winMsgEl.textContent = `Bravo ! Puzzle résolu en ${moves} coups et ${fmtTime(timer.seconds)}.`;
     winMsgEl.style.display = "block";
     SFX.win();
+    ACHV.evaluate(true);
     if (submitBlock) submitBlock.style.display = "flex";
   }
 
@@ -2169,7 +2477,7 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
     tiles = solvedArray();
     let bp = tiles.indexOf(0);
     let lastPos = -1;
-    const shuffleMoves = SIZE * SIZE * 30;
+    const shuffleMoves = SIZE * SIZE * 40;
     for (let i = 0; i < shuffleMoves; i++) {
       const row = Math.floor(bp / SIZE), col = bp % SIZE;
       const neighbors = [];
@@ -2224,6 +2532,7 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
 
   lbRenderers.push(renderLeaderboard);
   renderLeaderboard();
+  renderPicker();
   shuffle();
 })();
 
@@ -2248,18 +2557,27 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
   const scoreChip = document.getElementById("haircut-score");
   const submitBlock = document.getElementById("haircut-score-submit");
   const leaderboardEl = document.getElementById("haircut-leaderboard");
+  const avatarEl = document.getElementById("haircut-avatar");
 
-  const STYLE_POOL = ["Undercut", "Buzz cut", "Slick back", "Dégradé (fade) classique", "Crew cut", "Pompadour", "Taper fade", "Coupe + taille de barbe"];
+  const STYLE_POOL = ["Undercut", "Buzz cut", "Slick back", "Dégradé (fade)", "Crew cut", "Pompadour", "Taper fade", "Coupe + barbe", "Quiff (mèche)", "Afro", "Crâne rasé", "Crâne + barbe"];
 
   const ROUNDS_SOURCE = [
-    { text: "Je veux que ce soit très court sur les côtés et à l'arrière, mais que je garde de la longueur sur le dessus pour pouvoir coiffer avec du produit.", correct: "Undercut" },
-    { text: "Rasez tout à la même longueur courte, je veux un entretien minimum.", correct: "Buzz cut" },
-    { text: "Une coupe classique et nette, avec la raie sur le côté et les cheveux plaqués en arrière.", correct: "Slick back" },
-    { text: "Un dégradé propre sur les côtés qui se fond bien, avec un peu de longueur sur le dessus, style moderne.", correct: "Dégradé (fade) classique" },
-    { text: "Quelque chose d'assez court partout, facile à entretenir, mais pas complètement rasé.", correct: "Crew cut" },
-    { text: "Je veux du volume structuré vers l'arrière sur le dessus, avec les côtés dégradés, un style rétro assumé.", correct: "Pompadour" },
-    { text: "Un dégradé très progressif et discret, presque invisible, qui garde une allure naturelle.", correct: "Taper fade" },
-    { text: "J'aimerais une barbe bien taillée et structurée qui accompagne ma coupe, avec des contours nets.", correct: "Coupe + taille de barbe" }
+    { text: "Je veux que ce soit très court sur les côtés et à l'arrière, mais que je garde de la longueur sur le dessus pour pouvoir coiffer avec du produit.", correct: "Undercut", fact: "L'undercut garde un dessus mobile sur des côtés courts : la séparation franche fait tout le style." },
+    { text: "Rasez tout à la même longueur courte, je veux un entretien minimum.", correct: "Buzz cut", fact: "Le buzz cut : une seule longueur partout, zéro coiffage, entretien minimal." },
+    { text: "Une coupe classique et nette, avec la raie sur le côté et les cheveux plaqués en arrière.", correct: "Slick back", fact: "Le slick back plaque la matière en arrière avec une tenue brillante : un classique intemporel." },
+    { text: "Un dégradé propre sur les côtés qui se fond bien, avec un peu de longueur sur le dessus, style moderne.", correct: "Dégradé (fade)", fact: "Le fade fait disparaître la longueur progressivement jusqu'à la peau : aucun démarquage visible." },
+    { text: "Quelque chose d'assez court partout, facile à entretenir, mais pas complètement rasé.", correct: "Crew cut", fact: "Le crew cut reste court et net sur le dessus : ni rasé, ni volumineux." },
+    { text: "Je veux du volume généreux sur le dessus, brossé vers l'arrière, un style rétro assumé.", correct: "Pompadour", fact: "Le pompadour monte haut sur le front puis repousse la matière vers l'arrière : la signature des années 50." },
+    { text: "Un dégradé très progressif et discret, presque invisible, qui garde une allure naturelle.", correct: "Taper fade", fact: "Le taper dégrade doucement sans jamais aller au rasoir : le rendu reste très naturel." },
+    { text: "J'aimerais une barbe bien taillée et structurée qui accompagne ma coupe, avec des contours nets.", correct: "Coupe + barbe", fact: "Ici la barbe fait partie de la coupe : contours alignés et transition soignée entre visage et cheveux." },
+    { text: "Je veux une mèche qui se relève vers le haut et l'avant, du volume sur le dessus, sans toucher trop court sur les côtés.", correct: "Quiff (mèche)", fact: "Le quiff relève la mèche avant : du volume maximum, tenu par une cire souple." },
+    { text: "Je veux garder mon volume naturel en boucle, bien arrondi, sans jamais l'écraser.", correct: "Afro", fact: "L'afro travaille la matière naturelle en un volume homogène et parfaitement arrondi." },
+    { text: "Allez-y, rasez-moi la tête, je veux le plus simple possible, sans barbe.", correct: "Crâne rasé", fact: "Le crâne rasé s'entretient au rasoir : une tête lisse, des contours propres, rien d'autre." },
+    { text: "Rasez mes cheveux, mais gardez une barbe pleine et structurée pour équilibrer le visage.", correct: "Crâne + barbe", fact: "Crâne net + barbe pleine : le contraste structure le visage et la mâchoire." },
+    { text: "Je passe à un mariage : je veux une coiffure classique, lisse et élégante, qui ne bougera pas toute la soirée.", correct: "Slick back", fact: "Pour un événement, le slick back fixé à la cire reste impeccable des heures durant." },
+    { text: "C'est un peu trop long sur les côtés : redonnez-moi une forme courte et pratique sans tout raser.", correct: "Crew cut", fact: "Le crew cut est la réponse aux coupes courtes qui restent coiffées sans effort." },
+    { text: "Grande occasion ce soir : je veux du volume spectaculaire au dessus, façon vintage assumée.", correct: "Pompadour", fact: "Le pompadour se travaille au peigne et à la cire pour un volume qui tient toute la soirée." },
+    { text: "Je sors de l'eau tout l'été : je veux une coupe ultra courte, uniforme, qui sèche en deux minutes.", correct: "Buzz cut", fact: "Le buzz cut est le roi des étés : une seule longueur, aucune maintenance." }
   ];
 
   const LEVELS = {
@@ -2278,7 +2596,7 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
     const cfg = LEVELS[currentLevel];
     rounds = shuffleArray(ROUNDS_SOURCE).map(r => {
       const distractors = shuffleArray(STYLE_POOL.filter(s => s !== r.correct)).slice(0, cfg.optionCount - 1);
-      return { text: r.text, correct: r.correct, options: shuffleArray([r.correct, ...distractors]) };
+      return { text: r.text, correct: r.correct, fact: r.fact, options: shuffleArray([r.correct, ...distractors]) };
     });
   }
 
@@ -2316,13 +2634,15 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
     progressEl.textContent = `Client ${index + 1}/${rounds.length}`;
     setBar((index / rounds.length) * 100);
     requestEl.textContent = `« ${r.text} »`;
+    if (avatarEl) avatarEl.innerHTML = ART.client(index + Math.floor(Math.random() * 3));
     optionsEl.innerHTML = "";
     feedbackEl.textContent = "";
     feedbackEl.className = "quiz-feedback";
     nextBtn.style.display = "none";
 
     r.options.forEach(opt => {
-      const btn = el("button", "quiz-option", opt);
+      const btn = el("button", "quiz-option option-card");
+      btn.innerHTML = "<span class='option-art'>" + ART.style(opt) + "</span><span class='option-name'>" + opt + "</span>";
       btn.addEventListener("click", () => selectOption(opt));
       optionsEl.appendChild(btn);
     });
@@ -2343,11 +2663,11 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
     if (opt === r.correct) {
       score++;
       scoreChip.textContent = score;
-      feedbackEl.textContent = "Le client repart satisfait !";
+      feedbackEl.textContent = `Le client repart satisfait ! ${r.fact}`;
       feedbackEl.classList.add("quiz-feedback-correct");
       SFX.good();
     } else {
-      feedbackEl.textContent = (opt === null ? "Temps écoulé — " : "") + `La bonne réponse était : ${r.correct}.`;
+      feedbackEl.textContent = (opt === null ? "Temps écoulé — " : "") + `La bonne réponse était : ${r.correct}. ${r.fact}`;
       feedbackEl.classList.add("quiz-feedback-incorrect");
       SFX.bad();
     }
@@ -2368,6 +2688,7 @@ function attachScoreSubmit(inputId, buttonId, onSave) {
     const pct = Math.round((score / rounds.length) * 100);
     scoreTextEl.textContent = `Clients satisfaits : ${score}/${rounds.length} · ${pct}%`;
     if (pct >= 60) SFX.win(); else SFX.lose();
+    ACHV.evaluate(true);
     if (submitBlock) submitBlock.style.display = "flex";
   }
 

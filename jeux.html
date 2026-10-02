@@ -43,7 +43,7 @@
 <section id="jeux-intro" class="games-intro">
   <span class="eyebrow">En attendant votre tour</span>
   <h1>Salle de jeux</h1>
-  <p>Dix jeux gratuits — réflexes, logique, mémoire, culture générale — avec plusieurs niveaux de difficulté, des effets sonores et un classement des meilleurs scores enregistré sur cet appareil. Choisissez-en un ci-dessous&nbsp;!</p>
+  <p>Dix jeux gratuits — réflexes, logique, mémoire, culture générale — avec plusieurs niveaux de difficulté, des effets sonores, des illustrations originales et un classement des meilleurs scores enregistré sur cet appareil. Cumulez aussi les <strong>succès</strong> à débloquer, affichés juste en dessous&nbsp;!</p>
 </section>
 
 <section id="jeux" class="games">
@@ -57,17 +57,22 @@
     </button>
   </div>
 
+  <div class="achv-block">
+    <span class="achv-title"><i class="fa-solid fa-medal"></i> Vos succès <strong id="achv-count">0/14</strong></span>
+    <div id="achv-strip" class="achv-strip" aria-label="Succès à débloquer"></div>
+  </div>
+
   <div class="game-selector">
-    <button class="game-tab active" data-game="catch">✂️ Attrape la mèche</button>
-    <button class="game-tab" data-game="2048">🔢 2048</button>
-    <button class="game-tab" data-game="mine">💣 Démineur</button>
-    <button class="game-tab" data-game="memory">🃏 Memory</button>
-    <button class="game-tab" data-game="connect4">🔴 Puissance 4</button>
-    <button class="game-tab" data-game="simon">🎵 Suite de rythme</button>
-    <button class="game-tab" data-game="hangman">🪢 Pendu barbier</button>
-    <button class="game-tab" data-game="quiz">❓ Quiz coiffure</button>
-    <button class="game-tab" data-game="puzzle">🧩 Puzzle photo</button>
-    <button class="game-tab" data-game="haircut">💇 Trouve la bonne coupe</button>
+    <button class="game-tab active" data-game="catch"><i class="fa-solid fa-scissors"></i> Attrape la mèche</button>
+    <button class="game-tab" data-game="2048"><i class="fa-solid fa-brain"></i> 2048</button>
+    <button class="game-tab" data-game="mine"><i class="fa-solid fa-bomb"></i> Démineur</button>
+    <button class="game-tab" data-game="memory"><i class="fa-solid fa-clone"></i> Memory</button>
+    <button class="game-tab" data-game="connect4"><i class="fa-solid fa-circle-down"></i> Puissance 4</button>
+    <button class="game-tab" data-game="simon"><i class="fa-solid fa-music"></i> Suite de rythme</button>
+    <button class="game-tab" data-game="hangman"><i class="fa-solid fa-keyboard"></i> Pendu barbier</button>
+    <button class="game-tab" data-game="quiz"><i class="fa-solid fa-circle-question"></i> Quiz coiffure</button>
+    <button class="game-tab" data-game="puzzle"><i class="fa-solid fa-puzzle-piece"></i> Puzzle photo</button>
+    <button class="game-tab" data-game="haircut"><i class="fa-solid fa-user-tie"></i> Trouve la bonne coupe</button>
   </div>
 
   <!-- JEU 1 : ATTRAPE LA MÈCHE -->
@@ -85,7 +90,7 @@
           <span class="chip"><span class="chip-label">Vies</span><strong id="catch-lives">❤️❤️❤️</strong></span>
         </div>
       </div>
-      <p class="game-help">Cliquez sur les objets avant qu'ils ne touchent le sol. Ramassez les étoiles ⭐ pour marquer des points bonus, attrapez les cœurs ❤️ pour gagner une vie — et évitez les bombes 💣&nbsp;!</p>
+      <p class="game-help">Cliquez sur les objets avant qu'ils ne touchent le sol. Les étoiles rapportent 5 points, les cœurs offrent une vie — et il vaut mieux éviter les bombes&nbsp;!</p>
       <div class="game-stage">
         <div id="catch-area" class="catch-area">
           <div id="catch-overlay" class="game-overlay">
@@ -100,7 +105,7 @@
         <button id="catch-save-score-btn" class="btn">Enregistrer le score</button>
       </div>
       <div class="leaderboard">
-        <h4>🏆 Meilleurs scores (cet appareil)</h4>
+        <h4><i class="fa-solid fa-trophy"></i> Meilleurs scores (cet appareil)</h4>
         <div id="catch-leaderboard"></div>
       </div>
     </div>
@@ -148,7 +153,7 @@
         <button id="g2048-save-score-btn" class="btn">Enregistrer le score</button>
       </div>
       <div class="leaderboard">
-        <h4>🏆 Meilleurs scores (cet appareil)</h4>
+        <h4><i class="fa-solid fa-trophy"></i> Meilleurs scores (cet appareil)</h4>
         <div id="g2048-leaderboard"></div>
       </div>
     </div>
@@ -188,7 +193,7 @@
         <button id="mine-save-score-btn" class="btn">Enregistrer le temps</button>
       </div>
       <div class="leaderboard">
-        <h4>🏆 Meilleurs temps (cet appareil)</h4>
+        <h4><i class="fa-solid fa-trophy"></i> Meilleurs temps (cet appareil)</h4>
         <div id="mine-leaderboard"></div>
       </div>
     </div>
@@ -224,7 +229,7 @@
         <button id="memory-save-score-btn" class="btn">Enregistrer le score</button>
       </div>
       <div class="leaderboard">
-        <h4>🏆 Meilleurs scores (cet appareil)</h4>
+        <h4><i class="fa-solid fa-trophy"></i> Meilleurs scores (cet appareil)</h4>
         <div id="memory-leaderboard"></div>
       </div>
     </div>
@@ -265,7 +270,7 @@
         <button id="c4-save-score-btn" class="btn">Enregistrer</button>
       </div>
       <div class="leaderboard">
-        <h4>🏆 Victoires contre l'IA (cet appareil)</h4>
+        <h4><i class="fa-solid fa-trophy"></i> Victoires contre l'IA (cet appareil)</h4>
         <div id="c4-leaderboard"></div>
       </div>
     </div>
@@ -303,7 +308,7 @@
         <button id="simon-save-score-btn" class="btn">Enregistrer le niveau</button>
       </div>
       <div class="leaderboard">
-        <h4>🏆 Meilleurs niveaux (cet appareil)</h4>
+        <h4><i class="fa-solid fa-trophy"></i> Meilleurs niveaux (cet appareil)</h4>
         <div id="simon-leaderboard"></div>
       </div>
     </div>
@@ -346,7 +351,7 @@
         <button id="hangman-save-score-btn" class="btn">Enregistrer le score</button>
       </div>
       <div class="leaderboard">
-        <h4>🏆 Meilleurs scores (cet appareil)</h4>
+        <h4><i class="fa-solid fa-trophy"></i> Meilleurs scores (cet appareil)</h4>
         <div id="hangman-leaderboard"></div>
       </div>
     </div>
@@ -357,22 +362,23 @@
     <div class="game-shell">
       <div class="game-top">
         <div id="quiz-level-select" class="level-selector">
-          <button class="level-btn" data-level="facile">5 questions</button>
-          <button class="level-btn active" data-level="moyen">8 questions</button>
-          <button class="level-btn" data-level="difficile">10 questions · 15 s</button>
+          <button class="level-btn" data-level="facile">6 questions</button>
+          <button class="level-btn active" data-level="moyen">10 questions</button>
+          <button class="level-btn" data-level="difficile">12 questions · 15 s</button>
         </div>
         <div class="stat-chips">
           <span class="chip"><span class="chip-label">Bonnes réponses</span><strong id="quiz-score">0</strong></span>
           <span class="chip"><span class="chip-label">Série</span><strong id="quiz-streak">0</strong></span>
         </div>
       </div>
-      <p class="game-help">Testez votre culture de barbier : à chaque question, une petite explication s'affiche après votre réponse.</p>
+      <p class="game-help">Testez votre culture de barbier sur 34 questions : chaque question est illustrée et reliée au salon, et une explication s'affiche après votre réponse.</p>
       <div id="quiz-question-block" class="quiz-question-block">
         <div class="quiz-meta">
           <span id="quiz-progress" class="quiz-progress">Question 1/8</span>
           <span id="quiz-timer" class="timer-display"></span>
         </div>
         <div class="progress-track"><div id="quiz-bar" class="progress-fill"></div></div>
+        <figure id="quiz-art" class="quiz-art"></figure>
         <h3 id="quiz-question" class="quiz-question"></h3>
         <div id="quiz-options" class="quiz-options"></div>
         <p id="quiz-feedback" class="quiz-feedback"></p>
@@ -381,13 +387,14 @@
       <div id="quiz-result" class="quiz-result" style="display:none;">
         <p id="quiz-score-text"></p>
         <button id="quiz-restart-btn" class="btn">Recommencer</button>
+        <a class="btn btn-ghost" href="index.html#reservation">Réserver un créneau au salon</a>
       </div>
       <div id="quiz-score-submit" class="score-submit" style="display:none;">
         <input type="text" id="quiz-name-input" maxlength="16" placeholder="Votre pseudo">
         <button id="quiz-save-score-btn" class="btn">Enregistrer le score</button>
       </div>
       <div class="leaderboard">
-        <h4>🏆 Meilleurs scores (cet appareil)</h4>
+        <h4><i class="fa-solid fa-trophy"></i> Meilleurs scores (cet appareil)</h4>
         <div id="quiz-leaderboard"></div>
       </div>
     </div>
@@ -401,13 +408,15 @@
           <button class="level-btn active" data-level="facile">3×3</button>
           <button class="level-btn" data-level="moyen">4×4</button>
           <button class="level-btn" data-level="difficile">5×5</button>
+          <button class="level-btn" data-level="expert">6×6 Expert</button>
         </div>
         <div class="stat-chips">
           <span class="chip"><span class="chip-label">Coups</span><strong id="puzzle-moves">0</strong></span>
           <span class="chip"><span class="chip-label">Temps</span><strong id="puzzle-time">0:00</strong></span>
         </div>
       </div>
-      <p class="game-help">Remettez la photo du salon dans le bon ordre : cliquez sur une pièce adjacente à la case vide pour la faire glisser.</p>
+      <p class="game-help">Choisissez une photo du salon ci-dessous, puis remettez-la dans le bon ordre : cliquez sur une pièce adjacente à la case vide pour la faire glisser — jusqu'au défi 6×6 Expert&nbsp;!</p>
+      <div id="puzzle-picker" class="puzzle-picker" aria-label="Choisir la photo du puzzle"></div>
       <div class="game-stage">
         <div id="puzzle-board" class="puzzle-board"></div>
       </div>
@@ -420,7 +429,7 @@
         <button id="puzzle-save-score-btn" class="btn">Enregistrer le score</button>
       </div>
       <div class="leaderboard">
-        <h4>🏆 Meilleurs scores (cet appareil)</h4>
+        <h4><i class="fa-solid fa-trophy"></i> Meilleurs scores (cet appareil)</h4>
         <div id="puzzle-leaderboard"></div>
       </div>
     </div>
@@ -439,28 +448,32 @@
           <span class="chip"><span class="chip-label">Clients satisfaits</span><strong id="haircut-score">0</strong></span>
         </div>
       </div>
-      <p class="game-help">Un client s'exprise : comprenez sa demande et choisissez la coupe qu'il attend.</p>
+      <p class="game-help">Un client s'exprime : comprenez sa demande et choisissez parmi les illustrations la coupe qu'il attend — une explication s'affiche ensuite. 16 demandes à tester&nbsp;!</p>
       <div id="haircut-block" class="haircut-block">
         <div class="quiz-meta">
           <span id="haircut-progress" class="quiz-progress">Client 1/8</span>
           <span id="haircut-timer" class="timer-display"></span>
         </div>
         <div class="progress-track"><div id="haircut-bar" class="progress-fill"></div></div>
-        <p id="haircut-request" class="haircut-request"></p>
-        <div id="haircut-options" class="quiz-options"></div>
+        <div class="haircut-client">
+          <span id="haircut-avatar" class="haircut-avatar" aria-hidden="true"></span>
+          <p id="haircut-request" class="haircut-request"></p>
+        </div>
+        <div id="haircut-options" class="quiz-options cards"></div>
         <p id="haircut-feedback" class="quiz-feedback"></p>
         <button id="haircut-next-btn" class="btn" style="display:none;">Client suivant</button>
       </div>
       <div id="haircut-result" class="quiz-result" style="display:none;">
         <p id="haircut-score-text"></p>
         <button id="haircut-restart-btn" class="btn">Recommencer</button>
+        <a class="btn btn-ghost" href="index.html#galerie">Voir nos coupes en galerie</a>
       </div>
       <div id="haircut-score-submit" class="score-submit" style="display:none;">
         <input type="text" id="haircut-name-input" maxlength="16" placeholder="Votre pseudo">
         <button id="haircut-save-score-btn" class="btn">Enregistrer le score</button>
       </div>
       <div class="leaderboard">
-        <h4>🏆 Meilleurs scores (cet appareil)</h4>
+        <h4><i class="fa-solid fa-trophy"></i> Meilleurs scores (cet appareil)</h4>
         <div id="haircut-leaderboard"></div>
       </div>
     </div>
