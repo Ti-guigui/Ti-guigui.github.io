@@ -1,0 +1,45 @@
+name: Checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  checks:
+    name: Syntaxe JS, CSS et HTML
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Syntaxe JavaScript
+        run: |
+          node --check games.js
+          node --check script.js
+
+      - name: Équilibre CSS et balises HTML
+        run: |
+          node -e '
+          const fs = require("fs");
+          const css = fs.readFileSync("games.css", "utf8");
+          const style = fs.readFileSync("style.css", "utf8");
+          for (const [name, src] of [["games.css", css], ["style.css", style]]) {
+            const o = (src.match(/{/g) || []).length;
+            const c = (src.match(/}/g) || []).length;
+            if (o !== c) { console.error(`${name}: accolades déséquilibrées ${o}/${c}`); process.exit(1); }
+          }
+          const pages = ["index.html", "jeux.html", "mentions-legales.html", "politique-de-confidentialite.html"];
+          for (const f of pages) {
+            const h = fs.readFileSync(f, "utf8");
+            for (const t of ["div", "section", "button", "footer", "header", "nav"]) {
+              const open = (h.match(new RegExp("<" + t + "(\\s|>)", "g")) || []).length;
+              const close = (h.match(new RegExp("</" + t + ">", "g")) || []).length;
+              if (open !== close) { console.error(`${f}: <${t}> ${open}/${close}`); process.exit(1); }
+            }
+          }
+          console.log("CSS et HTML équilibrés sur", pages.length, "pages");
+          '
