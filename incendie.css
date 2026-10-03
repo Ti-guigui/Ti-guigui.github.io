@@ -1,0 +1,225 @@
+/* =========================================================
+   PAGE CHEF D'ÉQUIPE INCENDIE — styles dédiés (thème noir & or)
+   Dossier de formation CE INC : documents stagiaire & formateur
+   ========================================================= */
+
+/* --- Intro --- */
+.ce-intro {
+  padding-top: 40px;
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+  padding-inline: 20px;
+}
+
+.ce-intro p {
+  color: var(--muted);
+  line-height: 1.7;
+  margin-top: 10px;
+}
+
+.ce-intro p strong {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.ce-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+  padding: 9px 20px;
+  border: 1px solid var(--gold-45);
+  border-radius: 50px;
+  background: var(--gold-12);
+  color: var(--gold);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.ce-back:hover {
+  background: var(--gold);
+  color: #100d02;
+  transform: translateX(-4px);
+}
+
+.ce-jump {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 28px;
+}
+
+/* --- Grille de cartes --- */
+.ce-grid {
+  width: 100%;
+  max-width: 1180px;
+  margin: 44px auto 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr));
+  gap: 26px;
+  align-items: start;
+}
+
+.ce-card {
+  background: linear-gradient(160deg, var(--card-2), var(--card));
+  padding: 30px 28px;
+  border-radius: var(--radius);
+  border: 1px solid var(--gold-25);
+  box-shadow: var(--shadow);
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  min-width: 0;
+}
+
+.ce-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--gold-45);
+  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.55);
+}
+
+.ce-card h3 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-transform: none;
+}
+
+.ce-card h3 i {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--gold-12);
+  color: var(--gold);
+  font-size: 1rem;
+  border: 1px solid var(--gold-25);
+}
+
+.ce-count {
+  color: var(--gold);
+  font-size: 0.78rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin: 10px 0 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+/* --- Sous-dossiers --- */
+.ce-folder {
+  margin-top: 16px;
+}
+
+.ce-folder h4 {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.ce-folder h4 i {
+  color: var(--gold);
+  font-size: 0.8rem;
+}
+
+.ce-folder .ce-folder {
+  margin-left: 12px;
+  padding-left: 12px;
+  border-left: 1px solid var(--gold-25);
+}
+
+.ce-folder .ce-folder h4 {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.ce-empty {
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+/* --- Liste de fichiers --- */
+.ce-files {
+  list-style: none;
+}
+
+.ce-files li a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 10px;
+  border-radius: 10px;
+  text-decoration: none;
+  border-bottom: 1px dashed var(--line);
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+.ce-files li:last-child a {
+  border-bottom: none;
+}
+
+.ce-files li a:hover,
+.ce-files li a:focus-visible {
+  background: var(--gold-12);
+  outline: none;
+}
+
+.ce-files li a i {
+  flex-shrink: 0;
+  width: 18px;
+  text-align: center;
+  color: var(--gold);
+}
+
+.ce-file-name {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.9rem;
+  font-weight: 300;
+  overflow-wrap: anywhere;
+}
+
+.ce-files li a:hover .ce-file-name {
+  color: var(--gold-bright);
+}
+
+.ce-file-meta {
+  flex-shrink: 0;
+  color: var(--muted);
+  font-size: 0.72rem;
+  white-space: nowrap;
+}
+
+/* --- Responsive --- */
+@media (max-width: 480px) {
+  .ce-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ce-card {
+    padding: 24px 18px;
+  }
+
+  .ce-files li a {
+    flex-wrap: wrap;
+    gap: 4px 10px;
+  }
+
+  .ce-file-meta {
+    width: 100%;
+    padding-left: 28px;
+  }
+}
