@@ -1,0 +1,13 @@
+{
+  "extraKnownMarketplaces": {
+    "irrlab.ai": {
+      "source": {
+        "source": "github",
+        "repo": "irr/arena-mode"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "arena-mode@irrlab.ai": true
+  }
+}
