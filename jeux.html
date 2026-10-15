@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Jeux — Star Barbershop</title>
   <meta name="description" content="Patientez en jouant : douze mini-jeux gratuits (2048, démineur, puissance 4, memory, quiz, mime, blagues…) en solo ou à plusieurs, avec niveaux de difficulté, classement et effets sonores, sur le site de Star Barbershop à Mourmelon-le-Grand.">
   <link rel="canonical" href="https://www.starbarbershop.fr/jeux.html">
@@ -85,8 +85,15 @@
     <button class="game-tab" data-game="jokes" data-mode="multi"><i class="fa-solid fa-face-laugh-squint"></i> Blagues &amp; Anecdotes</button>
   </div>
 
+  <p class="game-selector-hint"><i class="fa-solid fa-expand"></i> Touchez un jeu pour l'ouvrir en plein écran</p>
+
+  <div id="game-fs-bar" class="game-fs-bar" hidden>
+    <span id="game-fs-title" class="game-fs-title"></span>
+    <button id="game-fs-close" class="game-fs-close" type="button" aria-label="Fermer le jeu"><i class="fa-solid fa-xmark"></i><span>Fermer</span></button>
+  </div>
+
   <!-- JEU 1 : ATTRAPE LA MÈCHE -->
-  <div id="game-catch" class="game-panel active">
+  <div id="game-catch" class="game-panel">
     <div class="game-shell">
       <div class="game-top">
         <div id="catch-level-select" class="level-selector">

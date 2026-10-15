@@ -218,17 +218,58 @@ function isGameActive(gameId) {
   return !!panel && panel.classList.contains("active");
 }
 
-function activateTab(tab) {
+function selectTab(tab) {
   gameTabs.forEach(t => t.classList.remove("active"));
-  gamePanels.forEach(p => p.classList.remove("active"));
   tab.classList.add("active");
+}
+
+/* ---------------- Jeu en plein écran ---------------- */
+const fsBar = document.getElementById("game-fs-bar");
+const fsTitle = document.getElementById("game-fs-title");
+const fsClose = document.getElementById("game-fs-close");
+let openGameId = null;
+
+// Un rechargement peut conserver l'état « jeu ouvert » dans l'historique : on le nettoie
+try { if (history.state && history.state.game) history.replaceState(null, ""); } catch (e) { /* ignore */ }
+
+function activateTab(tab) {
+  selectTab(tab);
+  gamePanels.forEach(p => p.classList.remove("active"));
   const id = tab.dataset.game;
   const panel = document.getElementById("game-" + id);
-  if (panel) panel.classList.add("active");
+  if (panel) {
+    panel.classList.add("active");
+    panel.scrollTop = 0;
+  }
+  openGameId = id;
+  document.body.classList.add("game-open");
+  if (fsTitle) fsTitle.innerHTML = tab.innerHTML;
+  if (fsBar) fsBar.hidden = false;
+  // Le bouton « retour » du téléphone ferme le jeu au lieu de quitter la page
+  try { if (!history.state || !history.state.game) history.pushState({ game: id }, ""); } catch (e) { /* ignore */ }
   try { localStorage.setItem("starbarbershop_lastgame", id); } catch (e) { /* stockage indisponible */ }
   if (gameShowHooks[id]) gameShowHooks[id]();
   ACHV.evaluate(true);
 }
+
+function closeGame() {
+  if (!openGameId) return;
+  gamePanels.forEach(p => p.classList.remove("active"));
+  openGameId = null;
+  document.body.classList.remove("game-open");
+  if (fsBar) fsBar.hidden = true;
+}
+
+function requestCloseGame() {
+  if (!openGameId) return;
+  SFX.click();
+  if (history.state && history.state.game) history.back();
+  else closeGame();
+}
+
+if (fsClose) fsClose.addEventListener("click", requestCloseGame);
+window.addEventListener("popstate", e => { if (!(e.state && e.state.game)) closeGame(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape") requestCloseGame(); });
 
 gameTabs.forEach(tab => {
   tab.addEventListener("click", () => {
@@ -256,7 +297,7 @@ gameTabs.forEach(tab => {
       if (show) visible.push(tab);
     });
     const active = document.querySelector(".game-tab.active");
-    if (visible.length && (!active || visible.indexOf(active) === -1)) activateTab(visible[0]);
+    if (visible.length && (!active || visible.indexOf(active) === -1)) selectTab(visible[0]);
   }
 
   filterBtns.forEach(btn => {
@@ -280,7 +321,7 @@ try {
   const last = localStorage.getItem("starbarbershop_lastgame");
   if (last) {
     const tab = document.querySelector('.game-tab[data-game="' + last + '"]');
-    if (tab && !tab.classList.contains("active")) activateTab(tab);
+    if (tab) selectTab(tab);
   }
 } catch (e) { /* stockage indisponible */ }
 
@@ -3171,20 +3212,50 @@ function initGame(config) {
   } = game.els;
 
   const CARDS = [
-    { type: "Blague", text: "Le client dit au barbier : « C'est la première fois que je viens chez vous ? »", punch: "« Non… c'est la première fois que je repars ! »" },
-    { type: "Blague", text: "Pourquoi le barbier fait-il toujours des blagues courtes ?", punch: "Parce qu'il a le sens du raccourci." },
-    { type: "Blague", text: "Le client : « Étonnez-moi avec ma coiffure ! »", punch: "« Très bien : je vous laisse la barbe pousser. »" },
-    { type: "Blague", text: "Qu'est-ce qu'un cheveu rebelle ?", punch: "Un cheveu qui refuse de suivre la raie." },
-    { type: "Blague", text: "Combien de barbiers faut-il pour changer une ampoule ?", punch: "Aucun : on leur demande seulement de monter le volume." },
-    { type: "Blague", text: "Le maître apprenti lui dit : « Tu as fini ce client ? »", punch: "« Oui, il est méconnaissable ! » — « C'est exactement le but. »" },
-    { type: "Blague", text: "Quel est le sport préféré d'un dégradé bien fondu ?", punch: "Le fondu enchaîné." },
-    { type: "Blague", text: "Le client arrive en retard : « Désolé, mes cheveux ont pris du temps. »", punch: "« Pas de souci, la tondeuse ne s'est pas pressée non plus. »" },
-    { type: "Blague", text: "Pourquoi la tondeuse n'a jamais de secret ?", punch: "Elle dit tout à voix haute." },
-    { type: "Blague", text: "Le client demande : « Faites-moi une coupe qui va avec ma personnalité. »", punch: "« Dans ce cas, on va plutôt retoucher la coupe… »" },
-    { type: "Blague", text: "Que dit un cheveu qui tombe au sol ?", punch: "« Je m'étais dit que c'était le moment de prendre mon envol. »" },
-    { type: "Blague", text: "Pourquoi les ciseaux sont-ils toujours calmes ?", punch: "Parce qu'ils savent couper la poisse." },
-    { type: "Blague", text: "Le client demande un dégradé « invisible ».", punch: "« Pas de souci : personne ne verra rien… sauf ma facture. »" },
-    { type: "Blague", text: "Qu'est-ce qu'un barbier fatigue après 40 clients ?", punch: "Ses mochetés… de rires ! Il passe la journée à faire rire tout le monde." },
+    { type: "Blague", text: "Pourquoi les plongeurs plongent-ils toujours en arrière et jamais en avant ?", punch: "Parce que sinon, ils tombent dans le bateau." },
+    { type: "Blague", text: "Qu'est-ce qui est jaune et qui attend ?", punch: "Jonathan." },
+    { type: "Blague", text: "Que dit une imprimante dans l'eau ?", punch: "« J'ai papier ! »" },
+    { type: "Blague", text: "C'est l'histoire d'un pingouin qui respire par les fesses.", punch: "Un jour, il s'assoit… et il meurt." },
+    { type: "Blague", text: "Quel est le comble pour un électricien ?", punch: "De ne pas être au courant." },
+    { type: "Blague", text: "Que fait une fraise sur un cheval ?", punch: "Tagada, tagada !" },
+    { type: "Blague", text: "Monsieur et Madame Térieur ont deux fils. Comment s'appellent-ils ?", punch: "Alain et Alex." },
+    { type: "Blague", text: "La maîtresse : « Toto, cite-moi un mammifère qui n'a pas de dents. »", punch: "« Ma grand-mère ! »" },
+    { type: "Blague", text: "Chuck Norris a compté jusqu'à l'infini.", punch: "Deux fois." },
+    { type: "Blague", text: "Chuck Norris ne se mouille jamais.", punch: "C'est l'eau qui se Chuck-Norrise." },
+    { type: "Blague", text: "Qu'est-ce qui est petit, carré et jaune ?", punch: "Un petit carré jaune." },
+    { type: "Blague", text: "Pourquoi Napoléon n'a-t-il jamais déménagé ?", punch: "Parce qu'il avait un Bonaparte." },
+    { type: "Blague", text: "Que dit un oignon quand il se cogne ?", punch: "« Aïe ! »" },
+    { type: "Blague", text: "Quel est le sport le plus silencieux ?", punch: "Le parachute." },
+    { type: "Blague", text: "Pourquoi les vaches ferment-elles les yeux pendant la traite ?", punch: "Pour faire du lait concentré." },
+    { type: "Blague", text: "Que se passe-t-il quand deux poissons s'énervent ?", punch: "Le thon monte." },
+    { type: "Blague", text: "Un homme entre dans un café…", punch: "Plouf." },
+    { type: "Blague", text: "Quelle est la femelle du hamster ?", punch: "L'Amsterdam." },
+    { type: "Blague", text: "Pourquoi les éléphants n'utilisent-ils pas d'ordinateur ?", punch: "Parce qu'ils ont peur de la souris." },
+    { type: "Blague", text: "Qu'est-ce qu'un yaourt dans la forêt ?", punch: "Un yaourt nature." },
+    { type: "Blague", text: "Comment appelle-t-on un boomerang qui ne revient pas ?", punch: "Un bout de bois." },
+    { type: "Blague", text: "Quel animal a le plus de dents ?", punch: "La petite souris." },
+    { type: "Blague", text: "« Docteur, docteur, j'ai l'impression d'être invisible ! »", punch: "« Qui a dit ça ? »" },
+    { type: "Blague", text: "« Docteur, j'ai mal à l'œil droit chaque fois que je bois mon café. »", punch: "« Essayez d'enlever la cuillère de la tasse. »" },
+    { type: "Blague", text: "Qu'est-ce qui est vert et qui monte et qui descend ?", punch: "Un petit pois dans un ascenseur." },
+    { type: "Blague", text: "Pourquoi les Français mangent-ils des escargots ?", punch: "Parce qu'ils n'aiment pas la restauration rapide." },
+    { type: "Blague", text: "Deux grains de sable arrivent dans le désert. L'un dit à l'autre :", punch: "« Dis donc, il y a du monde aujourd'hui ! »" },
+    { type: "Blague", text: "C'est un aveugle qui entre dans un bar…", punch: "… puis dans une table, puis dans une chaise." },
+    { type: "Blague", text: "Quel est le comble pour un jardinier ?", punch: "De raconter des salades." },
+    { type: "Blague", text: "Pourquoi les coiffeurs sont-ils d'excellents conducteurs ?", punch: "Parce qu'ils connaissent tous les raccourcis." },
+    { type: "Blague", text: "Comment appelle-t-on un chien qui n'a pas de pattes ?", punch: "On ne l'appelle pas : on va le chercher." },
+    { type: "Blague", text: "J'ai raconté une blague sur le chômage…", punch: "… mais elle n'a pas marché." },
+    { type: "Blague", text: "Pourquoi le livre de maths est-il toujours triste ?", punch: "Parce qu'il a trop de problèmes." },
+    { type: "Blague", text: "Que dit un escargot quand il croise une limace ?", punch: "« Oh, un nudiste ! »" },
+    { type: "Blague", text: "Comment la chouette sait-elle que son mari fait la tête ?", punch: "Parce qu'hiboude." },
+    { type: "Blague", text: "Pourquoi les canards sont-ils toujours à l'heure ?", punch: "Parce qu'ils sont dans l'étang." },
+    { type: "Blague", text: "Que fait un crocodile quand il croise une superbe femelle ?", punch: "Il Lacoste." },
+    { type: "Blague", text: "Pourquoi les squelettes ne se battent-ils jamais entre eux ?", punch: "Parce qu'ils n'ont pas les tripes." },
+    { type: "Blague", text: "Qu'est-ce qu'un canif ?", punch: "Un petit fien." },
+    { type: "Blague", text: "Comment appelle-t-on un chat tombé dans un pot de peinture le jour de Noël ?", punch: "Un chat-peint de Noël." },
+    { type: "Blague", text: "Une maman tomate se retourne vers son petit qui traîne derrière elle et lui crie :", punch: "« Ketchup ! »" },
+    { type: "Blague", text: "Que dit un zéro à un huit ?", punch: "« Sympa, ta ceinture ! »" },
+    { type: "Blague", text: "Pourquoi les fantômes sont-ils de si mauvais menteurs ?", punch: "Parce qu'on voit à travers eux." },
+    { type: "Blague", text: "Le serveur : « Comment avez-vous trouvé votre steak ? »", punch: "« Par hasard, en soulevant une frite. »" },
     { type: "Anecdote", text: "Le poteau tournant blanc, rouge et bleu vient du Moyen Âge.", punch: "Le rouge évoquait le sang, le bleu les veines, le blanc les pansements : les barbiers étaient aussi chirurgiens." },
     { type: "Anecdote", text: "Le mot « barbier » vient du latin barba.", punch: "Il signifie tout simplement… barbe !" },
     { type: "Anecdote", text: "Le blaireau doit son nom au pinceau.", punch: "Les poils les plus doux pour étaler la mousse venaient autrefois de la queue du blaireau." },
@@ -3202,7 +3273,7 @@ function initGame(config) {
   ];
 
   const MODES = {
-    facile: { label: "Blagues", filter: "Blague", count: 8 },
+    facile: { label: "Blagues", filter: "Blague", count: 10 },
     moyen: { label: "Anecdotes", filter: "Anecdote", count: 8 },
     difficile: { label: "Mélange", filter: null, count: 12 }
   };
