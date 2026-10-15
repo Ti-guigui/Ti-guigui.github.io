@@ -1909,3 +1909,116 @@
     padding: 8px 13px;
   }
 }
+
+/* --- Jeu en plein écran --- */
+.game-selector-hint {
+  margin: -16px 0 10px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.game-selector-hint i {
+  color: var(--gold);
+  margin-right: 6px;
+}
+
+body.game-open {
+  overflow: hidden;
+}
+
+/* L'animation d'apparition des sections (transform) piégerait le position: fixed */
+body.game-open .games {
+  transform: none;
+  transition: none;
+}
+
+.game-panel.active {
+  position: fixed;
+  inset: 0;
+  z-index: 1550;
+  justify-content: flex-start;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  background: var(--bg);
+  padding: calc(72px + env(safe-area-inset-top)) 16px calc(24px + env(safe-area-inset-bottom));
+}
+
+.game-panel.active .game-shell {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.game-panel.active .catch-area {
+  max-width: 100%;
+  height: min(68vh, 640px);
+}
+
+.game-fs-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1560;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  height: calc(60px + env(safe-area-inset-top));
+  padding: env(safe-area-inset-top) 12px 0 18px;
+  background: rgba(8, 8, 10, 0.94);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--gold-25);
+}
+
+.game-fs-bar[hidden] {
+  display: none;
+}
+
+.game-fs-title {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-family: "Playfair Display", serif;
+  font-size: 1.15rem;
+  color: var(--gold);
+}
+
+.game-fs-title i {
+  margin-right: 8px;
+  font-size: 0.95rem;
+}
+
+.game-fs-close {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--gold), #b8912b);
+  color: #100d02;
+  border: none;
+  border-radius: 50px;
+  padding: 10px 18px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(212, 175, 55, 0.28);
+}
+
+.game-fs-close:hover {
+  filter: brightness(1.08);
+}
+
+@media (max-width: 600px) {
+  .game-panel.active {
+    padding-inline: 8px;
+  }
+
+  .game-panel.active .catch-area {
+    height: min(62vh, 520px);
+  }
+}
